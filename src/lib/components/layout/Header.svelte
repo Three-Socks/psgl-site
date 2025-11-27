@@ -21,8 +21,9 @@
 <header
     class="absolute top-0 left-0 right-0 z-50 flex flex-col border-b border-psgl-blue/70"
 >
+    {#if $page.url.pathname !== '/'}
     <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        <!-- Simulated Hero Background Container -->
+        <!-- Background Container -->
         <div class="absolute top-0 left-0 w-full h-screen overflow-hidden pointer-events-none">
             <div class="bg-hero-gradient absolute inset-0 opacity-90"></div>
             <div
@@ -32,14 +33,14 @@
 
             <!-- Decorative Racing Lines -->
             <div
-                class="bg-psgl-blue/10 absolute top-0 right-[-10%] h-full w-[40%] -skew-x-12 border-l border-white/5"
+                class="bg-psgl-blue/10 absolute top-0 right-[-10%] h-full w-[40%] -skew-x-12 origin-top border-l border-white/5"
             ></div>
             <div
-                class="absolute bottom-0 left-[-10%] h-full w-[30%] -skew-x-12 border-r border-white/5 bg-white/5"
+                class="absolute bottom-0 left-[-10%] h-full w-[30%] -skew-x-12 origin-top border-r border-white/5 bg-white/5"
             ></div>
         </div>
     </div>
-    <!-- Overlay to match Home page header darkness -->
+    {/if}
     <div class="absolute inset-0 -z-5 bg-black/20 backdrop-blur-sm"></div>
 
     <div class="flex items-center justify-between p-4 lg:p-6">

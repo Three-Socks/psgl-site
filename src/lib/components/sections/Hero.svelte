@@ -52,25 +52,26 @@
 </script>
 
 <section
-    class="relative py-32 flex flex-col items-center justify-center overflow-x-hidden overflow-hidden min-h-screen lg:min-h-auto"
+    class="relative py-32 flex flex-col items-center justify-center overflow-x-hidden overflow-hidden min-h-screen lg:min-h-0"
 >
-    <!-- Dynamic Background Elements -->
-    <div class="absolute top-0 left-0 z-0 h-screen w-full overflow-hidden pointer-events-none">
-        <div class="bg-hero-gradient absolute inset-0 opacity-90"></div>
-        <div
-            class="absolute inset-0 opacity-20 mix-blend-screen"
-            style={`background-image: url('${RealCarbonFibre}')`}
-        ></div>
+    <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+        <!-- Background Container -->
+        <div class="absolute top-0 left-0 w-full h-full lg:h-screen overflow-hidden pointer-events-none">
+            <div class="bg-hero-gradient absolute inset-0 opacity-90"></div>
+            <div
+                class="absolute inset-0 opacity-20 mix-blend-screen"
+                style={`background-image: url('${RealCarbonFibre}')`}
+            ></div>
 
-        <!-- Decorative Racing Lines -->
-        <div
-            class="bg-psgl-blue/10 absolute top-0 right-[-10%] h-full w-[40%] -skew-x-12 border-l border-white/5"
-        ></div>
-        <div
-            class="absolute bottom-0 left-[-10%] h-full w-[30%] -skew-x-12 border-r border-white/5 bg-white/5"
-        ></div>
+            <!-- Decorative Racing Lines -->
+            <div
+                class="bg-psgl-blue/10 absolute top-0 right-[-10%] h-full w-[40%] -skew-x-12 origin-top border-l border-white/5"
+            ></div>
+            <div
+                class="absolute bottom-0 left-[-10%] h-full w-[30%] -skew-x-12 origin-top border-r border-white/5 bg-white/5"
+            ></div>
+        </div>
     </div>
-
     <div
         class="relative z-10 grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-4 lg:grid-cols-12"
     >
