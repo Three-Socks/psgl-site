@@ -4,7 +4,7 @@
 </script>
 
 <section
-    class="relative overflow-hidden py-16 bg-gradient-to-br from-[#0033cc] to-[#001540]"
+    class="relative overflow-hidden py-16 bg-linear-to-br from-[#0033cc] to-[#001540]"
 >
     <!-- Background pattern -->
     <div

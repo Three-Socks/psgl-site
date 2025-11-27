@@ -1,8 +1,9 @@
 
 <script lang="ts">
     import { DISCORD_LINK, LEAGUES } from "$lib/constants";
-    import { MessageSquare } from "@lucide/svelte";
+    import { siDiscord } from 'simple-icons';
     import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
+    import DecorativeCorners from "$lib/components/ui/DecorativeCorners.svelte";
 </script>
 
 <section class="relative z-10 w-full py-20 bg-psgl-dark">
@@ -11,20 +12,8 @@
 
         <div class="mt-16 grid gap-8 md:grid-cols-3">
             {#each LEAGUES as league}
-                <div class="hover:border-psgl-blue group relative flex flex-col overflow-hidden border border-transparent bg-gray-900/30 hover:bg-gray-900 hover:-translate-y-1">
-                    <!-- Decorative corners -->
-                    <div
-                        class="z-30 border-psgl-blue transition-opacity duration-500 group-hover:opacity-0 absolute top-0 left-0 h-4 w-4 border-t-2 border-l-2"
-                    ></div>
-                    <div
-                        class="z-30 border-psgl-blue transition-opacity duration-500 group-hover:opacity-0 absolute top-0 right-0 h-4 w-4 border-t-2 border-r-2"
-                    ></div>
-                    <div
-                        class="z-30 border-psgl-blue transition-opacity duration-500 group-hover:opacity-0 absolute bottom-0 left-0 h-4 w-4 border-b-2 border-l-2"
-                    ></div>
-                    <div
-                        class="z-30 border-psgl-blue transition-opacity duration-500 group-hover:opacity-0 absolute bottom-0 right-0 h-4 w-4 border-b-2 border-r-2"
-                    ></div>
+                <div class="hover:border-psgl-blue group relative flex flex-col overflow-hidden border border-transparent bg-gray-900/30 transition-all duration-500 hover:bg-gray-900">
+                    <DecorativeCorners zIndex="z-30" />
 
                     <!-- Image Container (16:9) -->
                     <div class="relative aspect-video w-full overflow-hidden">
@@ -53,7 +42,7 @@
                             </div>
                         </div>
 
-                        <h3 class="mb-3 text-2xl font-black uppercase text-white group-hover:text-psgl-blue transition-colors">
+                        <h3 class="mb-3 text-2xl font-black uppercase text-white group-hover:text-psgl-blue transition-colors duration-300">
                             {league.name}
                         </h3>
 
@@ -72,7 +61,10 @@
                 rel="noreferrer"
                 class="btn-primary"
             >
-                <MessageSquare class="h-5 w-5" />
+                <svg role="img" viewBox="0 0 24 24" class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg">
+                    <title>{siDiscord.title}</title>
+                    <path d={siDiscord.path} />
+                </svg>
                 <span>Join On Discord</span>
             </a>
         </div>

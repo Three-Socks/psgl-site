@@ -1,7 +1,7 @@
 <script lang="ts">
     import { PARTNERS, AFFILIATE_LINKS } from "$lib/constants";
     import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
-    import AffiliateCard from "$lib/components/sections/AffiliateCard.svelte";
+    import AffiliateCard from "$lib/components/ui/AffiliateCard.svelte";
 </script>
 
 <section class="border-t border-white/10 bg-psgl-dark py-24">

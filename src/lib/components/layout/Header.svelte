@@ -1,7 +1,7 @@
 <script lang="ts">
     import { page } from '$app/stores';
     import { NAV_LINKS, SOCIAL_LINKS } from '$lib/constants';
-    import SimpleIcon from '$lib/components/SimpleIcon.svelte';
+    import SocialIcon from '$lib/components/ui/SocialIcon.svelte';
     import logo from "$lib/assets/psgl-logo-125.png";
     import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
     import { Menu, X } from '@lucide/svelte';
@@ -70,7 +70,7 @@
 
         <div class="hidden lg:flex gap-2">
             {#each SOCIAL_LINKS as link}
-                <SimpleIcon icon={link.icon} url={link.url} />
+                <SocialIcon icon={link.icon} url={link.url} />
             {/each}
         </div>
 
@@ -105,7 +105,7 @@
 
             <div class="flex flex-wrap gap-4 mt-2">
                 {#each SOCIAL_LINKS as link}
-                    <SimpleIcon icon={link.icon} url={link.url} />
+                    <SocialIcon icon={link.icon} url={link.url} />
                 {/each}
             </div>
         </div>

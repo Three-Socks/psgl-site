@@ -3,7 +3,7 @@
         AlertCircle,
     } from "@lucide/svelte";
     import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
-    import StandingsControls from "./StandingsControls.svelte";
+    import StandingsControls from "../ui/StandingsControls.svelte";
     import { LEAGUE_DATA } from "$lib/constants";
     import { Platform, ViewType } from "$lib/types";
 

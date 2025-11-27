@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { Affiliate } from "$lib/types";
     import { ExternalLink, Copy, Check } from "@lucide/svelte";
+    import DecorativeCorners from "$lib/components/ui/DecorativeCorners.svelte";
 
     export let item: Affiliate;
     export let widthClass = "sm:w-90";
@@ -23,23 +24,10 @@
 
 <a
     href={item.link}
-    class={`hover:border-psgl-blue group relative flex w-full flex-col items-center border border-transparent bg-gray-900/30 p-4 text-center transition-all duration-500 hover:-translate-y-1 ${widthClass}`}
+    class={`hover:border-psgl-blue group relative flex w-full flex-col items-center border border-transparent bg-gray-900/30 p-4 text-center transition-all duration-500 ${widthClass}`}
 >
-
     {#if item.partner}
-        <!-- Decorative corners -->
-        <div
-            class="border-psgl-blue transition-opacity duration-500 group-hover:opacity-0 absolute top-0 left-0 h-4 w-4 border-t border-l"
-        ></div>
-        <div
-            class="border-psgl-blue transition-opacity duration-500 group-hover:opacity-0 absolute top-0 right-0 h-4 w-4 border-t border-r"
-        ></div>
-        <div
-            class="border-psgl-blue transition-opacity duration-500 group-hover:opacity-0 absolute bottom-0 left-0 h-4 w-4 border-b border-l"
-        ></div>
-        <div
-            class="border-psgl-blue transition-opacity duration-500 group-hover:opacity-0 absolute bottom-0 right-0 h-4 w-4 border-b border-r"
-        ></div>
+        <DecorativeCorners />
     {/if}
     {#if "logoPath" in item}
         <div class="mb-4 flex h-20 w-full items-center justify-center">
@@ -63,7 +51,7 @@
 
     {#if item.code}
         <button
-            class={`flex items-center gap-2 mb-5 rounded cursor-pointer border border-white/10 bg-white/5 px-3 py-1 text-sm font-mono font-bold tracking-widest text-white transition-colors hover:border-psgl-blue/50 hover:bg-white/10`}
+            class={`flex items-center gap-2 mb-5 rounded cursor-pointer border border-white/10 bg-psgl-dark px-3 py-1 text-sm font-mono font-bold tracking-widest text-white transition-colors hover:border-psgl-blue/50`}
             on:click={(e) => copyCode(e, item.code)}
         >
             {#if copiedCode === item.code}

@@ -187,7 +187,7 @@
 
                                         <div class="flex flex-wrap gap-2">
                                             {#each block.tiers as tier, tIdx}
-                                                <div class={`min-w-[80px] text-center px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition ${tier.comm_confirm ? 'bg-psgl-blue text-white shadow-md' : 'bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10'}`}>
+                                                <div class={`min-w-20 text-center px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition ${tier.comm_confirm ? 'bg-psgl-blue text-white shadow-md' : 'bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10'}`}>
                                                     {tier.name}
                                                 </div>
                                             {/each}

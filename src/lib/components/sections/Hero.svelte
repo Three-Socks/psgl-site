@@ -1,12 +1,12 @@
 <script lang="ts">
     import { DISCORD_LINK } from "$lib/constants";
     import {
-        MessageSquare,
         Calendar,
         MapPin,
         Trophy,
         ArrowRight,
     } from "@lucide/svelte";
+    import { siDiscord } from 'simple-icons';
     import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
     import { onMount } from "svelte";
 
@@ -84,7 +84,7 @@
             </h1>
             <h1
                 class="text-6xl font-black uppercase leading-none tracking-tight drop-shadow-2xl md:text-6xl lg:text-7xl
-                mb-8 from-psgl-blue bg-gradient-to-r to-blue-400 bg-clip-text text-transparent"
+                mb-8 from-psgl-blue bg-linear-to-r to-blue-400 bg-clip-text text-transparent"
             >
                 Gaming Leagues
             </h1>
@@ -104,7 +104,10 @@
                     rel="noreferrer"
                     class="btn-primary text-lg"
                 >
-                    <MessageSquare class="h-5 w-5 fill-current" />
+                    <svg role="img" viewBox="0 0 24 24" class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg">
+                        <title>{siDiscord.title}</title>
+                        <path d={siDiscord.path} />
+                    </svg>
                     <span>JOIN DISCORD</span>
                 </a>
 
@@ -147,7 +150,7 @@
 
                     <!-- Content -->
                     <div
-                        class="flex flex-col gap-6 bg-[length:20px_20px] p-6 md:p-8"
+                        class="flex flex-col gap-6 bg-size-[20px_20px] p-6 md:p-8"
                     >
                         <div
                             class="flex items-start justify-between border-b border-white/10 pb-4"
@@ -160,11 +163,11 @@
                                     ></span>
                                     Next Race
                                 </div>
-                                <h3
+                                <div
                                     class="text-white text-2xl font-bold uppercase leading-none mb-1"
                                 >
                                     {nextRace.tier}
-                                </h3>
+                                </div>
                                 <p class="text-white/60 text-xs font-bold uppercase tracking-widest">
                                     {nextRace.round}
                                 </p>
