@@ -4,9 +4,19 @@
     const currentYear = new Date().getFullYear();
 
     let logoActive = false;
+    let timeoutId: ReturnType<typeof setTimeout>;
 
-    const activateLogo = () => (logoActive = true);
-    const deactivateLogo = () => (logoActive = false);
+    const activateLogo = () => {
+        clearTimeout(timeoutId);
+        logoActive = true;
+    };
+
+    const deactivateLogo = () => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            logoActive = false;
+        }, 500);
+    };
 </script>
 
 <Affiliates />
@@ -16,7 +26,7 @@
     ></div>
 
     <div
-        class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-4 md:flex-row"
+        class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-4 lg:flex-row"
     >
         <div class="flex items-center gap-4 group">
             <div
@@ -65,7 +75,7 @@
                 />
             </div>
             <span
-                class="text-3xl font-black uppercase text-white select-none md:block"
+                class="text-3xl font-black uppercase text-white select-none lg:block"
                 class:active={logoActive}
                 on:pointerenter={activateLogo}
                 on:pointerleave={deactivateLogo}
@@ -76,7 +86,7 @@
             >
         </div>
 
-        <div class="text-center md:text-right">
+        <div class="text-center lg:text-right">
             <p
                 class="mb-1 text-xs font-bold uppercase tracking-widest text-gray-500"
             >
