@@ -19,6 +19,7 @@
 
     let isTierMenuOpen = $state(false);
     let menuRef: HTMLDivElement | undefined = $state();
+    let tierCloseTimeout: ReturnType<typeof setTimeout> | undefined = $state();
 
     function handleClickOutside(event: MouseEvent) {
         if (menuRef && !menuRef.contains(event.target as Node)) {
@@ -34,8 +35,16 @@
 
     const handleTierSelect = (id: string) => {
         selectedTierId = id;
-        isTierMenuOpen = false;
+
+        if (tierCloseTimeout) clearTimeout(tierCloseTimeout);
+        tierCloseTimeout = setTimeout(() => {
+            isTierMenuOpen = false;
+        }, 160);
     };
+
+    $effect(() => {
+        return () => tierCloseTimeout && clearTimeout(tierCloseTimeout);
+    });
 
     const getViewLabel = (type: ViewType) => {
         switch (type) {
@@ -78,7 +87,7 @@
         </button>
     </div>
 
-    <!-- Unified Tier Dropdown -->
+    <!-- Tier Dropdown -->
     <div class="relative z-40 w-full md:w-64" bind:this={menuRef}>
         <button
             onclick={() => (isTierMenuOpen = !isTierMenuOpen)}

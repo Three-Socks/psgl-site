@@ -53,6 +53,7 @@ body {
 	.btn-primary {
 		@apply inline-flex items-center justify-center gap-2 min-w-[200px] px-8 py-4 cursor-pointer
         font-extrabold uppercase tracking-tight bg-white text-black
-        hover:bg-psgl-blue hover:text-white;
+        hover:bg-psgl-blue hover:text-white
+        active:bg-psgl-blue active:text-white;
 	}
 }

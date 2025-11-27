@@ -2,19 +2,32 @@
     import Affiliates from "$lib/components/sections/Affiliates.svelte";
     import logo from "$lib/assets/psgl-logo-125.png";
     const currentYear = new Date().getFullYear();
+
+    let logoActive = false;
+
+    const activateLogo = () => (logoActive = true);
+    const deactivateLogo = () => (logoActive = false);
 </script>
 
 <Affiliates />
 <footer class="relative border-t border-white/10 bg-black py-12">
     <div
-        class="from-psgl-blue absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent to-transparent opacity-50"
+        class="absolute top-0 left-0 h-px w-full bg-linear-to-r from-transparent to-transparent opacity-50"
     ></div>
 
     <div
         class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-4 md:flex-row"
     >
-        <div class="flex items-center gap-4">
-            <div class="logo-container group relative flex h-10 w-10 items-center justify-center overflow-visible">
+        <div class="flex items-center gap-4 group">
+            <div
+                class="logo-container group relative flex h-10 w-10 items-center select-none justify-center overflow-visible"
+                class:active={logoActive}
+                on:pointerenter={activateLogo}
+                on:pointerleave={deactivateLogo}
+                on:pointerdown={activateLogo}
+                on:pointerup={deactivateLogo}
+                on:pointercancel={deactivateLogo}
+            >
                 <div class="speed-lines pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                     <div class="speed-line"></div>
                     <div class="speed-line"></div>
@@ -45,7 +58,14 @@
                     class="logo-img relative z-10 h-full w-full object-contain transition-all duration-300"
                 />
             </div>
-            <span class="text-3xl font-black uppercase text-white md:block"
+            <span
+                class="text-3xl font-black uppercase text-white select-none md:block"
+                class:active={logoActive}
+                on:pointerenter={activateLogo}
+                on:pointerleave={deactivateLogo}
+                on:pointerdown={activateLogo}
+                on:pointerup={deactivateLogo}
+                on:pointercancel={deactivateLogo}
                 >PSGL</span
             >
         </div>
@@ -235,5 +255,10 @@
         top: 60%;
         animation-delay: 0.16s;
         width: 65px;
+    }
+
+    .logo-container.active .speed-lines,
+    .logo-container.active .sparks-container {
+        opacity: 1;
     }
 </style>

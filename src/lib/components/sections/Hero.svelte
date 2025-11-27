@@ -10,11 +10,6 @@
     import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
     import { onMount } from "svelte";
 
-    const scrollToStandings = () => {
-        const element = document.getElementById("standings");
-        element?.scrollIntoView({ behavior: "smooth" });
-    };
-
     const nextRace = {
         tier: "PC F1",
         round: "Round 7",
@@ -57,7 +52,7 @@
 </script>
 
 <section
-    class="relative py-32 flex flex-col items-center justify-center overflow-x-hidden overflow-hidden"
+    class="relative py-32 flex flex-col items-center justify-center overflow-x-hidden overflow-hidden min-h-screen lg:min-h-auto"
 >
     <!-- Dynamic Background Elements -->
     <div class="absolute top-0 left-0 z-0 h-screen w-full overflow-hidden pointer-events-none">
@@ -112,13 +107,13 @@
                     <span>JOIN DISCORD</span>
                 </a>
 
-                <button
-                    onclick={scrollToStandings}
+                <a
+                    href="/standings"
                     class="btn-primary text-lg"
                 >
                     <Trophy class="h-5 w-5" />
                     <span>VIEW STANDINGS</span>
-                </button>
+                </a>
             </div>
         </div>
 

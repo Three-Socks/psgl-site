@@ -42,7 +42,7 @@
     <!-- Overlay to match Home page header darkness -->
     <div class="absolute inset-0 -z-5 bg-black/20 backdrop-blur-sm"></div>
 
-    <div class="flex items-center justify-between p-4 md:p-6">
+    <div class="flex items-center justify-between p-4 lg:p-6">
         <a href="/" class="flex items-center gap-4">
             <div class="flex h-12 w-12 items-center justify-center">
                 <img
@@ -51,12 +51,12 @@
                     class="h-full w-full object-contain"
                 />
             </div>
-            <span class="text-5xl font-black uppercase text-white md:block">
+            <span class="text-5xl font-black uppercase text-white lg:block">
                 PSGL
             </span>
         </a>
 
-        <nav class="hidden md:flex items-center gap-8">
+        <nav class="hidden lg:flex items-center gap-8">
             {#each NAV_LINKS as link}
                 <a
                     href={link.href}
@@ -67,7 +67,7 @@
             {/each}
         </nav>
 
-        <div class="hidden md:flex gap-2">
+        <div class="hidden lg:flex gap-2">
             {#each SOCIAL_LINKS as link}
                 <SimpleIcon icon={link.icon} url={link.url} />
             {/each}
@@ -75,7 +75,7 @@
 
         <!-- Mobile Menu Button -->
         <button
-            class="text-white md:hidden"
+            class="text-white lg:hidden"
             onclick={toggleMenu}
             aria-label="Toggle menu"
         >
@@ -89,12 +89,12 @@
 
     <!-- Mobile Menu Dropdown -->
     {#if isMenuOpen}
-        <div class="flex flex-col gap-8 border-t border-white/10 bg-black/95 p-6 backdrop-blur-xl md:hidden">
-            <nav class="flex flex-col gap-6">
+        <div class="flex flex-col gap-2 border-t border-white/10 bg-black/95 p-4 backdrop-blur-xl lg:hidden">
+            <nav class="flex flex-col gap-2">
                 {#each NAV_LINKS as link}
                     <a
                         href={link.href}
-                        class="text-xl font-bold uppercase tracking-widest transition-colors hover:text-white {isActive(link.href) ? 'text-psgl-blue' : 'text-white/70'}"
+                        class="text-xl font-bold uppercase tracking-widest text-center transition-colors py-3 border-b border-white/10 hover:text-white {isActive(link.href) ? 'text-psgl-blue' : 'text-white/70'}"
                         onclick={toggleMenu}
                     >
                         {link.name}
@@ -102,7 +102,7 @@
                 {/each}
             </nav>
 
-            <div class="flex flex-wrap gap-4">
+            <div class="flex flex-wrap gap-4 mt-2">
                 {#each SOCIAL_LINKS as link}
                     <SimpleIcon icon={link.icon} url={link.url} />
                 {/each}
