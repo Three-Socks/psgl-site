@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+	--color-psgl-blue: #0055ff;
+	--color-psgl-dark: #050508;
+	--color-psgl-card: #0a0a0f;
+	--color-psgl-accent: #ff0040;
+	--color-psgl-light: #f0f5ff;
+
+	--font-sans: 'Outfit', Roboto, Helvetica, Arial, sans-serif;
+
+	--background-image-racing-pattern: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+	--background-image-hero-gradient: linear-gradient(135deg, #0033cc 0%, #000510 100%);
+
+	--background-size-grid: 40px 40px;
+}
+
+body {
+	background-color: #050508;
+	color: white;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: #0a0a12;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #0055ff;
+	border-radius: 0px;
+	/* Sharp edges */
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #2563eb;
+}
+
+/* Utility for skewed text revert */
+.skew-fix {
+	transform: skewX(12deg);
+}
+
+.-skew-fix {
+	transform: skewX(-12deg);
+}
+
+@layer components {
+	.btn-primary {
+		@apply inline-flex items-center justify-center gap-2 min-w-[200px] px-8 py-4 cursor-pointer
+        font-extrabold uppercase tracking-tight bg-white text-black
+        hover:bg-psgl-blue hover:text-white;
+	}
+}
