@@ -19,7 +19,7 @@
 </script>
 
 <header
-    class="absolute top-0 left-0 right-0 z-50 flex flex-col border-b border-psgl-blue/70 transition-all duration-300"
+    class="absolute top-0 left-0 right-0 z-50 flex flex-col border-b border-psgl-blue/70"
 >
     <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
         <!-- Simulated Hero Background Container -->

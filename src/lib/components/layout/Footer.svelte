@@ -28,13 +28,19 @@
                 on:pointerup={deactivateLogo}
                 on:pointercancel={deactivateLogo}
             >
-                <div class="speed-lines pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                <div
+                    class="speed-lines pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                    aria-hidden="true"
+                >
                     <div class="speed-line"></div>
                     <div class="speed-line"></div>
                     <div class="speed-line"></div>
                 </div>
 
-                <div class="sparks-container pointer-events-none absolute bottom-0 left-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                <div
+                    class="sparks-container pointer-events-none absolute bottom-0 left-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                    aria-hidden="true"
+                >
                     <div class="spark"></div>
                     <div class="spark"></div>
                     <div class="spark"></div>
@@ -91,6 +97,7 @@
         background: radial-gradient(circle, #fff 0%, #ffaa00 50%, transparent 100%);
         border-radius: 50%;
         animation: spark-shoot 0.5s cubic-bezier(0.33, 0, 0.66, 1) infinite;
+        animation-play-state: paused;
         opacity: 0;
     }
 
@@ -222,6 +229,7 @@
         height: 2px;
         background: linear-gradient(to left, rgba(255, 255, 255, 0.1), transparent);
         animation: speed-whoosh 0.4s ease-out infinite;
+        animation-play-state: paused;
         transform: translateY(-50%);
     }
 
@@ -260,5 +268,10 @@
     .logo-container.active .speed-lines,
     .logo-container.active .sparks-container {
         opacity: 1;
+    }
+
+    .logo-container.active .spark,
+    .logo-container.active .speed-line {
+        animation-play-state: running;
     }
 </style>

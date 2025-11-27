@@ -11,7 +11,7 @@
 
         <div class="mt-16 grid gap-8 md:grid-cols-3">
             {#each LEAGUES as league}
-                <div class="hover:border-psgl-blue group relative flex flex-col overflow-hidden transition-all duration-500 border border-transparent bg-gray-900/30 hover:bg-gray-900 hover:-translate-y-1">
+                <div class="hover:border-psgl-blue group relative flex flex-col overflow-hidden border border-transparent bg-gray-900/30 hover:bg-gray-900 hover:-translate-y-1">
                     <!-- Decorative corners -->
                     <div
                         class="z-30 border-psgl-blue transition-opacity duration-500 group-hover:opacity-0 absolute top-0 left-0 h-4 w-4 border-t-2 border-l-2"
@@ -29,11 +29,17 @@
                     <!-- Image Container (16:9) -->
                     <div class="relative aspect-video w-full overflow-hidden">
                         <div class="absolute inset-0 z-10"></div>
-                        <img
-                            src={league.image}
-                            alt={league.name}
-                            class="h-full w-full object-cover"
-                        />
+                        <picture>
+                            {#if league.imageWebp}
+                                <source srcset={league.imageWebp} type="image/webp" />
+                            {/if}
+                            <img
+                                src={league.image}
+                                alt={league.name}
+                                class="h-full w-full object-cover"
+                                loading="lazy"
+                            />
+                        </picture>
                     </div>
 
                     <!-- Content -->

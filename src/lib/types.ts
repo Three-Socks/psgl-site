@@ -14,6 +14,7 @@ export interface League {
   name: string;
   description: string;
   image: string;
+  imageWebp?: string;
   signupsOpen: boolean;
 }
 

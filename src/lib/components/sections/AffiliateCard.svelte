@@ -47,6 +47,7 @@
                 src={item.logoPath}
                 alt={item.name}
                 class="max-h-full object-contain"
+                loading="lazy"
             />
         </div>
     {/if}

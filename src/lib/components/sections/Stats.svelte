@@ -1,5 +1,6 @@
 <script lang="ts">
     import { STATS } from "$lib/constants";
+    import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
 </script>
 
 <section
@@ -7,7 +8,8 @@
 >
     <!-- Background pattern -->
     <div
-        class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/real-carbon-fibre.png')] opacity-50 mix-blend-overlay"
+        class="absolute inset-0 opacity-50 mix-blend-overlay"
+        style={`background-image: url('${RealCarbonFibre}')`}
     ></div>
 
     <div class="relative z-10 mx-auto max-w-7xl px-4">

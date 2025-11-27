@@ -28,18 +28,21 @@ export const LEAGUES: League[] = [
         name: "F1 25 Season 40",
         description: "Join the world's largest F1 league. With tiers for every skill level on PC & PlayStation.",
         image: "/leagues/f125.jpg",
+        imageWebp: "/leagues/f125.webp",
         signupsOpen: true
     },
     {
         name: "F1 PSGL E-Series S6",
         description: "E-Series is a PC team event bringing the biggest and best organisations together.",
         image: "/leagues/e-series-s6.jpg",
+        imageWebp: "/leagues/e-series-s6.webp",
         signupsOpen: false
     },
     {
         name: "GT7",
         description: "Experience competitive Gran Turismo 7 racing.",
-        image: "/leagues/gt7.png",
+        image: "/leagues/gt7.jpg",
+        imageWebp: "/leagues/gt7.webp",
         signupsOpen: true
     }
 ];
