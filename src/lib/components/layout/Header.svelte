@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import { NAV_LINKS, SOCIAL_LINKS } from '$lib/constants';
     import SocialIcon from '$lib/components/ui/SocialIcon.svelte';
     import logo from "$lib/assets/psgl-logo-125.png";
@@ -13,15 +13,15 @@
     }
 
     $: isActive = (href: string) => {
-        if (href === '/') return $page.url.pathname === '/';
-        return $page.url.pathname.startsWith(href);
+        if (href === '/') return page.url.pathname === '/';
+        return page.url.pathname.startsWith(href);
     };
 </script>
 
 <header
     class="absolute top-0 left-0 right-0 z-50 flex flex-col border-b border-psgl-blue/70"
 >
-    {#if $page.url.pathname !== '/'}
+    {#if page.url.pathname !== '/'}
     <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
         <!-- Background Container -->
         <div class="absolute top-0 left-0 w-full h-screen overflow-hidden pointer-events-none">
@@ -91,11 +91,11 @@
     <!-- Mobile Menu Dropdown -->
     {#if isMenuOpen}
         <div class="flex flex-col gap-2 border-t border-white/10 bg-black/95 p-4 backdrop-blur-xl lg:hidden">
-            <nav class="flex flex-col gap-2">
+            <nav class="flex flex-col">
                 {#each NAV_LINKS as link}
                     <a
                         href={link.href}
-                        class="text-xl font-bold uppercase tracking-widest text-center transition-colors py-3 border-b border-white/10 hover:text-white {isActive(link.href) ? 'text-psgl-blue' : 'text-white/70'}"
+                        class="text-xl font-bold uppercase tracking-widest text-center transition-colors py-5 border-b border-white/10 hover:text-white {isActive(link.href) ? 'text-psgl-blue' : 'text-white/70'}"
                         onclick={toggleMenu}
                     >
                         {link.name}

@@ -1,6 +1,6 @@
 <script lang="ts">
     import {
-        AlertCircle,
+        CircleAlert,
     } from "@lucide/svelte";
     import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
     import StandingsControls from "../ui/StandingsControls.svelte";
@@ -48,18 +48,19 @@
     <div
         class="group relative w-fit mx-auto max-w-full overflow-hidden border border-white/10 bg-black"
     >
-
         {#if currentTier}
-            <img
-                src={currentTier.images[selectedView]}
-                alt={`${currentTier.name} - ${selectedView}`}
-                class="block h-auto max-w-full mx-auto"
-            />
-    {:else}
+            <a href={currentTier.images[selectedView]}>
+                <img
+                    src={currentTier.images[selectedView]}
+                    alt={`${currentTier.name} - ${selectedView}`}
+                    class="block h-auto max-w-full mx-auto"
+                />
+            </a>
+        {:else}
             <div
                 class="flex h-full w-full flex-col items-center justify-center text-gray-600"
             >
-                <AlertCircle class="mb-4 h-12 w-12" />
+                <CircleAlert class="mb-4 h-12 w-12" />
                 <p class="font-bold uppercase tracking-widest">
                     No Data Available
                 </p>

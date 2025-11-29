@@ -88,7 +88,7 @@
 
         <div class="text-center lg:text-right">
             <p
-                class="mb-1 text-xs font-bold uppercase tracking-widest text-gray-500"
+                class="mb-1 text-xs font-bold uppercase tracking-widest text-gray-400"
             >
                 &copy; {currentYear} Premier Sim Gaming Leagues LTD
             </p>

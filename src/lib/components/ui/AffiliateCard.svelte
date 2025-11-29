@@ -58,13 +58,13 @@
                 <span class="text-green-400">COPIED</span>
                 <Check class="h-4 w-4 text-green-400" />
             {:else}
-                {item.discount}: <span class="text-psgl-blue">{item.code}</span>
+                {item.discount}: <span class="text-[#2971ff]">{item.code}</span>
                 <Copy class="h-4 w-4 text-white/50" />
             {/if}
         </button>
     {/if}
 
-    <div class="text-psgl-blue mt-auto flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 group-hover:text-white">
+    <div class="text-[#2971ff] mt-auto flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 group-hover:text-white">
         {ctaLabel} <ExternalLink class="h-3.5 w-3.5" />
     </div>
 </a>
