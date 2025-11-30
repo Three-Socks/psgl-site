@@ -27,20 +27,6 @@ export interface Tier {
   comm_confirm?: boolean;
 }
 
-export interface StandingsTier extends Tier {
-  images: {
-    [ViewType.DRIVERS]: string;
-    [ViewType.CONSTRUCTORS]: string;
-    [ViewType.RESULTS]: string;
-  };
-}
-
-export interface StatItem {
-  label: string;
-  value: string;
-  icon: Component;
-}
-
 export interface Affiliate {
   name: string;
   link: string;

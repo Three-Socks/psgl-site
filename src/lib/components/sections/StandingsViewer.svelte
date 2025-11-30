@@ -5,6 +5,7 @@
     import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
     import StandingsControls from "../ui/StandingsControls.svelte";
     import { Platform, ViewType } from "$lib/types";
+    import { STANDINGS_IMAGE_BASE_URL } from "$lib/constants";
     import type { Tier } from "$lib/types";
 
     let { tiers } = $props<{ tiers: Tier[] }>();
@@ -14,6 +15,17 @@
 
     const initialTier = tiers.find((t: Tier) => t.platform === Platform.PC);
     let selectedTierId = $state<string>(initialTier?.id || "");
+
+    const tierSlug = (tierName: string) => tierName.replace(/\s+/g, "-");
+
+    const viewSuffix: Record<ViewType, string> = {
+        [ViewType.DRIVERS]: "drivers-standings",
+        [ViewType.CONSTRUCTORS]: "constructors-standings",
+        [ViewType.RESULTS]: "results"
+    };
+
+    const buildImageUrl = (tierName: string, view: ViewType) =>
+        `${STANDINGS_IMAGE_BASE_URL}/${tierSlug(tierName)}-${viewSuffix[view]}.png`;
 
 
     let filteredTiers = $derived(
@@ -31,6 +43,10 @@
 
     let currentTier = $derived(
         filteredTiers.find((t: Tier) => t.id === selectedTierId),
+    );
+
+    let currentImageUrl = $derived(
+        currentTier ? buildImageUrl(currentTier.name, selectedView) : undefined,
     );
 </script>
 
@@ -50,10 +66,10 @@
     <div
         class="group relative w-fit mx-auto max-w-full overflow-hidden border border-white/10 bg-black"
     >
-        {#if currentTier}
-            <a href={currentTier.images[selectedView]}>
+        {#if currentTier && currentImageUrl}
+            <a href={currentImageUrl}>
                 <img
-                    src={currentTier.images[selectedView]}
+                    src={currentImageUrl}
                     alt={`${currentTier.name} - ${selectedView}`}
                     class="block h-auto max-w-full mx-auto"
                 />

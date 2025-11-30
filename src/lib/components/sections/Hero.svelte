@@ -240,7 +240,7 @@
                         </div>
 
                         <a
-                            href="/calendar"
+                            href="/calendars"
                             class="btn-primary mt-2 w-full"
                         >
                             <span>View Full Calendar</span>

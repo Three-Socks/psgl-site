@@ -1,21 +1,20 @@
 import { getAllCalendars, getAllTiers } from '$lib/server/directus';
 import { NEXT_RACE_TIER_ID } from '$env/static/private';
-import type { CalendarData, RaceRound, CalendarTier, StandingsTier } from '$lib/types';
+import type { CalendarData, RaceRound, Tier, CalendarTier } from '$lib/types';
 import { error } from '@sveltejs/kit';
 import { building } from '$app/environment';
 import { DEFAULT_RACE_TIME, DEFAULT_TIMEZONE } from '$lib/constants';
-import { Platform, ViewType } from '$lib/types';
 
 export const prerender = true;
 
 export const load = async () => {
     let calendars: CalendarData[];
-    let tiers: any[];
+    let tiers: Tier[];
 
     try {
         [calendars, tiers] = await Promise.all([
             getAllCalendars() as unknown as Promise<CalendarData[]>,
-            getAllTiers()
+            getAllTiers() as unknown as Promise<Tier[]>,
         ]);
     } catch (e) {
         console.error("Failed to load data:", e);
@@ -24,6 +23,16 @@ export const load = async () => {
         }
         throw error(503, "Service Unavailable: Unable to fetch data.");
     }
+
+    // Resolve the current timezone name (e.g. GMT, BST)
+    const now = new Date();
+    const timeZoneFormatter = new Intl.DateTimeFormat('en-GB', {
+        timeZone: DEFAULT_TIMEZONE,
+        timeZoneName: 'short'
+    });
+    const timeZoneParts = timeZoneFormatter.formatToParts(now);
+    const timeZoneName =
+        timeZoneParts.find((part) => part.type === 'timeZoneName')?.value ?? 'UK';
 
     // Process calendars to match the frontend structure
     const processedCalendars: Record<string, CalendarData> = {};
@@ -47,7 +56,6 @@ export const load = async () => {
         if (NEXT_RACE_TIER_ID) {
             const hasTargetTier = calendar.tiers.some((t: CalendarTier) => t.tiers_id.id === NEXT_RACE_TIER_ID);
             if (hasTargetTier) {
-                const now = new Date();
                 const upcomingRounds = calendar.rounds
                     .filter((r: RaceRound) => {
                         return new Date(r.date) >= new Date(now.toISOString().split('T')[0]);
@@ -87,30 +95,10 @@ export const load = async () => {
         }
     }
 
-    // Process tiers for standings
-    const processedTiers: StandingsTier[] = tiers.map((tier: any) => {
-        const platform = tier.platform?.toUpperCase() === 'PC' ? Platform.PC : Platform.PS;
-        const tierName = tier.name.replace(/\s+/g, '-');
-
-        const images = {
-            [ViewType.DRIVERS]: `https://i.premiersimgl.com/standings/${tierName}-drivers-standings.png`,
-            [ViewType.CONSTRUCTORS]: `https://i.premiersimgl.com/standings/${tierName}-constructors-standings.png`,
-            [ViewType.RESULTS]: `https://i.premiersimgl.com/standings/${tierName}-results.png`,
-        };
-
-        return {
-            id: tier.id,
-            name: tier.name,
-            platform,
-            time: tier.time,
-            comm_confirm: tier.comm_confirm,
-            images
-        };
-    });
-
     return {
         calendars: processedCalendars,
         nextRace: nextRaceData,
-        tiers: processedTiers
+        tiers: tiers,
+        timeZoneName
     };
 };

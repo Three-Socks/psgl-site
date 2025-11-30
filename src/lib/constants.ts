@@ -2,14 +2,12 @@ import { Platform, ViewType } from './types';
 import type {
     League,
     Affiliate,
-    StatItem,
-    Tier,
 } from './types';
-import { Users, Trophy, Video, Activity } from '@lucide/svelte';
-import { siX, siYoutube, siTwitch, siInstagram, siTiktok, siDiscord } from 'simple-icons';
+import { siX, siYoutube, siTwitch, siInstagram, siTiktok, siDiscord } from "simple-icons";
 import SimRacingSetup from "$lib/assets/psgl-x-simracingsetup-360.png";
 
 export const DISCORD_LINK = "https://premiersimgl.com/discord";
+export const STANDINGS_IMAGE_BASE_URL = "https://i.premiersimgl.com/standings";
 
 export const SOCIAL_LINKS = [
     { icon: siDiscord, url: "https://premiersimgl.com/discord", name: "Discord" },
@@ -44,13 +42,6 @@ export const LEAGUES: League[] = [
     }
 ];
 
-export const STATS: StatItem[] = [
-  { label: 'Active Drivers', value: '3,500+', icon: Users },
-  { label: 'Races Completed', value: '12,400', icon: Trophy },
-  { label: 'Live Views', value: '2.5M+', icon: Video },
-  { label: 'Discord Members', value: '15K+', icon: Activity },
-];
-
 export const PARTNERS: Affiliate[] = [
   {
     name: "SimRacing Setups",
@@ -75,10 +66,9 @@ export const AFFILIATE_LINKS: Affiliate[] = [
 export const NAV_LINKS = [
   { name: "Home", href: "/" },
   { name: "Standings", href: "/standings" },
-  { name: "Calendar", href: "/calendar" }
+  { name: "Calendars", href: "/calendars" }
 ];
 
 export const DEFAULT_TIMEZONE = 'Europe/London';
 export const DEFAULT_RACE_TIME = '19:00:00';
-
 

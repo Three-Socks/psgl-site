@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { Calendar, Clock, Trophy, Users } from "@lucide/svelte";
+    import { Calendar, Users } from "@lucide/svelte";
     import PageShell from "$lib/components/layout/PageShell.svelte";
     import PageSection from "$lib/components/layout/PageSection.svelte";
     import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
@@ -8,6 +8,7 @@
 
     let { data } = $props();
     const calendars = data.calendars as Record<string, CalendarData>;
+    const timeZoneName = $derived(data.timeZoneName);
 
     let activeCalendarId = $state<string>(Object.keys(calendars)[0] || "");
     let activeCalendar = $derived(calendars[activeCalendarId]);
@@ -28,6 +29,28 @@
     };
 
     let tierBlocks = $derived(tiersByTime(activeCalendar.tiers));
+
+    const formatTime = (timeStr: string) => {
+        if (!timeStr) return "";
+
+        const [hourStr, minuteStr] = timeStr.split(":");
+        const hour = Number(hourStr);
+        const minute = Number(minuteStr);
+
+        if (Number.isNaN(hour) || Number.isNaN(minute)) {
+            return timeStr;
+        }
+
+        const period = hour >= 12 ? "pm" : "am";
+        const twelveHour = ((hour + 11) % 12) + 1;
+
+        if (minute === 0) {
+            return `${twelveHour}${period}`;
+        }
+
+        const minutePadded = minute.toString().padStart(2, "0");
+        return `${twelveHour}:${minutePadded}${period}`;
+    };
 
     const setActiveCalendar = (id: string) => {
         activeCalendarId = id;
@@ -55,7 +78,7 @@
 
 <svelte:head>
     <title>PSGL | Calendar</title>
-    <meta name="description" content="Season 40 calendar." />
+    <meta name="description" content="League Calendars." />
 </svelte:head>
 
 <PageShell>
@@ -67,7 +90,7 @@
             <div class="flex flex-wrap justify-center gap-1 w-full max-w-4xl">
                 {#each Object.entries(calendars) as [calId, cal]}
                     <button
-                        class="flex-1 min-w-[140px] border border-white/20 px-6 py-4 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all hover:border-psgl-blue
+                        class="flex-0 min-w-40 min-h-20 border border-white/20 px-6 py-7 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all hover:border-psgl-blue
                         {activeCalendarId === calId
                             ? 'bg-psgl-blue text-white'
                             : 'bg-black/40 text-gray-300 hover:bg-white/5 hover:text-white'}"
@@ -185,8 +208,12 @@
                                 <div class={`pt-4 ${idx > 0 ? 'border-t border-white/5' : ''}`}>
                                     <div class="flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
                                         <div class="w-32 shrink-0 flex flex-col gap-1">
-                                            <div class="text-3xl font-black text-white leading-none">{block.time}</div>
-                                            <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">UK</div>
+                                            <div class="text-3xl font-black text-white leading-none">
+                                                {formatTime(block.time)}
+                                            </div>
+                                            <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">
+                                                {timeZoneName}
+                                            </div>
                                         </div>
 
                                         <div class="flex flex-wrap gap-2">
