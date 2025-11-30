@@ -5,9 +5,9 @@
   const { headerPadding = true, children } = $props();
 </script>
 
-<div class={`min-h-screen overflow-x-hidden font-display text-white selection:bg-blue-600 selection:text-white`}>
+<div class="min-h-screen overflow-x-hidden font-display text-white selection:bg-blue-600 selection:text-white">
   <Header />
-  <main class={`${headerPadding ? 'pt-32 pb-32' : ''}`}>
+  <main class={`${headerPadding ? "pt-32 pb-32" : ""}`}>
     {@render children()}
   </main>
   <Footer />

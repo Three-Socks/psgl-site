@@ -22,8 +22,8 @@
     }
 </script>
 
-<a
-    href={item.link}
+<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+<a href={item.link} target="_blank"
     class={`hover:border-psgl-blue group relative flex w-full flex-col items-center border border-transparent bg-gray-900/30 p-4 text-center transition-all duration-500 ${widthClass}`}
 >
     {#if item.partner}
@@ -51,7 +51,7 @@
 
     {#if item.code}
         <button
-            class={`flex items-center gap-2 mb-5 rounded cursor-pointer border border-white/10 bg-psgl-dark px-3 py-1 text-sm font-mono font-bold tracking-widest text-white transition-colors hover:border-psgl-blue/50`}
+            class="flex items-center gap-2 mb-5 rounded cursor-pointer border border-white/10 bg-psgl-dark px-3 py-1 text-sm font-mono font-bold tracking-widest text-white transition-colors hover:border-psgl-blue/50"
             on:click={(e) => copyCode(e, item.code)}
         >
             {#if copiedCode === item.code}

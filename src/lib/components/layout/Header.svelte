@@ -1,10 +1,11 @@
 <script lang="ts">
-    import { page } from '$app/state';
-    import { NAV_LINKS, SOCIAL_LINKS } from '$lib/constants';
-    import SocialIcon from '$lib/components/ui/SocialIcon.svelte';
+    import { page } from "$app/state";
+    import { NAV_LINKS, SOCIAL_LINKS } from "$lib/constants";
+    import SocialIcon from "$lib/components/ui/SocialIcon.svelte";
     import logo from "$lib/assets/psgl-logo-125.png";
     import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
-    import { Menu, X } from '@lucide/svelte';
+    import { Menu, X } from "@lucide/svelte";
+    import { resolve } from "$app/paths";
 
     let isMenuOpen = false;
 
@@ -12,16 +13,16 @@
         isMenuOpen = !isMenuOpen;
     }
 
-    $: isActive = (href: string) => {
-        if (href === '/') return page.url.pathname === '/';
+    function isActive(href: string) {
+        if (href === "/") return page.url.pathname === "/";
         return page.url.pathname.startsWith(href);
-    };
+    }
 </script>
 
 <header
     class="absolute top-0 left-0 right-0 z-50 flex flex-col border-b border-psgl-blue/70"
 >
-    {#if page.url.pathname !== '/'}
+    {#if page.url.pathname !== "/"}
     <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
         <!-- Background Container -->
         <div class="absolute top-0 left-0 w-full h-screen overflow-hidden pointer-events-none">
@@ -44,7 +45,7 @@
     <div class="absolute inset-0 -z-5 bg-black/20 backdrop-blur-sm"></div>
 
     <div class="flex items-center justify-between p-4 lg:p-6">
-        <a href="/" class="flex items-center gap-4">
+        <a href={resolve("/")} class="flex items-center gap-4">
             <div class="flex h-12 w-12 items-center justify-center">
                 <img
                     src={logo}
@@ -58,10 +59,10 @@
         </a>
 
         <nav class="hidden lg:flex items-center gap-8">
-            {#each NAV_LINKS as link}
+            {#each NAV_LINKS as link (link.href)}
                 <a
-                    href={link.href}
-                    class="text-sm font-bold uppercase tracking-widest transition-colors hover:text-white border-b-2 py-1 {isActive(link.href) ? 'text-white border-psgl-blue' : 'text-white/70 border-transparent'}"
+                    href={resolve(link.href)}
+                    class="text-sm font-bold uppercase tracking-widest transition-colors hover:text-white border-b-2 py-1 {isActive(link.href) ? "text-white border-psgl-blue" : "text-white/70 border-transparent"}"
                 >
                     {link.name}
                 </a>
@@ -69,7 +70,7 @@
         </nav>
 
         <div class="hidden lg:flex gap-2">
-            {#each SOCIAL_LINKS as link}
+            {#each SOCIAL_LINKS as link (link.url)}
                 <SocialIcon icon={link.icon} url={link.url} />
             {/each}
         </div>
@@ -92,10 +93,10 @@
     {#if isMenuOpen}
         <div class="flex flex-col gap-2 border-t border-white/10 bg-black/95 p-4 backdrop-blur-xl lg:hidden">
             <nav class="flex flex-col">
-                {#each NAV_LINKS as link}
+                {#each NAV_LINKS as link (link.href)}
                     <a
-                        href={link.href}
-                        class="text-xl font-bold uppercase tracking-widest text-center transition-colors py-5 border-b border-white/10 hover:text-white {isActive(link.href) ? 'text-psgl-blue' : 'text-white/70'}"
+                        href={resolve(link.href)}
+                        class="text-xl font-bold uppercase tracking-widest text-center transition-colors py-5 border-b border-white/10 hover:text-white {isActive(link.href) ? "text-psgl-blue" : "text-white/70"}"
                         onclick={toggleMenu}
                     >
                         {link.name}
@@ -104,7 +105,7 @@
             </nav>
 
             <div class="flex flex-wrap gap-4 mt-2">
-                {#each SOCIAL_LINKS as link}
+                {#each SOCIAL_LINKS as link (link.url)}
                     <SocialIcon icon={link.icon} url={link.url} />
                 {/each}
             </div>

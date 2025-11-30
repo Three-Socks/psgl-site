@@ -67,8 +67,8 @@
             onclick={() => (selectedPlatform = Platform.PC)}
             class="flex-1 border border-white/20 px-6 py-3 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all md:flex-none md:text-base hover:border-psgl-blue {selectedPlatform ===
             Platform.PC
-                ? 'bg-psgl-blue text-white'
-                : 'bg-black/40 text-gray-300 hover:bg-white/5 hover:text-white'}"
+                ? "bg-psgl-blue text-white"
+                : "bg-black/40 text-gray-300 hover:bg-white/5 hover:text-white"}"
         >
             <div class="flex items-center justify-center gap-2">
                 <Monitor class="h-5 w-5" /> PC
@@ -78,8 +78,8 @@
             onclick={() => (selectedPlatform = Platform.PS)}
             class="flex-1 border border-white/20 px-6 py-3 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all md:flex-none md:text-base hover:border-psgl-blue {selectedPlatform ===
             Platform.PS
-                ? 'bg-psgl-blue text-white'
-                : 'bg-black/40 text-gray-300 hover:bg-white/5 hover:text-white'}"
+                ? "bg-psgl-blue text-white"
+                : "bg-black/40 text-gray-300 hover:bg-white/5 hover:text-white"}"
         >
             <div class="flex items-center justify-center gap-2">
                 <Gamepad2 class="h-5 w-5" /> PS
@@ -104,8 +104,8 @@
             </div>
             <div
                 class="bg-white/5 p-1 transition-transform duration-300 {isTierMenuOpen
-                    ? 'rotate-180'
-                    : ''}"
+                    ? "rotate-180"
+                    : ""}"
             >
                 <ChevronDown class="text-psgl-blue h-4 w-4" />
             </div>
@@ -120,8 +120,8 @@
                         onclick={() => handleTierSelect(tier.id)}
                         class="group flex items-center justify-between border border-transparent px-3 py-2 cursor-pointer text-left transition-all hover:border-white/20 {selectedTierId ===
                         tier.id
-                            ? 'bg-psgl-blue text-white'
-                            : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'}"
+                            ? "bg-psgl-blue text-white"
+                            : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"}"
                     >
                         <span class="text-sm uppercase font-bold"
                             >{tier.name}</span
@@ -135,13 +135,13 @@
 
 <!-- VIEW TABS (Full width, no scroll) -->
 <div class="flex w-full gap-1">
-    {#each [ViewType.DRIVERS, ViewType.CONSTRUCTORS, ViewType.RESULTS] as type}
+    {#each [ViewType.DRIVERS, ViewType.CONSTRUCTORS, ViewType.RESULTS] as type (type)}
         <button
             onclick={() => (selectedView = type)}
             class="flex-1 min-w-0 border py-3 text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer md:py-4 md:text-sm {selectedView ===
             type
-                ? 'border-white bg-white text-black'
-                : 'border-white/20 bg-transparent text-gray-400 hover:border-white/50 hover:text-white'}"
+                ? "border-white bg-white text-black"
+                : "border-white/20 bg-transparent text-gray-400 hover:border-white/50 hover:text-white"}"
         >
             <div
                 class="flex flex-col items-center justify-center gap-1 text-center md:flex-row md:gap-2"

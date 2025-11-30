@@ -1,13 +1,13 @@
 <script lang="ts">
-    import { Icon, Trophy, Video, Users } from '@lucide/svelte';
+    import { Icon, Trophy, Video, Users } from "@lucide/svelte";
     import { motorRacingHelmet } from "@lucide/lab";
     import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
 
     const STATS = [
-        { label: 'Active Drivers', value: '3,500+', iconNode: motorRacingHelmet },
-        { label: 'Races Completed', value: '12,400', icon: Trophy },
-        { label: 'Live Views', value: '2.5M+', icon: Video },
-        { label: 'Discord Members', value: '15K+', icon: Users },
+        { label: "Active Drivers", value: "3,500+", iconNode: motorRacingHelmet },
+        { label: "Races Completed", value: "12,400", icon: Trophy },
+        { label: "Live Views", value: "2.5M+", icon: Video },
+        { label: "Discord Members", value: "15K+", icon: Users },
     ];
 </script>
 
@@ -22,7 +22,7 @@
 
     <div class="relative z-10 mx-auto max-w-7xl px-4">
         <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
-            {#each STATS as stat}
+            {#each STATS as stat (stat.label)}
                 {@const IconComponent = stat.icon}
                 <div class="group flex flex-col items-center text-center">
                     <div

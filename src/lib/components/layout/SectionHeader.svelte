@@ -1,7 +1,7 @@
 <script lang="ts">
     export let title: string;
-    export let subTitle: string = '';
-    export let highlight: string
+    export let subTitle: string = "";
+    export let highlight: string;
     export let align: "left" | "center" | "right" = "center";
 
     const alignMap = {

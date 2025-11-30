@@ -9,7 +9,7 @@
     ];
 </script>
 
-{#each corners as corner}
+{#each corners as corner (corner)}
     <div
         class="{zIndex} border-psgl-blue transition-opacity duration-500 group-hover:opacity-0 absolute {corner} h-4 w-4"
     ></div>

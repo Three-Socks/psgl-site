@@ -9,7 +9,7 @@
         <SectionHeader title="Official" highlight="Partners" />
 
         <div class="mt-16 flex flex-wrap justify-center gap-6">
-            {#each PARTNERS as partner}
+            {#each PARTNERS as partner (partner.name)}
                 <AffiliateCard
                     item={partner}
                     ctaLabel="Visit Partner"
@@ -27,7 +27,7 @@
             </div>
 
             <div class="flex flex-wrap justify-center gap-3">
-                {#each AFFILIATE_LINKS as link}
+                {#each AFFILIATE_LINKS as link (link.name)}
                     <AffiliateCard
                         item={link}
                         ctaLabel="Visit"

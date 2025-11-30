@@ -5,6 +5,7 @@
     import PageSection from "$lib/components/layout/PageSection.svelte";
     import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
     import type { CalendarData } from "$lib/types";
+    import { SvelteMap } from "svelte/reactivity";
 
     let { data } = $props();
     const calendars = data.calendars as Record<string, CalendarData>;
@@ -16,7 +17,7 @@
     let activeRoundIndex = $state(-1);
 
     const tiersByTime = (tiers: CalendarData["tiers"]) => {
-        const timeMap = new Map<string, typeof tiers>();
+        const timeMap = new SvelteMap<string, typeof tiers>();
         tiers.forEach((tierData) => {
             const time = tierData.tiers_id.time;
             if (time) {
@@ -88,12 +89,12 @@
         <!-- Calendar Switcher (Top) -->
         <div class="mt-6 flex justify-center mb-12">
             <div class="flex flex-wrap justify-center gap-1 w-full max-w-4xl">
-                {#each Object.entries(calendars) as [calId, cal]}
+                {#each Object.entries(calendars) as [calId, cal] (calId)}
                     <button
                         class="flex-0 min-w-40 min-h-20 border border-white/20 px-6 py-7 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all hover:border-psgl-blue
                         {activeCalendarId === calId
-                            ? 'bg-psgl-blue text-white'
-                            : 'bg-black/40 text-gray-300 hover:bg-white/5 hover:text-white'}"
+                            ? "bg-psgl-blue text-white"
+                            : "bg-black/40 text-gray-300 hover:bg-white/5 hover:text-white"}"
                         onclick={() => setActiveCalendar(calId)}
                     >
                         <div class="flex flex-col items-center justify-center gap-1">
@@ -119,11 +120,11 @@
                 </div>
 
                 <div class="grid gap-4">
-                    {#each activeRounds as round, i}
+                    {#each activeRounds as round, i (round.number)}
                         <div class={`group relative overflow-hidden border border-white/10 transition-all duration-300
                             ${activeRoundIndex === i
-                                ? 'bg-[#111116] border-psgl-blue/50 hover:border-psgl-blue shadow-lg'
-                                : 'bg-psgl-card hover:bg-[#111116] hover:border-psgl-blue'}`}>
+                            ? "bg-[#111116] border-psgl-blue/50 hover:border-psgl-blue shadow-lg"
+                            : "bg-psgl-card hover:bg-[#111116] hover:border-psgl-blue"}`}>
 
                             <!-- Decorative corners -->
                             {#if activeRoundIndex === i}
@@ -136,7 +137,7 @@
                             <div class="relative p-4 md:p-6 flex flex-col sm:flex-row items-center gap-6">
 
                                 <!-- Round Number Box -->
-                                <div class={`shrink-0 flex flex-col items-center justify-center w-16 h-16 bg-black/60 border border-white/10 transition-colors ${activeRoundIndex === i ? 'border-psgl-blue/50 group-hover:border-psgl-blue' : 'group-hover:border-psgl-blue'}`}>
+                                <div class={`shrink-0 flex flex-col items-center justify-center w-16 h-16 bg-black/60 border border-white/10 transition-colors ${activeRoundIndex === i ? "border-psgl-blue/50 group-hover:border-psgl-blue" : "group-hover:border-psgl-blue"}`}>
                                     <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Round</span>
                                     <span class="text-3xl font-black text-white leading-none">{round.number}</span>
                                 </div>
@@ -150,11 +151,11 @@
                                     />
                                     <div class="grow relative w-full">
                                         <div class="relative z-10">
-                                            <h3 class={`text-2xl font-black uppercase italic transition-colors ${activeRoundIndex === i ? 'text-psgl-blue' : 'text-white group-hover:text-psgl-blue'}`}>
-                                                {round.name.split(' - ')[0]}
+                                            <h3 class={`text-2xl font-black uppercase italic transition-colors ${activeRoundIndex === i ? "text-psgl-blue" : "text-white group-hover:text-psgl-blue"}`}>
+                                                {round.name.split(" - ")[0]}
                                             </h3>
                                             <p class="text-gray-400 text-xs font-bold uppercase tracking-[0.15em]">
-                                                {round.name.split(' - ')[1] || round.name}
+                                                {round.name.split(" - ")[1] || round.name}
                                             </p>
                                         </div>
                                     </div>
@@ -204,8 +205,8 @@
                     <!-- Tiers Grid -->
                     <div class="bg-psgl-card border border-white/10 p-6 md:p-8 shadow-lg">
                         <div class="space-y-8">
-                            {#each tierBlocks as block, idx}
-                                <div class={`pt-4 ${idx > 0 ? 'border-t border-white/5' : ''}`}>
+                            {#each tierBlocks as block, idx (block.time)}
+                                <div class={`pt-4 ${idx > 0 ? "border-t border-white/5" : ""}`}>
                                     <div class="flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
                                         <div class="w-32 shrink-0 flex flex-col gap-1">
                                             <div class="text-3xl font-black text-white leading-none">
@@ -217,8 +218,8 @@
                                         </div>
 
                                         <div class="flex flex-wrap gap-2">
-                                            {#each block.tiers as tierData, tIdx}
-                                                <div class={`min-w-20 text-center px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition ${tierData.tiers_id.comm_confirm ? 'bg-psgl-blue text-white shadow-md' : 'bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10'}`}>
+                                            {#each block.tiers as tierData (tierData.tiers_id.id)}
+                                                <div class={`min-w-20 text-center px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition ${tierData.tiers_id.comm_confirm ? "bg-psgl-blue text-white shadow-md" : "bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10"}`}>
                                                     {tierData.tiers_id.name}
                                                 </div>
                                             {/each}

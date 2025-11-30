@@ -1,9 +1,9 @@
-import { getAllCalendars, getAllTiers } from '$lib/server/directus';
-import { NEXT_RACE_TIER_ID } from '$env/static/private';
-import type { CalendarData, RaceRound, Tier, CalendarTier } from '$lib/types';
-import { error } from '@sveltejs/kit';
-import { building } from '$app/environment';
-import { DEFAULT_RACE_TIME, DEFAULT_TIMEZONE } from '$lib/constants';
+import { getAllCalendars, getAllTiers } from "$lib/server/directus";
+import { NEXT_RACE_TIER_ID } from "$env/static/private";
+import type { CalendarData, RaceRound, Tier, CalendarTier } from "$lib/types";
+import { error } from "@sveltejs/kit";
+import { building } from "$app/environment";
+import { DEFAULT_RACE_TIME, DEFAULT_TIMEZONE } from "$lib/constants";
 
 export const prerender = true;
 
@@ -17,7 +17,6 @@ export const load = async () => {
             getAllTiers() as unknown as Promise<Tier[]>,
         ]);
     } catch (e) {
-        console.error("Failed to load data:", e);
         if (building) {
             throw e;
         }
@@ -26,13 +25,13 @@ export const load = async () => {
 
     // Resolve the current timezone name (e.g. GMT, BST)
     const now = new Date();
-    const timeZoneFormatter = new Intl.DateTimeFormat('en-GB', {
+    const timeZoneFormatter = new Intl.DateTimeFormat("en-GB", {
         timeZone: DEFAULT_TIMEZONE,
-        timeZoneName: 'short'
+        timeZoneName: "short"
     });
     const timeZoneParts = timeZoneFormatter.formatToParts(now);
     const timeZoneName =
-        timeZoneParts.find((part) => part.type === 'timeZoneName')?.value ?? 'UK';
+        timeZoneParts.find((part) => part.type === "timeZoneName")?.value ?? "UK";
 
     // Process calendars to match the frontend structure
     const processedCalendars: Record<string, CalendarData> = {};
@@ -41,10 +40,10 @@ export const load = async () => {
     for (const calendar of calendars) {
         // Sort tiers by name/number if needed, but Directus might not return them sorted
         calendar.tiers.sort((a: CalendarTier, b: CalendarTier) => {
-            return a.tiers_id.name.localeCompare(b.tiers_id.name, undefined, { numeric: true, sensitivity: 'base' });
+            return a.tiers_id.name.localeCompare(b.tiers_id.name, undefined, { numeric: true, sensitivity: "base" });
         });
 
-        const calendarId = calendar.name.toLowerCase().replace(/\s+/g, '-');
+        const calendarId = calendar.name.toLowerCase().replace(/\s+/g, "-");
 
         processedCalendars[calendarId] = {
             name: calendar.name,
@@ -58,7 +57,7 @@ export const load = async () => {
             if (hasTargetTier) {
                 const upcomingRounds = calendar.rounds
                     .filter((r: RaceRound) => {
-                        return new Date(r.date) >= new Date(now.toISOString().split('T')[0]);
+                        return new Date(r.date) >= new Date(now.toISOString().split("T")[0]);
                     })
                     .sort((a: RaceRound, b: RaceRound) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
@@ -72,19 +71,19 @@ export const load = async () => {
 
                         // Format for display: "Wednesday 7:00 PM GMT"
                         const dateObj = new Date(dateTimeStr);
-                        const dateText = dateObj.toLocaleDateString('en-GB', {
-                            weekday: 'long',
-                            hour: 'numeric',
-                            minute: '2-digit',
+                        const dateText = dateObj.toLocaleDateString("en-GB", {
+                            weekday: "long",
+                            hour: "numeric",
+                            minute: "2-digit",
                             hour12: true,
                             timeZone: DEFAULT_TIMEZONE,
-                            timeZoneName: 'short'
+                            timeZoneName: "short"
                         });
 
                         nextRaceData = {
                             tier: targetTier.tiers_id.name,
                             round: `Round ${nextRound.number}`,
-                            track: nextRound.name.split(' - ')[1] || nextRound.name,
+                            track: nextRound.name.split(" - ")[1] || nextRound.name,
                             date: dateTimeStr,
                             dateText: dateText,
                             flag: nextRound.flag

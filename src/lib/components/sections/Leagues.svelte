@@ -1,9 +1,10 @@
 
 <script lang="ts">
-    import { DISCORD_LINK, LEAGUES } from "$lib/constants";
-    import { siDiscord } from 'simple-icons';
+    import { LEAGUES } from "$lib/constants";
+    import { siDiscord } from "simple-icons";
     import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
     import DecorativeCorners from "$lib/components/ui/DecorativeCorners.svelte";
+    import { resolve } from "$app/paths";
 </script>
 
 <section class="relative z-10 w-full py-20 bg-psgl-dark">
@@ -11,7 +12,7 @@
         <SectionHeader title="Our" highlight="Leagues" />
 
         <div class="mt-16 grid gap-8 md:grid-cols-3">
-            {#each LEAGUES as league}
+            {#each LEAGUES as league (league.name)}
                 <div class="hover:border-psgl-blue group relative flex flex-col overflow-hidden border border-transparent bg-gray-900/30 transition-all duration-500 hover:bg-gray-900">
                     <DecorativeCorners zIndex="z-30" />
 
@@ -35,9 +36,9 @@
                     <div class="relative z-10 flex flex-1 flex-col p-8">
                         <div class="mb-4 flex">
                             <div class="flex items-center gap-2 border border-white/10 bg-white/5 px-3 py-1">
-                                <div class="h-2 w-2 {league.signupsOpen ? 'bg-green-500 animate-pulse' : 'bg-red-500'}"></div>
+                                <div class="h-2 w-2 {league.signupsOpen ? "bg-green-500 animate-pulse" : "bg-red-500"}"></div>
                                 <span class="text-xs font-bold uppercase tracking-wider text-white">
-                                    SIGN-UPS {league.signupsOpen ? 'OPEN' : 'CLOSED'}
+                                    SIGN-UPS {league.signupsOpen ? "OPEN" : "CLOSED"}
                                 </span>
                             </div>
                         </div>
@@ -56,7 +57,7 @@
 
         <div class="mt-16 flex justify-center">
             <a
-                href="{DISCORD_LINK}"
+                href="{resolve("/discord")}"
                 target="_blank"
                 rel="noreferrer"
                 class="btn-primary"

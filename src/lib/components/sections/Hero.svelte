@@ -1,14 +1,14 @@
 <script lang="ts">
-    import { DISCORD_LINK } from "$lib/constants";
     import {
         Calendar,
         MapPin,
         Trophy,
         ArrowRight,
     } from "@lucide/svelte";
-    import { siDiscord } from 'simple-icons';
+    import { siDiscord } from "simple-icons";
     import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
     import { onMount } from "svelte";
+    import { resolve } from "$app/paths";
 
     let { nextRace } = $props();
 
@@ -42,10 +42,10 @@
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        const d = days.toString().padStart(2, '0');
-        const h = hours.toString().padStart(2, '0');
-        const m = minutes.toString().padStart(2, '0');
-        const s = seconds.toString().padStart(2, '0');
+        const d = days.toString().padStart(2, "0");
+        const h = hours.toString().padStart(2, "0");
+        const m = minutes.toString().padStart(2, "0");
+        const s = seconds.toString().padStart(2, "0");
 
         timeRemaining = `${d}d ${h}h ${m}m ${s}s`;
     };
@@ -111,9 +111,8 @@
                 class="mb-8 flex w-full flex-col gap-4 sm:mb-0 sm:w-auto sm:flex-row"
             >
                 <a
-                    href="{DISCORD_LINK}"
+                    href={resolve("/discord")}
                     target="_blank"
-                    rel="noreferrer"
                     class="btn-primary text-lg"
                 >
                     <svg role="img" viewBox="0 0 24 24" class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg">
@@ -124,7 +123,7 @@
                 </a>
 
                 <a
-                    href="/standings"
+                    href={resolve("/standings")}
                     class="btn-primary text-lg"
                 >
                     <Trophy class="h-5 w-5" />
@@ -172,9 +171,9 @@
                                 <div
                                     class="text-psgl-blue mb-1 flex items-center gap-2 text-xs font-bold uppercase tracking-widest"
                                 >
-                                    <span class={`h-2 w-2 ${isLive ? 'bg-red-500 animate-ping' : 'bg-white animate-pulse'}`}
+                                    <span class={`h-2 w-2 ${isLive ? "bg-red-500 animate-ping" : "bg-white animate-pulse"}`}
                                     ></span>
-                                    {isLive ? 'LIVE NOW' : 'Next Race'}
+                                    {isLive ? "LIVE NOW" : "Next Race"}
                                 </div>
                                 <div
                                     class="text-white text-2xl font-bold uppercase leading-none mb-1"
@@ -240,7 +239,7 @@
                         </div>
 
                         <a
-                            href="/calendars"
+                            href={resolve("/calendars")}
                             class="btn-primary mt-2 w-full"
                         >
                             <span>View Full Calendar</span>

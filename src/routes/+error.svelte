@@ -1,7 +1,8 @@
 <script lang="ts">
-    import { page } from '$app/state';
+    import { page } from "$app/state";
     import PageShell from "$lib/components/layout/PageShell.svelte";
     import { ArrowLeft } from "@lucide/svelte";
+    import { resolve } from "$app/paths";
 </script>
 
 <svelte:head>
@@ -26,7 +27,7 @@
 
             <div class="flex flex-col">
                 <a
-                    href="/"
+                    href={resolve("/")}
                     class="btn-primary group"
                 >
                     <ArrowLeft class="h-5 w-5" />

@@ -67,6 +67,7 @@
         class="group relative w-fit mx-auto max-w-full overflow-hidden border border-white/10 bg-black"
     >
         {#if currentTier && currentImageUrl}
+            <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
             <a href={currentImageUrl}>
                 <img
                     src={currentImageUrl}
