@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import { browser } from "$app/environment";
     import { Calendar, Users } from "@lucide/svelte";
     import PageShell from "$lib/components/layout/PageShell.svelte";
     import PageSection from "$lib/components/layout/PageSection.svelte";
@@ -31,6 +32,30 @@
     };
 
     let tierBlocks = $derived(tiersByTime(activeCalendar.tiers));
+
+    let hasSyncedCalendarFromUrl = $state(false);
+
+    const applyCalendarFromUrl = () => {
+        if (!browser) return;
+        const params = new URLSearchParams(window.location.search);
+        const calendarParam = params.get("calendar");
+        if (calendarParam && calendars[calendarParam]) {
+            activeCalendarId = calendarParam;
+        }
+    };
+
+    const updateCalendarQueryParams = (calendarId: string) => {
+        if (!browser) return;
+        const url = new URL(window.location.href);
+        if (calendarId) {
+            url.searchParams.set("calendar", calendarId);
+        } else {
+            url.searchParams.delete("calendar");
+        }
+        const query = url.searchParams.toString();
+        const nextUrl = `${url.pathname}${query ? `?${query}` : ""}${url.hash}`;
+        window.history.replaceState({}, "", nextUrl);
+    };
 
     const formatTime = (timeStr: string) => {
         if (!timeStr) return "";
@@ -66,7 +91,15 @@
     };
 
     onMount(() => {
+        applyCalendarFromUrl();
         updateActiveRound();
+        hasSyncedCalendarFromUrl = true;
+        updateCalendarQueryParams(activeCalendarId);
+    });
+
+    $effect(() => {
+        if (!hasSyncedCalendarFromUrl) return;
+        updateCalendarQueryParams(activeCalendarId);
     });
 
     const formatDate = (dateStr: string) => {

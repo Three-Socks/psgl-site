@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { onMount } from "svelte";
+    import { browser } from "$app/environment";
     import {
         CircleAlert,
     } from "@lucide/svelte";
@@ -16,7 +18,66 @@
     const initialTier = tiers.find((t: Tier) => t.platform === Platform.PC);
     let selectedTierId = $state<string>(initialTier?.id || "");
 
+    const viewParamMap: Record<string, ViewType> = {
+        drivers: ViewType.DRIVERS,
+        constructors: ViewType.CONSTRUCTORS,
+        results: ViewType.RESULTS
+    };
+
+    const viewValueMap: Record<ViewType, string> = {
+        [ViewType.DRIVERS]: "drivers",
+        [ViewType.CONSTRUCTORS]: "constructors",
+        [ViewType.RESULTS]: "results"
+    };
+
     const tierSlug = (tierName: string) => tierName.replace(/\s+/g, "-");
+
+    let hasSyncedFromUrl = $state(false);
+
+    const tierNameMatchesParam = (tier: Tier, paramValue: string) =>
+        tierSlug(tier.name).toLowerCase() === paramValue.toLowerCase();
+
+    const applyStandingsParams = () => {
+        if (!browser) return;
+        const params = new URLSearchParams(window.location.search);
+        const tierParam = params.get("tier");
+        if (tierParam) {
+            const tierMatch = tiers.find((tier: Tier) => tierNameMatchesParam(tier, tierParam));
+            if (tierMatch) {
+                selectedPlatform = tierMatch.platform;
+                selectedTierId = tierMatch.id;
+            }
+        }
+
+        const viewParam = params.get("view");
+        if (viewParam) {
+            const normalizedView = viewParam.toLowerCase();
+            const mappedView = viewParamMap[normalizedView];
+            if (mappedView) {
+                selectedView = mappedView;
+            }
+        }
+    };
+
+    const updateStandingsQueryParams = (tier: Tier | undefined, view: ViewType) => {
+        if (!browser) return;
+        const url = new URL(window.location.href);
+        if (tier) {
+            url.searchParams.set("tier", tierSlug(tier.name).toLowerCase());
+        } else {
+            url.searchParams.delete("tier");
+        }
+        url.searchParams.set("view", viewValueMap[view]);
+        const query = url.searchParams.toString();
+        const nextUrl = `${url.pathname}${query ? `?${query}` : ""}${url.hash}`;
+        window.history.replaceState({}, "", nextUrl);
+    };
+
+    onMount(() => {
+        applyStandingsParams();
+        hasSyncedFromUrl = true;
+        updateStandingsQueryParams(currentTier, selectedView);
+    });
 
     const viewSuffix: Record<ViewType, string> = {
         [ViewType.DRIVERS]: "drivers-standings",
@@ -48,6 +109,11 @@
     let currentImageUrl = $derived(
         currentTier ? buildImageUrl(currentTier.name, selectedView) : undefined,
     );
+
+    $effect(() => {
+        if (!hasSyncedFromUrl) return;
+        updateStandingsQueryParams(currentTier, selectedView);
+    });
 </script>
 
 <div class="relative mx-auto flex max-w-7xl flex-col gap-6">
