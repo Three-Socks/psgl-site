@@ -8,7 +8,7 @@
     import { STANDINGS_IMAGE_BASE_URL } from "$lib/constants";
     import type { Tier } from "$lib/types";
 
-    let { tiers } = $props<{ tiers: Tier[] }>();
+    let { tiers, currentSeason } = $props<{ tiers: Tier[], currentSeason: string }>();
 
     let selectedPlatform = $state<Platform>(Platform.PC);
     let selectedView = $state<ViewType>(ViewType.DRIVERS);
@@ -51,7 +51,7 @@
 </script>
 
 <div class="relative mx-auto flex max-w-7xl flex-col gap-6">
-    <SectionHeader title="League" subTitle="Season 40" highlight="Standings" align="left" />
+    <SectionHeader title="League" subTitle={currentSeason} highlight="Standings" align="left" />
 
     <!-- CONTROLS BAR: Platform + Tier Selector -->
     <StandingsControls

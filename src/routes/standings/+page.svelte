@@ -13,6 +13,6 @@
 
 <PageShell>
     <PageSection>
-        <StandingsViewer tiers={data.tiers} />
+        <StandingsViewer tiers={data.tiers} currentSeason={data.currentSeason} />
     </PageSection>
 </PageShell>

@@ -10,6 +10,7 @@
     let { data } = $props();
     const calendars = data.calendars as Record<string, CalendarData>;
     const timeZoneName = $derived(data.timeZoneName);
+    const currentSeason = $derived(data.currentSeason);
 
     let activeCalendarId = $state<string>(Object.keys(calendars)[0] || "");
     let activeCalendar = $derived(calendars[activeCalendarId]);
@@ -84,7 +85,7 @@
 
 <PageShell>
     <PageSection className="relative z-10">
-        <SectionHeader title="League" subTitle="Season 40" highlight="Calendar" align="left" />
+        <SectionHeader title="League" subTitle={currentSeason} highlight="Calendar" align="left" />
 
         <!-- Calendar Switcher (Top) -->
         <div class="mt-6 flex justify-center mb-12">

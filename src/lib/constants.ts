@@ -1,10 +1,16 @@
 import type {
-    League,
     Affiliate,
 } from "./types";
 import { siX, siYoutube, siTwitch, siInstagram, siTiktok, siDiscord } from "simple-icons";
 import SimRacingSetup from "$lib/assets/psgl-x-simracingsetup-360.png";
 
+export const NAV_LINKS = [
+    { name: "Home", href: "/" },
+    { name: "Standings", href: "/standings" },
+    { name: "Calendars", href: "/calendars" }
+] as const;
+
+export const DEFAULT_TIMEZONE = "Europe/London";
 export const DISCORD_LINK = "https://discord.gg/s9TzzCb";
 export const STANDINGS_IMAGE_BASE_URL = "https://i.premiersimgl.com/standings";
 
@@ -17,29 +23,23 @@ export const SOCIAL_LINKS = [
     { icon: siTiktok, url: "https://www.tiktok.com/@premiersimgl", name: "TikTok" }
 ];
 
-export const LEAGUES: League[] = [
-    {
-        name: "F1 25 Season 40",
+export const LEAGUE_METADATA = {
+    F1: {
         description: "Join the world's largest F1 league. With tiers for every skill level on PC & PlayStation.",
         image: "/leagues/f125.jpg",
-        imageWebp: "/leagues/f125.webp",
-        signupsOpen: true
+        imageWebp: "/leagues/f125.webp"
     },
-    {
-        name: "F1 PSGL E-Series S6",
-        description: "E-Series is a PC team event bringing the biggest and best organisations together.",
-        image: "/leagues/e-series-s6.jpg",
-        imageWebp: "/leagues/e-series-s6.webp",
-        signupsOpen: false
-    },
-    {
-        name: "GT7",
+    GT: {
         description: "Experience competitive Gran Turismo 7 racing.",
         image: "/leagues/gt7.jpg",
-        imageWebp: "/leagues/gt7.webp",
-        signupsOpen: true
+        imageWebp: "/leagues/gt7.webp"
+    },
+    "E-Series": {
+        description: "E-Series is a PC team event bringing the biggest and best organisations together.",
+        image: "/leagues/e-series-s6.jpg",
+        imageWebp: "/leagues/e-series-s6.webp"
     }
-];
+};
 
 export const PARTNERS: Affiliate[] = [
     {
@@ -61,12 +61,3 @@ export const AFFILIATE_LINKS: Affiliate[] = [
         discount: "5% OFF"
     }
 ];
-
-export const NAV_LINKS = [
-    { name: "Home", href: "/" },
-    { name: "Standings", href: "/standings" },
-    { name: "Calendars", href: "/calendars" }
-] as const;
-
-export const DEFAULT_TIMEZONE = "Europe/London";
-export const DEFAULT_RACE_TIME = "19:00:00";

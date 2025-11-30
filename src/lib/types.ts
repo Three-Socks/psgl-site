@@ -3,12 +3,31 @@ export enum Platform {
     PS = "PS"
 }
 
-export interface League {
-    name: string;
+export interface HomepageLeagueEntry extends Pick<League, "id" | "name" | "closed" | "color"> {
+    platform?: string;
+    phase?: string;
+}
+
+export interface HomepageLeagueCard {
+    id: string;
+    title: string;
     description: string;
-    image: string;
     imageWebp?: string;
-    signupsOpen: boolean;
+    image?: string;
+    entries: HomepageLeagueEntry[];
+}
+
+export interface StandingsConfig {
+    season: string;
+}
+
+export interface League {
+    id: string;
+    name: string;
+    closed: boolean;
+    standings_config?: StandingsConfig[] | string;
+    color?: string;
+    game?: string;
 }
 
 export enum ViewType {
