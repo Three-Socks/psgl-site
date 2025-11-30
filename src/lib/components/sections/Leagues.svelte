@@ -38,7 +38,11 @@
 
                     <!-- Content -->
                     <div class="relative z-10 flex flex-1 flex-col p-8">
-                        <div class="mb-4 flex flex-wrap gap-3">
+                        <h3 class="mb-3 text-2xl font-black uppercase text-white group-hover:text-psgl-blue transition-colors duration-300">
+                            {league.title}
+                        </h3>
+
+                        <div class="mb-3 flex flex-wrap gap-3">
                             {#each league.entries as entry (entry.id)}
                                 <div class="flex items-center gap-2 border border-white/10 bg-white/5 px-3 py-1">
                                     <div
@@ -55,13 +59,10 @@
                             {/each}
                         </div>
 
-                        <h3 class="mb-3 text-2xl font-black uppercase text-white group-hover:text-psgl-blue transition-colors duration-300">
-                            {league.title}
-                        </h3>
-
                         <p class="text-sm text-gray-400 font-light leading-relaxed">
                             {league.description}
                         </p>
+
                     </div>
                 </div>
             {/each}

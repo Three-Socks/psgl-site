@@ -75,8 +75,8 @@ export const getLeaguesByIds = async (ids: string[]) => {
             return [];
         }
 
-    const leagues_response = await directus.request(readItems("leagues", {
-        fields: ["id", "name", "closed", "color"],
+        const leagues_response = await directus.request(readItems("leagues", {
+            fields: ["id", "name", "closed", "color"],
             filter: {
                 id: { _in: ids }
             },

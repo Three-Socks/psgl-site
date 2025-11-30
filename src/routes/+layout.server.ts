@@ -73,23 +73,44 @@ export const load = async () => {
     const leagueMap = new Map(leagues.map((l) => [l.id, l]));
 
     const displayLeagues = HOMEPAGE_LEAGUES.reduce<HomepageLeagueCard[]>((acc, league) => {
-        const entries = league.entries.reduce<HomepageLeagueEntry[]>((entryAcc, entry) => {
+        const order: string[] = [];
+        const entriesByKey = league.entries.reduce<Record<string, HomepageLeagueEntry>>((map, entry) => {
             const directusLeague = leagueMap.get(entry.id);
             if (!directusLeague) {
-                return entryAcc;
+                return map;
             }
 
-            entryAcc.push({
+            const key = entry.platform?.toLowerCase() ?? entry.id;
+            const candidate: HomepageLeagueEntry = {
                 id: directusLeague.id,
                 name: directusLeague.name,
                 closed: directusLeague.closed,
                 color: directusLeague.color,
                 platform: entry.platform,
                 phase: entry.phase,
-            });
+            };
 
-            return entryAcc;
-        }, []);
+            const existing = map[key];
+            if (!existing) {
+                map[key] = candidate;
+                order.push(key);
+                return map;
+            }
+
+            const candidateIsMid = candidate.phase?.toLowerCase().includes("mid") ?? false;
+            const existingIsMid = existing.phase?.toLowerCase().includes("mid") ?? false;
+
+            if (existingIsMid || !candidateIsMid) {
+                return map;
+            }
+
+            map[key] = candidate;
+            return map;
+        }, {} as Record<string, HomepageLeagueEntry>);
+
+        const entries = order
+            .map((key) => entriesByKey[key])
+            .filter((entry): entry is HomepageLeagueEntry => Boolean(entry));
 
         if (!entries.length) {
             return acc;
