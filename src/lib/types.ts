@@ -23,6 +23,11 @@ export interface Tier {
   id: string;
   name: string;
   platform: Platform;
+  time?: string;
+  comm_confirm?: boolean;
+}
+
+export interface StandingsTier extends Tier {
   images: {
     [ViewType.DRIVERS]: string;
     [ViewType.CONSTRUCTORS]: string;
@@ -57,17 +62,12 @@ export interface RaceRound {
   countryCode?: string;
 }
 
-export interface TierData {
-  tiers_id: {
-    id: string;
-    name: string;
-    time: string;
-    comm_confirm: boolean;
-  };
+export interface CalendarTier {
+  tiers_id: Tier;
 }
 
 export interface CalendarData {
   name: string;
-  tiers: TierData[];
+  tiers: CalendarTier[];
   rounds: RaceRound[];
 }

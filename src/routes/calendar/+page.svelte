@@ -18,7 +18,9 @@
         const timeMap = new Map<string, typeof tiers>();
         tiers.forEach((tierData) => {
             const time = tierData.tiers_id.time;
-            timeMap.set(time, [...(timeMap.get(time) ?? []), tierData]);
+            if (time) {
+                timeMap.set(time, [...(timeMap.get(time) ?? []), tierData]);
+            }
         });
         return Array.from(timeMap.entries())
             .map(([time, groupedTiers]) => ({ time, tiers: groupedTiers }))

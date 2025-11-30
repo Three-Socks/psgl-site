@@ -4,23 +4,25 @@
     } from "@lucide/svelte";
     import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
     import StandingsControls from "../ui/StandingsControls.svelte";
-    import { LEAGUE_DATA } from "$lib/constants";
     import { Platform, ViewType } from "$lib/types";
+    import type { Tier } from "$lib/types";
+
+    let { tiers } = $props<{ tiers: Tier[] }>();
 
     let selectedPlatform = $state<Platform>(Platform.PC);
     let selectedView = $state<ViewType>(ViewType.DRIVERS);
 
-    const initialTier = LEAGUE_DATA.find((t) => t.platform === Platform.PC);
+    const initialTier = tiers.find((t: Tier) => t.platform === Platform.PC);
     let selectedTierId = $state<string>(initialTier?.id || "");
 
 
     let filteredTiers = $derived(
-        LEAGUE_DATA.filter((tier) => tier.platform === selectedPlatform),
+        tiers.filter((tier: Tier) => tier.platform === selectedPlatform),
     );
 
     $effect(() => {
         const currentTierExists = filteredTiers.find(
-            (t) => t.id === selectedTierId,
+            (t: Tier) => t.id === selectedTierId,
         );
         if (!currentTierExists && filteredTiers.length > 0) {
             selectedTierId = filteredTiers[0].id;
@@ -28,7 +30,7 @@
     });
 
     let currentTier = $derived(
-        filteredTiers.find((t) => t.id === selectedTierId),
+        filteredTiers.find((t: Tier) => t.id === selectedTierId),
     );
 </script>
 

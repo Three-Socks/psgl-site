@@ -44,45 +44,6 @@ export const LEAGUES: League[] = [
     }
 ];
 
-// Helper to generate many tiers
-const generateTiers = (): Tier[] => {
-  const tiers: Tier[] = [];
-
-  // PC Tiers
-  const pcTiers = 16;
-  for (let i = 1; i <= pcTiers; i++) {
-    tiers.push({
-      id: `pc-f1-tier-${i}`,
-      name: `PC F${i}`,
-      platform: Platform.PC,
-      images: {
-        [ViewType.DRIVERS]: `https://i.premiersimgl.com/standings/PC-F${i}-drivers-standings.png`,
-        [ViewType.CONSTRUCTORS]: `https://i.premiersimgl.com/standings/PC-F${i}-constructors-standings.png`,
-        [ViewType.RESULTS]: `https://i.premiersimgl.com/standings/PC-F${i}-results.png`,
-      }
-    });
-  }
-
-  // PS Tiers
-  const psTiers = 14;
-  for (let i = 1; i <= psTiers; i++) {
-    tiers.push({
-      id: `ps-f1-tier-${i}`,
-      name: `PS F${i}`,
-      platform: Platform.PS,
-      images: {
-        [ViewType.DRIVERS]: `https://i.premiersimgl.com/standings/PS-F${i}-drivers-standings.png`,
-        [ViewType.CONSTRUCTORS]: `https://i.premiersimgl.com/standings/PS-F${i}-constructors-standings.png`,
-        [ViewType.RESULTS]: `https://i.premiersimgl.com/standings/PS-F${i}-results.png`,
-      }
-    });
-  }
-
-  return tiers;
-};
-
-export const LEAGUE_DATA = generateTiers();
-
 export const STATS: StatItem[] = [
   { label: 'Active Drivers', value: '3,500+', icon: Users },
   { label: 'Races Completed', value: '12,400', icon: Trophy },
