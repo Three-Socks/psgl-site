@@ -9,11 +9,77 @@
     import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
     import { onMount } from "svelte";
     import { resolve } from "$app/paths";
+    import type { CalendarData } from "$lib/types";
+    import { DEFAULT_TIMEZONE } from "$lib/constants";
 
-    let { nextRace } = $props();
+    type NextRace = {
+        tier: string;
+        round: string;
+        track: string;
+        date: string;
+        dateText: string;
+        flag: string;
+    };
+
+    const props = $props<{ calendars: Record<string, CalendarData>; nextRaceTierId?: string | null }>();
+    let { calendars, nextRaceTierId } = props;
+
+    let nextRace = $state<NextRace | null>(null);
 
     let timeRemaining = $state("");
     let isLive = $state(false);
+
+    const computeNextRace = (): NextRace | null => {
+        if (!nextRaceTierId) return null;
+        const calendarEntries = Object.values(calendars ?? {}) as CalendarData[];
+        if (!calendarEntries.length) return null;
+
+        for (const calendar of calendarEntries) {
+            const targetTier = calendar.tiers.find((t) => t.tiers_id.id === nextRaceTierId);
+            if (!targetTier || !targetTier.tiers_id.time) continue;
+
+            const upcomingRounds = calendar.rounds
+                .map((round) => {
+                    const dateTimeStr = `${round.date}T${targetTier.tiers_id.time}`;
+                    return {
+                        round,
+                        dateTimeStr,
+                        date: new Date(dateTimeStr)
+                    };
+                })
+                .filter(({ date }) => date.getTime() >= Date.now())
+                .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+            if (!upcomingRounds.length) {
+                continue;
+            }
+
+            const { round, dateTimeStr } = upcomingRounds[0];
+            const dateText = new Date(dateTimeStr).toLocaleDateString("en-GB", {
+                weekday: "long",
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+                timeZone: DEFAULT_TIMEZONE,
+                timeZoneName: "short"
+            });
+
+            return {
+                tier: targetTier.tiers_id.name,
+                round: `Round ${round.number}`,
+                track: round.name.split(" - ")[1] || round.name,
+                date: dateTimeStr,
+                dateText,
+                flag: round.flag
+            };
+        }
+
+        return null;
+    };
+
+    const setNextRace = () => {
+        nextRace = computeNextRace();
+    };
 
     const updateCountdown = () => {
         if (!nextRace?.date) return;
@@ -31,6 +97,12 @@
         }
 
         isLive = false;
+
+        if (diff <= -twoHours) {
+            setNextRace();
+            updateCountdown();
+            return;
+        }
 
         if (diff <= 0) {
             timeRemaining = "00d 00h 00m 00s";
@@ -51,6 +123,7 @@
     };
 
     onMount(() => {
+        setNextRace();
         updateCountdown();
         const interval = setInterval(updateCountdown, 1000);
         return () => clearInterval(interval);

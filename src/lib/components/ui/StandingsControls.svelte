@@ -65,10 +65,10 @@
     <div class="flex w-full gap-1 md:w-auto">
         <button
             onclick={() => (selectedPlatform = Platform.PC)}
-            class="flex-1 border border-white/20 px-6 py-3 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all md:flex-none md:text-base hover:border-psgl-blue {selectedPlatform ===
+            class="flex-1 border px-6 py-3 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all duration-300 md:flex-none md:text-base {selectedPlatform ===
             Platform.PC
-                ? "bg-psgl-blue text-white"
-                : "bg-black/40 text-gray-300 hover:bg-white/5 hover:text-white"}"
+                ? "bg-psgl-blue border-psgl-blue text-white"
+                : "bg-black/40 border-white/10 text-gray-300 hover:bg-white/5 hover:border-white/30 hover:text-white"}"
         >
             <div class="flex items-center justify-center gap-2">
                 <Monitor class="h-5 w-5" /> PC
@@ -76,10 +76,10 @@
         </button>
         <button
             onclick={() => (selectedPlatform = Platform.PS)}
-            class="flex-1 border border-white/20 px-6 py-3 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all md:flex-none md:text-base hover:border-psgl-blue {selectedPlatform ===
+            class="flex-1 border px-6 py-3 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all duration-300 md:flex-none md:text-base {selectedPlatform ===
             Platform.PS
-                ? "bg-psgl-blue text-white"
-                : "bg-black/40 text-gray-300 hover:bg-white/5 hover:text-white"}"
+                ? "bg-psgl-blue border-psgl-blue text-white"
+                : "bg-black/40 border-white/10 text-gray-300 hover:bg-white/5 hover:border-white/30 hover:text-white"}"
         >
             <div class="flex items-center justify-center gap-2">
                 <Gamepad2 class="h-5 w-5" /> PS
@@ -91,7 +91,7 @@
     <div class="relative z-40 w-full md:w-64" bind:this={menuRef}>
         <button
             onclick={() => (isTierMenuOpen = !isTierMenuOpen)}
-            class="flex w-full items-center justify-between border border-white/20 px-6 py-3 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all md:flex-none md:text-base hover:border-psgl-blue"
+            class="flex w-full items-center justify-between border bg-black/40 border-white/10 px-6 py-3 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all duration-300 md:flex-none md:text-base text-gray-300 hover:bg-white/5 hover:border-white/30 hover:text-white"
         >
             <div class="flex flex-col items-start">
                 <span
@@ -121,7 +121,7 @@
                         class="group flex items-center justify-between border border-transparent px-3 py-2 cursor-pointer text-left transition-all hover:border-white/20 {selectedTierId ===
                         tier.id
                             ? "bg-psgl-blue text-white"
-                            : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"}"
+                            : "bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white"}"
                     >
                         <span class="text-sm uppercase font-bold"
                             >{tier.name}</span
@@ -138,10 +138,10 @@
     {#each [ViewType.DRIVERS, ViewType.CONSTRUCTORS, ViewType.RESULTS] as type (type)}
         <button
             onclick={() => (selectedView = type)}
-            class="flex-1 min-w-0 border py-3 text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer md:py-4 md:text-sm {selectedView ===
+            class="flex-1 min-w-0 border py-3 text-[10px] font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer md:py-4 md:text-sm {selectedView ===
             type
                 ? "border-white bg-white text-black"
-                : "border-white/20 bg-transparent text-gray-400 hover:border-white/50 hover:text-white"}"
+                : "bg-black/40 border-white/10 text-gray-300 hover:bg-white/5 hover:border-white/30 hover:text-white"}"
         >
             <div
                 class="flex flex-col items-center justify-center gap-1 text-center md:flex-row md:gap-2"

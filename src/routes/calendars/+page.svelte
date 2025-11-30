@@ -75,7 +75,6 @@
     };
 
     const getFlagUrl = (code: string) => `https://flagcdn.com/${code}.svg`;
-
 </script>
 
 <svelte:head>
@@ -88,18 +87,18 @@
         <SectionHeader title="League" subTitle={currentSeason} highlight="Calendar" align="left" />
 
         <!-- Calendar Switcher (Top) -->
-        <div class="mt-6 flex justify-center mb-12">
-            <div class="flex flex-wrap justify-center gap-1 w-full max-w-4xl">
+        <div class="mt-8 flex justify-center mb-12">
+            <div class="flex flex-wrap justify-center gap-2 w-full max-w-5xl px-4">
                 {#each Object.entries(calendars) as [calId, cal] (calId)}
                     <button
-                        class="flex-0 min-w-40 min-h-20 border border-white/20 px-6 py-7 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all hover:border-psgl-blue
+                        class="group relative flex-1 min-w-40 max-w-60 border px-6 py-4 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all duration-300
                         {activeCalendarId === calId
-                            ? "bg-psgl-blue text-white"
-                            : "bg-black/40 text-gray-300 hover:bg-white/5 hover:text-white"}"
+                            ? "bg-psgl-blue border-psgl-blue text-white"
+                            : "bg-black/40 border-white/10 text-gray-300 hover:bg-white/5 hover:border-white/30 hover:text-white"}"
                         onclick={() => setActiveCalendar(calId)}
                     >
-                        <div class="flex flex-col items-center justify-center gap-1">
-                            <span class="text-lg leading-none">{cal.name}</span>
+                        <div class="flex items-center justify-center gap-3">
+                            <span class="leading-none">{cal.name}</span>
                         </div>
                     </button>
                 {/each}
