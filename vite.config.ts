@@ -10,9 +10,5 @@ export default defineConfig({
 		cssMinify: true,
 		target: 'baseline-widely-available',
 		sourcemap: false
-	},
-	esbuild: {
-		// Strip debug noise from production bundles
-		drop: ['console', 'debugger']
 	}
 });

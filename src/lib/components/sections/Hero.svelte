@@ -10,21 +10,27 @@
     import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
     import { onMount } from "svelte";
 
-    const nextRace = {
-        tier: "PC F1",
-        round: "Round 7",
-        countryCode: "BEL",
-        track: "Belgian GP",
-        date: "2025-11-26T19:00:00Z", // Wednesday 7PM GMT
-        dateText: "Wednesday 7:00 PM GMT"
-    };
+    let { nextRace } = $props();
 
     let timeRemaining = $state("");
+    let isLive = $state(false);
 
     const updateCountdown = () => {
+        if (!nextRace?.date) return;
+
         const now = new Date();
         const target = new Date(nextRace.date);
         const diff = target.getTime() - now.getTime();
+
+        // Check if live (race started less than 2 hours ago)
+        const twoHours = 2 * 60 * 60 * 1000;
+        if (diff <= 0 && Math.abs(diff) < twoHours) {
+            isLive = true;
+            timeRemaining = "LIVE NOW";
+            return;
+        }
+
+        isLive = false;
 
         if (diff <= 0) {
             timeRemaining = "00d 00h 00m 00s";
@@ -50,6 +56,12 @@
         return () => clearInterval(interval);
     });
 </script>
+
+<svelte:head>
+    {#if nextRace?.flag}
+        <link rel="preload" as="image" href={`https://flagcdn.com/${nextRace.flag}.svg`} />
+    {/if}
+</svelte:head>
 
 <section
     class="relative py-32 flex flex-col items-center justify-center overflow-x-hidden overflow-hidden min-h-screen lg:min-h-0"
@@ -122,6 +134,7 @@
         </div>
 
         <!-- Right: Next Round Card -->
+        {#if nextRace}
         <div
             class="animate-in fade-in slide-in-from-right duration-1000 mt-8 w-full lg:col-span-5 lg:mt-0"
         >
@@ -159,9 +172,9 @@
                                 <div
                                     class="text-psgl-blue mb-1 flex items-center gap-2 text-xs font-bold uppercase tracking-widest"
                                 >
-                                    <span class="h-2 w-2 animate-pulse bg-white"
+                                    <span class={`h-2 w-2 ${isLive ? 'bg-red-500 animate-ping' : 'bg-white animate-pulse'}`}
                                     ></span>
-                                    Next Race
+                                    {isLive ? 'LIVE NOW' : 'Next Race'}
                                 </div>
                                 <div
                                     class="text-white text-2xl font-bold uppercase leading-none mb-1"
@@ -173,11 +186,11 @@
                                 </p>
                             </div>
                             <div class="text-right">
-                                <div
-                                    class="select-none text-4xl font-bold text-white/10"
-                                >
-                                    {nextRace.countryCode}
-                                </div>
+                                <img
+                                    src={`https://flagcdn.com/${nextRace.flag}.svg`}
+                                    alt={nextRace.flag}
+                                    class="w-16 h-10 object-cover shadow-lg border border-white/10 ml-auto"
+                                />
                                 <div class="text-psgl-blue font-mono text-sm font-bold mt-1">
                                     {timeRemaining}
                                 </div>
@@ -237,5 +250,6 @@
                 </div>
             </div>
         </div>
+        {/if}
     </div>
 </section>

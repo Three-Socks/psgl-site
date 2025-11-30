@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
     import PageShell from "$lib/components/layout/PageShell.svelte";
     import { ArrowLeft } from "@lucide/svelte";
 </script>
 
 <svelte:head>
-    <title>404 | PSGL</title>
+    <title>{page.status} | PSGL</title>
     <meta name="robots" content="noindex" />
 </svelte:head>
 
@@ -16,12 +16,12 @@
                 <h1
                     class="text-9xl font-black leading-none text-white md:text-[10rem]"
                 >
-                    <span class="text-psgl-blue">4</span>0<span class="text-psgl-blue">4</span>
+                    <span class="text-psgl-blue">{page.status}</span>
                 </h1>
             </div>
 
             <p class="mb-10 max-w-lg text-lg font-light text-gray-300">
-                The page you are looking for does not exist or has been moved.
+                {page.error?.message || "The page you are looking for does not exist or has been moved."}
             </p>
 
             <div class="flex flex-col">

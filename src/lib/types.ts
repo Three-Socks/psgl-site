@@ -2,12 +2,7 @@ import type { Component } from 'svelte';
 
 export enum Platform {
   PC = 'PC',
-  PS = 'PlayStation'
-}
-
-export enum Category {
-  F1 = 'F1',
-  GT = 'GT'
+  PS = 'PS'
 }
 
 export interface League {
@@ -28,8 +23,6 @@ export interface Tier {
   id: string;
   name: string;
   platform: Platform;
-  category: Category;
-  isLiveStreamed: boolean;
   images: {
     [ViewType.DRIVERS]: string;
     [ViewType.CONSTRUCTORS]: string;
@@ -64,16 +57,17 @@ export interface RaceRound {
   countryCode?: string;
 }
 
-export interface ScheduleTier {
-  name: string;
-  time: string;
-  comm_confirm?: boolean;
+export interface TierData {
+  tiers_id: {
+    id: string;
+    name: string;
+    time: string;
+    comm_confirm: boolean;
+  };
 }
 
-export interface CalendarConfig {
-  id: string;
+export interface CalendarData {
   name: string;
-  platform: string;
-  tiers: ScheduleTier[];
+  tiers: TierData[];
   rounds: RaceRound[];
 }

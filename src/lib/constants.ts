@@ -1,12 +1,9 @@
-import { Category, Platform, ViewType } from './types';
+import { Platform, ViewType } from './types';
 import type {
     League,
     Affiliate,
     StatItem,
     Tier,
-    RaceRound,
-    ScheduleTier,
-    CalendarConfig,
 } from './types';
 import { Users, Trophy, Video, Activity } from '@lucide/svelte';
 import { siX, siYoutube, siTwitch, siInstagram, siTiktok, siDiscord } from 'simple-icons';
@@ -58,8 +55,6 @@ const generateTiers = (): Tier[] => {
       id: `pc-f1-tier-${i}`,
       name: `PC F${i}`,
       platform: Platform.PC,
-      category: Category.F1,
-      isLiveStreamed: i <= 3, // Top 3 tiers are live
       images: {
         [ViewType.DRIVERS]: `https://i.premiersimgl.com/standings/PC-F${i}-drivers-standings.png`,
         [ViewType.CONSTRUCTORS]: `https://i.premiersimgl.com/standings/PC-F${i}-constructors-standings.png`,
@@ -75,8 +70,6 @@ const generateTiers = (): Tier[] => {
       id: `ps-f1-tier-${i}`,
       name: `PS F${i}`,
       platform: Platform.PS,
-      category: Category.F1,
-      isLiveStreamed: i <= 2,
       images: {
         [ViewType.DRIVERS]: `https://i.premiersimgl.com/standings/PS-F${i}-drivers-standings.png`,
         [ViewType.CONSTRUCTORS]: `https://i.premiersimgl.com/standings/PS-F${i}-constructors-standings.png`,
@@ -124,86 +117,7 @@ export const NAV_LINKS = [
   { name: "Calendar", href: "/calendar" }
 ];
 
-export const BASE_ROUNDS: RaceRound[] = [
-  { date: "2025-10-23", flag: "au", name: "Australia - Albert Park", number: "1", countryCode: "AUS", race_confirm_sent: true, schedule_date: "2025-10-19T13:00:00" },
-  { date: "2025-10-30", flag: "be", name: "Belgium - Spa-Francorchamps", number: "2", countryCode: "BEL", race_confirm_sent: true },
-  { date: "2025-11-06", flag: "us", name: "United States - COTA", number: "3", countryCode: "USA", race_confirm_sent: true, short_name: "Texas" },
-  { date: "2025-11-20", flag: "mc", name: "Monaco - Circuit de Monaco", number: "4", countryCode: "MCO", race_confirm_sent: true },
-  { date: "2025-11-27", flag: "at", name: "Austria - Red Bull Ring", number: "5", countryCode: "AUT", race_confirm_sent: true },
-  { date: "2025-12-04", flag: "ca", name: "Canada - Circuit Gilles Villeneuve", number: "6", countryCode: "CAN" },
-  { date: "2025-12-11", flag: "gb", name: "Britain - Silverstone", number: "7", countryCode: "GBR" },
-  { date: "2025-12-18", flag: "mx", name: "Mexico - Autodromo Hermanos Rodriguez", number: "8", countryCode: "MEX" },
-  { date: "2026-01-08", flag: "sa", name: "Saudi Arabia - Jeddah Corniche Circuit", number: "9", countryCode: "KSA" },
-  { date: "2026-01-15", flag: "br", name: "Brazil - Interlagos Circuit", number: "10", countryCode: "BRA" },
-  { date: "2026-01-22", flag: "ae", name: "Abu Dhabi - Yas Marina Circuit", number: "11", countryCode: "UAE" }
-];
+export const DEFAULT_TIMEZONE = 'Europe/London';
+export const DEFAULT_RACE_TIME = '19:00:00';
 
-const shiftDate = (dateStr: string, days: number) => {
-  const date = new Date(dateStr);
-  date.setDate(date.getDate() + days);
-  return date.toISOString().split("T")[0];
-};
 
-const offsetRounds = (rounds: RaceRound[], days: number) =>
-  rounds.map((round) => ({ ...round, date: shiftDate(round.date, days) }));
-
-const THURSDAY_TIERS: ScheduleTier[] = [
-  { name: "PC F2", time: "7:00 PM", comm_confirm: true },
-  { name: "PC F3", time: "7:00 PM", comm_confirm: true },
-  { name: "PC F4", time: "7:00 PM" },
-  { name: "PC F5", time: "7:00 PM" },
-  { name: "PC F6", time: "7:00 PM" },
-  { name: "PC F7", time: "7:00 PM" },
-  { name: "PC F8", time: "7:00 PM" },
-  { name: "PC F9", time: "8:00 PM" },
-  { name: "PC F10", time: "8:00 PM" },
-  { name: "PC F11", time: "8:00 PM" },
-  { name: "PC F12", time: "8:00 PM" },
-  { name: "PC F13", time: "8:00 PM" },
-  { name: "PC F14", time: "8:00 PM" },
-  { name: "PC F15", time: "8:00 PM" },
-  { name: "PC F16", time: "8:00 PM" }
-];
-
-const MONDAY_TIERS: ScheduleTier[] = [
-  { name: "PS F1", time: "7:00 PM", comm_confirm: true },
-  { name: "PS F2", time: "7:00 PM", comm_confirm: true },
-  { name: "PS F3", time: "7:00 PM" },
-  { name: "PS F4", time: "7:00 PM" },
-  { name: "PS F5", time: "7:00 PM" },
-  { name: "PS F6", time: "7:00 PM" },
-  { name: "PS F7", time: "7:00 PM" },
-  { name: "PS F8", time: "7:00 PM" },
-  { name: "PS F9", time: "8:00 PM" },
-  { name: "PS F10", time: "8:00 PM" },
-  { name: "PS F11", time: "8:00 PM" },
-  { name: "PS F12", time: "8:00 PM" },
-  { name: "PS F13", time: "8:00 PM" },
-  { name: "PS F14", time: "8:00 PM" },
-  { name: "PS F15", time: "8:00 PM" },
-  { name: "PS F16", time: "8:00 PM" }
-];
-
-export const CALENDAR_CONFIGS: Record<string, CalendarConfig> = {
-  wednesday: {
-    id: "wednesday",
-    name: "Wednesday",
-    platform: "PC F1",
-    tiers: [{ name: "PC F1", time: "7:00 PM", comm_confirm: true },],
-    rounds: BASE_ROUNDS,
-  },
-  thursday: {
-    id: "thursday",
-    name: "Thursday",
-    platform: "PC",
-    tiers: THURSDAY_TIERS,
-    rounds: BASE_ROUNDS
-  },
-  monday: {
-    id: "monday",
-    name: "Monday",
-    platform: "PlayStation",
-    tiers: MONDAY_TIERS,
-    rounds: offsetRounds(BASE_ROUNDS, -3)
-  }
-};

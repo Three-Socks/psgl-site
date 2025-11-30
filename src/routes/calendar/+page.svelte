@@ -4,18 +4,21 @@
     import PageShell from "$lib/components/layout/PageShell.svelte";
     import PageSection from "$lib/components/layout/PageSection.svelte";
     import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
-    import { CALENDAR_CONFIGS } from "$lib/constants";
-    import type { CalendarConfig } from "$lib/types";
-    const calendars: Record<string, CalendarConfig> = CALENDAR_CONFIGS;
-    let activeCalendarId = $state<string>("thursday");
+    import type { CalendarData } from "$lib/types";
+
+    let { data } = $props();
+    const calendars = data.calendars as Record<string, CalendarData>;
+
+    let activeCalendarId = $state<string>(Object.keys(calendars)[0] || "");
     let activeCalendar = $derived(calendars[activeCalendarId]);
     let activeRounds = $derived(activeCalendar.rounds);
     let activeRoundIndex = $state(-1);
 
-    const tiersByTime = (tiers: CalendarConfig["tiers"]) => {
+    const tiersByTime = (tiers: CalendarData["tiers"]) => {
         const timeMap = new Map<string, typeof tiers>();
-        tiers.forEach((tier) => {
-            timeMap.set(tier.time, [...(timeMap.get(tier.time) ?? []), tier]);
+        tiers.forEach((tierData) => {
+            const time = tierData.tiers_id.time;
+            timeMap.set(time, [...(timeMap.get(time) ?? []), tierData]);
         });
         return Array.from(timeMap.entries())
             .map(([time, groupedTiers]) => ({ time, tiers: groupedTiers }))
@@ -60,16 +63,15 @@
         <!-- Calendar Switcher (Top) -->
         <div class="mt-6 flex justify-center mb-12">
             <div class="flex flex-wrap justify-center gap-1 w-full max-w-4xl">
-                {#each Object.values(calendars) as cal}
+                {#each Object.entries(calendars) as [calId, cal]}
                     <button
                         class="flex-1 min-w-[140px] border border-white/20 px-6 py-4 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all hover:border-psgl-blue
-                        {activeCalendarId === cal.id
+                        {activeCalendarId === calId
                             ? 'bg-psgl-blue text-white'
                             : 'bg-black/40 text-gray-300 hover:bg-white/5 hover:text-white'}"
-                        onclick={() => setActiveCalendar(cal.id)}
+                        onclick={() => setActiveCalendar(calId)}
                     >
                         <div class="flex flex-col items-center justify-center gap-1">
-                            <span class="text-[10px] opacity-70">{cal.platform}</span>
                             <span class="text-lg leading-none">{cal.name}</span>
                         </div>
                     </button>
@@ -186,9 +188,9 @@
                                         </div>
 
                                         <div class="flex flex-wrap gap-2">
-                                            {#each block.tiers as tier, tIdx}
-                                                <div class={`min-w-20 text-center px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition ${tier.comm_confirm ? 'bg-psgl-blue text-white shadow-md' : 'bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10'}`}>
-                                                    {tier.name}
+                                            {#each block.tiers as tierData, tIdx}
+                                                <div class={`min-w-20 text-center px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition ${tierData.tiers_id.comm_confirm ? 'bg-psgl-blue text-white shadow-md' : 'bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10'}`}>
+                                                    {tierData.tiers_id.name}
                                                 </div>
                                             {/each}
                                         </div>

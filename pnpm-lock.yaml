@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@directus/sdk':
+        specifier: ^20.2.0
+        version: 20.2.0
     devDependencies:
       '@lucide/svelte':
         specifier: ^0.554.0
@@ -46,6 +50,10 @@ importers:
         version: 7.2.4(jiti@2.6.1)(lightningcss@1.30.2)
 
 packages:
+
+  '@directus/sdk@20.2.0':
+    resolution: {integrity: sha512-MzS6mjpM/XKr8jGM4DMSNCwLfgN2RNXnStP/fX23a8Nbpkgl6HyiwVPqHZh8DjTdmRMwif2/zJ0sqbfJJeel8g==}
+    engines: {node: '>=22'}
 
   '@esbuild/aix-ppc64@0.25.12':
     resolution: {integrity: sha512-Hhmwd6CInZ3dwpuGTF8fJG6yoWmsToE+vYgD4nytZVxcu1ulHpUQRAB1UJ8+N1Am3Mz4+xOByoQoSZf4D+CpkA==}
@@ -919,6 +927,8 @@ packages:
     resolution: {integrity: sha512-B58NGBEoc8Y9MWWCQGl/gq9xBCe4IiKM0a2x7GZdQKOW5Exr8S1W24J6OgM1njK8xCRGvAJIL/MxXHf6SkmQKQ==}
 
 snapshots:
+
+  '@directus/sdk@20.2.0': {}
 
   '@esbuild/aix-ppc64@0.25.12':
     optional: true

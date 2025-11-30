@@ -3,6 +3,8 @@
     import Stats from "$lib/components/sections/Stats.svelte";
     import Leagues from "$lib/components/sections/Leagues.svelte";
     import PageShell from "$lib/components/layout/PageShell.svelte";
+
+    let { data } = $props();
 </script>
 
 <svelte:head>
@@ -11,7 +13,7 @@
 </svelte:head>
 
 <PageShell headerPadding={false}>
-        <Hero />
+        <Hero nextRace={data.nextRace} />
         <Leagues />
         <Stats />
 </PageShell>
