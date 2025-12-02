@@ -30,7 +30,7 @@ function hasId(entry: RawLeagueEntry): entry is RawLeagueEntry & { id: string } 
 const rawLeagues: RawHomepageLeague[] = [
     {
         id: "f1",
-        title: "PSGL F1",
+        title: "F1",
         description: LEAGUE_METADATA.F1.description,
         image: LEAGUE_METADATA.F1.image,
         imageWebp: LEAGUE_METADATA.F1.imageWebp,

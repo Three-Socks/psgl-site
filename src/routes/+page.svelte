@@ -15,5 +15,5 @@
 <PageShell headerPadding={false}>
         <Hero calendars={data.calendars} nextRaceTierId={data.nextRaceTierId} />
         <Leagues leagues={data.leagues} />
-        <Stats />
+        <Stats stats={data.stats} />
 </PageShell>

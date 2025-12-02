@@ -1,5 +1,6 @@
-import { createDirectus, rest, authentication, readItems, isDirectusError } from "@directus/sdk";
+import { createDirectus, rest, authentication, readItems, readSingleton, isDirectusError } from "@directus/sdk";
 import { DIRECTUS_URL, DIRECTUS_STATIC_TOKEN } from "$env/static/private";
+import type { SiteStats } from "$lib/types";
 
 export const directus = createDirectus(DIRECTUS_URL)
     .with(rest())
@@ -115,6 +116,25 @@ export const getLeagueSeasonByGameId = async (gameId: string) => {
         }
 
         return seasonLeague;
+    } catch (e) {
+        if (isDirectusError(e)) {
+            throw new Error(`Directus Error: ${e.message}`);
+        }
+        throw e;
+    }
+};
+
+export const getSiteStats = async () => {
+    try {
+        const stats = await directus.request(readSingleton("stats", {
+            fields: ["driver_count", "races_completed", "member_count", "tier_count"],
+        })) as SiteStats | null;
+
+        if (!stats) {
+            throw new Error("No stats found.");
+        }
+
+        return stats;
     } catch (e) {
         if (isDirectusError(e)) {
             throw new Error(`Directus Error: ${e.message}`);

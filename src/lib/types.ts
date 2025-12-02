@@ -74,3 +74,10 @@ export interface CalendarData {
     tiers: CalendarTier[];
     rounds: RaceRound[];
 }
+
+export interface SiteStats {
+    driver_count: number;
+    races_completed: number;
+    member_count: number;
+    tier_count: number;
+}

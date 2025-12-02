@@ -1,6 +1,6 @@
-import { getAllCalendars, getAllTiers, getLeaguesByIds, getLeagueSeasonByGameId } from "$lib/server/directus";
+import { getAllCalendars, getAllTiers, getLeaguesByIds, getLeagueSeasonByGameId, getSiteStats } from "$lib/server/directus";
 import { SEASON_GAME_ID, NEXT_RACE_TIER_ID } from "$env/static/private";
-import type { CalendarData, Tier, CalendarTier, League, HomepageLeagueCard, HomepageLeagueEntry } from "$lib/types";
+import type { CalendarData, Tier, CalendarTier, League, HomepageLeagueCard, HomepageLeagueEntry, SiteStats } from "$lib/types";
 import { error } from "@sveltejs/kit";
 import { building } from "$app/environment";
 import { DEFAULT_TIMEZONE } from "$lib/constants";
@@ -49,6 +49,7 @@ export const load = async () => {
     let tiers: Tier[];
     let leagues: League[];
     let seasonLeague: League;
+    let stats: SiteStats;
 
     const featuredLeagueIds = Array.from(new Set(HOMEPAGE_LEAGUE_IDS));
     if (!featuredLeagueIds.length) {
@@ -57,11 +58,12 @@ export const load = async () => {
 
     try {
 
-        [calendars, tiers, leagues, seasonLeague] = await Promise.all([
+        [calendars, tiers, leagues, seasonLeague, stats] = await Promise.all([
             getAllCalendars() as unknown as Promise<CalendarData[]>,
             getAllTiers() as unknown as Promise<Tier[]>,
             getLeaguesByIds(featuredLeagueIds) as unknown as Promise<League[]>,
             getLeagueSeasonByGameId(SEASON_GAME_ID) as unknown as Promise<League>,
+            getSiteStats() as unknown as Promise<SiteStats>,
         ]);
     } catch (e) {
         if (building) {
@@ -154,5 +156,6 @@ export const load = async () => {
         timeZoneName: getTimeZoneName(),
         leagues: displayLeagues,
         currentSeason: getCurrentSeasonFromLeague(seasonLeague),
+        stats,
     };
 };
