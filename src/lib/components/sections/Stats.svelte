@@ -42,11 +42,13 @@
 
     const resolvedStats = $derived(STAT_CARDS.map((config) => {
         const source = stats ?? DEFAULT_STATS;
+        const rawValue = source[config.key];
         return {
             ...config,
-            value: formatStatValue(source[config.key]),
+            value: formatStatValue(rawValue),
+            isVisible: (rawValue ?? 0) > 0
         };
-    }));
+    }).filter(stat => stat.isVisible));
 </script>
 
 <section
@@ -59,10 +61,10 @@
     ></div>
 
     <div class="relative z-10 mx-auto max-w-7xl px-4">
-        <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
+        <div class="flex flex-wrap justify-center gap-8 md:gap-16">
             {#each resolvedStats as stat (stat.label)}
                 {@const IconComponent = stat.icon}
-                <div class="group flex flex-col items-center text-center">
+                <div class="group flex w-[45%] flex-col items-center text-center md:w-64">
                     <div
                         class="mb-6 rotate-45 border border-white/10 bg-black/20 p-5 text-white transition-all duration-500 group-hover:bg-white group-hover:text-psgl-blue"
                     >
@@ -78,7 +80,7 @@
                         </div>
                     </div>
                     <h3
-                        class="mb-1 text-4xl font-black italic text-white md:text-5xl"
+                        class="mb-1 pr-3 text-4xl font-black italic text-white md:text-5xl"
                     >
                         {stat.value}
                     </h3>
