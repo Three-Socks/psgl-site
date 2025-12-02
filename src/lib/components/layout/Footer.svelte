@@ -1,5 +1,6 @@
 <script lang="ts">
     import Affiliates from "$lib/components/sections/Affiliates.svelte";
+    import { resolve } from "$app/paths";
     import logo from "$lib/assets/psgl-logo-125.png";
     const currentYear = new Date().getFullYear();
 
@@ -92,6 +93,18 @@
             >
                 &copy; {currentYear} Premier Sim Gaming Leagues LTD
             </p>
+            <div class="mt-2 flex justify-center gap-4 lg:justify-end">
+                <a
+                    href={resolve("/page/terms")}
+                    class="text-xs font-bold uppercase tracking-widest text-gray-500 transition-colors hover:text-white"
+                    >Terms</a
+                >
+                <a
+                    href={resolve("/page/privacy")}
+                    class="text-xs font-bold uppercase tracking-widest text-gray-500 transition-colors hover:text-white"
+                    >Privacy</a
+                >
+            </div>
         </div>
     </div>
 </footer>

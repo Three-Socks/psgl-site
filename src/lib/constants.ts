@@ -3,6 +3,7 @@ import type {
 } from "./types";
 import { siX, siYoutube, siTwitch, siInstagram, siTiktok, siDiscord } from "simple-icons";
 import SimRacingSetup from "$lib/assets/psgl-x-simracingsetup-360.png";
+import { resolve } from "$app/paths";
 
 export const NAV_LINKS = [
     { name: "Home", href: "/" },
@@ -15,7 +16,7 @@ export const DISCORD_LINK = "https://discord.gg/s9TzzCb";
 export const STANDINGS_IMAGE_BASE_URL = "https://i.premiersimgl.com/standings";
 
 export const SOCIAL_LINKS = [
-    { icon: siDiscord, url: DISCORD_LINK, name: "Discord" },
+    { icon: siDiscord, url: resolve("/discord"), name: "Discord" },
     { icon: siYoutube, url: "https://www.youtube.com/channel/UCJOgL44GC1W1dWLIB7Er-2w?sub_confirmation=1", name: "YouTube" },
     { icon: siTwitch, url: "https://www.twitch.tv/premiersimgl", name: "Twitch" },
     { icon: siX, url: "https://x.com/PremierSimGL", name: "X" },

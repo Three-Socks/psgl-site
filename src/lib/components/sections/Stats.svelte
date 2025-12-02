@@ -33,7 +33,7 @@
     });
 
     const formatStatValue = (value?: number | null) => {
-        if (value == null || Number.isNaN(value)) {
+        if (!value || Number.isNaN(value)) {
             return "0";
         }
 
