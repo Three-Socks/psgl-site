@@ -42,7 +42,7 @@
         </div>
     </div>
     {/if}
-    <div class="absolute inset-0 -z-5 bg-black/20 backdrop-blur-sm"></div>
+    <div class="absolute inset-0 -z-5 bg-black/20 backdrop-blur-xs"></div>
 
     <div class="flex items-center justify-between p-4 lg:p-6">
         <a href={resolve("/")} class="flex items-center gap-4">
@@ -91,7 +91,7 @@
 
     <!-- Mobile Menu Dropdown -->
     {#if isMenuOpen}
-        <div class="flex flex-col gap-2 border-t border-white/10 bg-black/95 p-4 backdrop-blur-xl lg:hidden">
+        <div class="flex flex-col gap-2 border-t border-white/10 bg-black/95 p-4 lg:hidden">
             <nav class="flex flex-col">
                 {#each NAV_LINKS as link (link.href)}
                     <a
