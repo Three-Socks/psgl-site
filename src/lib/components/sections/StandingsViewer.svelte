@@ -70,7 +70,7 @@
         url.searchParams.set("view", viewValueMap[view]);
         const query = url.searchParams.toString();
         const nextUrl = `${url.pathname}${query ? `?${query}` : ""}${url.hash}`;
-        window.history.replaceState({}, "", nextUrl);
+        window.history.replaceState(window.history.state, "", nextUrl);
     };
 
     onMount(() => {
