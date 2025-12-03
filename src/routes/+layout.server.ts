@@ -1,5 +1,5 @@
 import { getAllCalendars, getAllTiers, getLeaguesByIds, getLeagueSeasonByGameId, getSiteStats } from "$lib/server/directus";
-import { SEASON_GAME_ID, NEXT_RACE_TIER_ID } from "$env/static/private";
+import { SEASON_GAME_ID, NEXT_FEATURED_RACE_TIER_NAMES } from "$env/static/private";
 import type { CalendarData, Tier, CalendarTier, League, HomepageLeagueCard, HomepageLeagueEntry, SiteStats } from "$lib/types";
 import { error } from "@sveltejs/kit";
 import { building } from "$app/environment";
@@ -134,7 +134,6 @@ export const load = async () => {
     const processedCalendars: Record<string, CalendarData> = {};
 
     for (const calendar of calendars) {
-        // Sort tiers by name/number if needed, but Directus might not return them sorted
         calendar.tiers.sort((a: CalendarTier, b: CalendarTier) => {
             return a.tiers_id.name.localeCompare(b.tiers_id.name, undefined, { numeric: true, sensitivity: "base" });
         });
@@ -149,9 +148,14 @@ export const load = async () => {
 
     }
 
+    const nextFeaturedRaceTierNames = (NEXT_FEATURED_RACE_TIER_NAMES ?? "")
+        .split(",")
+        .map((value) => value.trim())
+        .filter((value) => Boolean(value));
+
     return {
         calendars: processedCalendars,
-        nextRaceTierId: NEXT_RACE_TIER_ID ?? null,
+        nextRaceTierNames: nextFeaturedRaceTierNames,
         tiers: tiers,
         timeZoneName: getTimeZoneName(),
         leagues: displayLeagues,

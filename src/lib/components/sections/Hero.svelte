@@ -21,8 +21,8 @@
         flag: string;
     };
 
-    const props = $props<{ calendars: Record<string, CalendarData>; nextRaceTierId?: string | null }>();
-    let { calendars, nextRaceTierId } = props;
+    const props = $props<{ calendars: Record<string, CalendarData>; nextRaceTierNames?: string[] }>();
+    let { calendars, nextRaceTierNames } = props;
 
     let nextRace = $state<NextRace | null>(null);
 
@@ -30,48 +30,52 @@
     let isLive = $state(false);
 
     const computeNextRace = (): NextRace | null => {
-        if (!nextRaceTierId) return null;
+        if (!nextRaceTierNames?.length) return null;
         const calendarEntries = Object.values(calendars ?? {}) as CalendarData[];
         if (!calendarEntries.length) return null;
 
-        for (const calendar of calendarEntries) {
-            const targetTier = calendar.tiers.find((t) => t.tiers_id.id === nextRaceTierId);
-            if (!targetTier || !targetTier.tiers_id.time) continue;
+        for (const tierName of nextRaceTierNames) {
+            const normalizedTierName = tierName.trim().toLowerCase();
+            if (!normalizedTierName) continue;
+            for (const calendar of calendarEntries) {
+                const targetTier = calendar.tiers.find((t) => t.tiers_id.name.trim().toLowerCase() === normalizedTierName);
+                if (!targetTier || !targetTier.tiers_id.time) continue;
 
-            const upcomingRounds = calendar.rounds
-                .map((round) => {
-                    const dateTimeStr = `${round.date}T${targetTier.tiers_id.time}`;
-                    return {
-                        round,
-                        dateTimeStr,
-                        date: new Date(dateTimeStr)
-                    };
-                })
-                .filter(({ date }) => date.getTime() >= Date.now())
-                .sort((a, b) => a.date.getTime() - b.date.getTime());
+                const upcomingRounds = calendar.rounds
+                    .map((round) => {
+                        const dateTimeStr = `${round.date}T${targetTier.tiers_id.time}`;
+                        return {
+                            round,
+                            dateTimeStr,
+                            date: new Date(dateTimeStr)
+                        };
+                    })
+                    .filter(({ date }) => date.getTime() >= Date.now())
+                    .sort((a, b) => a.date.getTime() - b.date.getTime());
 
-            if (!upcomingRounds.length) {
-                continue;
+                if (!upcomingRounds.length) {
+                    continue;
+                }
+
+                const { round, dateTimeStr } = upcomingRounds[0];
+                const dateText = new Date(dateTimeStr).toLocaleDateString("en-GB", {
+                    weekday: "long",
+                    hour: "numeric",
+                    minute: "2-digit",
+                    hour12: true,
+                    timeZone: DEFAULT_TIMEZONE,
+                    timeZoneName: "short"
+                });
+
+                return {
+                    tier: targetTier.tiers_id.name,
+                    round: `Round ${round.number}`,
+                    track: round.name.split(" - ")[1] || round.name,
+                    date: dateTimeStr,
+                    dateText,
+                    flag: round.flag
+                };
             }
-
-            const { round, dateTimeStr } = upcomingRounds[0];
-            const dateText = new Date(dateTimeStr).toLocaleDateString("en-GB", {
-                weekday: "long",
-                hour: "numeric",
-                minute: "2-digit",
-                hour12: true,
-                timeZone: DEFAULT_TIMEZONE,
-                timeZoneName: "short"
-            });
-
-            return {
-                tier: targetTier.tiers_id.name,
-                round: `Round ${round.number}`,
-                track: round.name.split(" - ")[1] || round.name,
-                date: dateTimeStr,
-                dateText,
-                flag: round.flag
-            };
         }
 
         return null;
@@ -246,7 +250,7 @@
                                 >
                                     <span class={`h-2 w-2 ${isLive ? "bg-red-500 animate-ping" : "bg-white animate-pulse"}`}
                                     ></span>
-                                    {isLive ? "LIVE NOW" : "Next Race"}
+                                    {isLive ? "LIVE NOW" : "Next Featured Race"}
                                 </div>
                                 <div
                                     class="text-white text-2xl font-bold uppercase leading-none mb-1"

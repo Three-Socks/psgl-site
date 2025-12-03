@@ -141,7 +141,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
             <!-- Left Column: Rounds -->
-            <div class="lg:col-span-7 space-y-8">
+            <div class="lg:col-span-7 space-y-8 order-2 lg:order-1">
                 <div class="flex items-center gap-4 mb-8">
                     <div class="bg-psgl-blue/20 p-3 border border-psgl-blue/50">
                         <Calendar class="w-8 h-8 text-psgl-blue" />
@@ -220,7 +220,7 @@
             </div>
 
             <!-- Right Column: Tiers -->
-            <div class="lg:col-span-5 space-y-8">
+            <div class="lg:col-span-5 space-y-8 order-1 lg:order-2">
                 <div class="sticky top-8">
                     <div class="flex items-center justify-between mb-8">
                         <div class="flex items-center gap-4">

@@ -13,7 +13,7 @@
 </svelte:head>
 
 <PageShell headerPadding={false}>
-        <Hero calendars={data.calendars} nextRaceTierId={data.nextRaceTierId} />
+        <Hero calendars={data.calendars} nextRaceTierNames={data.nextRaceTierNames} />
         <Leagues leagues={data.leagues} />
         <Stats stats={data.stats} />
 </PageShell>
