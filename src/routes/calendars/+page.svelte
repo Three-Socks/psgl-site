@@ -111,7 +111,7 @@
 </script>
 
 <svelte:head>
-    <title>PSGL | Calendar</title>
+    <title>PSGL | Calendars</title>
     <meta name="description" content="League Calendars." />
 </svelte:head>
 

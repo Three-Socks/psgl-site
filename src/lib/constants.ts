@@ -5,6 +5,8 @@ import { siX, siYoutube, siTwitch, siInstagram, siTiktok, siDiscord } from "simp
 import SimRacingSetup from "$lib/assets/psgl-x-simracingsetup-360.png";
 import { resolve } from "$app/paths";
 
+export const SITE_URL = "https://www.premiersimgl.com";
+
 export const NAV_LINKS = [
     { name: "Home", href: "/" },
     { name: "Standings", href: "/standings" },
