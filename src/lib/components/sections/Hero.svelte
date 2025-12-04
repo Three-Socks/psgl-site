@@ -9,7 +9,7 @@
     import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
     import { onMount } from "svelte";
     import { resolve } from "$app/paths";
-    import type { CalendarData } from "$lib/types";
+    import type { CalendarData, RaceRound } from "$lib/types";
     import { DEFAULT_TIMEZONE } from "$lib/constants";
 
     type NextRace = {
@@ -34,51 +34,64 @@
         const calendarEntries = Object.values(calendars ?? {}) as CalendarData[];
         if (!calendarEntries.length) return null;
 
+        let allRounds: {
+            tier: string;
+            round: RaceRound;
+            dateTimeStr: string;
+            date: Date;
+            flag: string;
+        }[] = [];
+
         for (const tierName of nextRaceTierNames) {
             const normalizedTierName = tierName.trim().toLowerCase();
             if (!normalizedTierName) continue;
+
             for (const calendar of calendarEntries) {
                 const targetTier = calendar.tiers.find((t) => t.tiers_id.name.trim().toLowerCase() === normalizedTierName);
                 if (!targetTier || !targetTier.tiers_id.time) continue;
 
-                const upcomingRounds = calendar.rounds
+                const tierRounds = calendar.rounds
                     .map((round) => {
                         const dateTimeStr = `${round.date}T${targetTier.tiers_id.time}`;
                         return {
+                            tier: targetTier.tiers_id.name,
                             round,
                             dateTimeStr,
-                            date: new Date(dateTimeStr)
+                            date: new Date(dateTimeStr),
+                            flag: round.flag
                         };
                     })
-                    .filter(({ date }) => date.getTime() >= Date.now())
-                    .sort((a, b) => a.date.getTime() - b.date.getTime());
+                    // Keep races that started up to 2 hours ago
+                    .filter(({ date }) => date.getTime() + (2 * 60 * 60 * 1000) > Date.now());
 
-                if (!upcomingRounds.length) {
-                    continue;
-                }
-
-                const { round, dateTimeStr } = upcomingRounds[0];
-                const dateText = new Date(dateTimeStr).toLocaleDateString("en-GB", {
-                    weekday: "long",
-                    hour: "numeric",
-                    minute: "2-digit",
-                    hour12: true,
-                    timeZone: DEFAULT_TIMEZONE,
-                    timeZoneName: "short"
-                });
-
-                return {
-                    tier: targetTier.tiers_id.name,
-                    round: `Round ${round.number}`,
-                    track: round.name.split(" - ")[1] || round.name,
-                    date: dateTimeStr,
-                    dateText,
-                    flag: round.flag
-                };
+                allRounds = [...allRounds, ...tierRounds];
             }
         }
 
-        return null;
+        if (!allRounds.length) return null;
+
+        // Sort by date to find the absolute nearest/current race
+        allRounds.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+        const next = allRounds[0];
+
+        const dateText = next.date.toLocaleDateString("en-GB", {
+            weekday: "long",
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+            timeZone: DEFAULT_TIMEZONE,
+            timeZoneName: "short"
+        });
+
+        return {
+            tier: next.tier,
+            round: `Round ${next.round.number}`,
+            track: next.round.name.split(" - ")[1] || next.round.name,
+            date: next.dateTimeStr,
+            dateText,
+            flag: next.flag
+        };
     };
 
     const setNextRace = () => {
