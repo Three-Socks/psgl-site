@@ -1,6 +1,6 @@
 <script lang="ts">
+    import { FOOTER_LINKS } from "$lib/constants";
     import Affiliates from "$lib/components/sections/Affiliates.svelte";
-    import { resolve } from "$app/paths";
     import logo from "$lib/assets/psgl-logo-125.png";
     const currentYear = new Date().getFullYear();
 
@@ -93,17 +93,19 @@
             >
                 &copy; {currentYear} Premier Sim Gaming Leagues LTD
             </p>
-            <div class="mt-2 flex justify-center gap-4 lg:justify-end">
-                <a
-                    href={resolve("/page/terms")}
-                    class="text-xs font-bold uppercase tracking-widest text-gray-500 transition-colors hover:text-white"
-                    >Terms</a
-                >
-                <a
-                    href={resolve("/page/privacy")}
-                    class="text-xs font-bold uppercase tracking-widest text-gray-500 transition-colors hover:text-white"
-                    >Privacy</a
-                >
+            <div class="mt-2 flex justify-center gap-2 lg:justify-end">
+                {#each FOOTER_LINKS as link, i (link.name)}
+                    <a
+                        href={link.href}
+                        class="text-xs font-bold uppercase tracking-widest text-psgl-blue-2 transition-colors hover:text-white"
+                        target={link.external ? "_blank" : ""}
+                        rel={link.external ? "noopener" : ""}
+                    >{link.name}</a>
+
+                    {#if i < FOOTER_LINKS.length - 1}
+                        <span class="text-xs font-bold uppercase text-gray-400">|</span>
+                    {/if}
+                {/each}
             </div>
         </div>
     </div>

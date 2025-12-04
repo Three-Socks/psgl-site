@@ -13,6 +13,13 @@ export const NAV_LINKS = [
     { name: "Calendars", href: "/calendars" }
 ] as const;
 
+export const FOOTER_LINKS = [
+    { name: "Terms", href: resolve("/page/terms") },
+    { name: "Privacy", href: resolve("/page/privacy") },
+    { name: "Source", href: "https://github.com/Three-Socks/psgl-site/", external: true },
+    { name: "Deploys by Vercel", href: "https://vercel.com", external: true }
+];
+
 export const DEFAULT_TIMEZONE = "Europe/London";
 export const DISCORD_LINK = "https://discord.gg/s9TzzCb";
 export const STANDINGS_IMAGE_BASE_URL = "https://i.premiersimgl.com/standings";

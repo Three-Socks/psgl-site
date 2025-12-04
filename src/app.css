@@ -3,6 +3,7 @@
 
 @theme {
 	--color-psgl-blue: #0055ff;
+	--color-psgl-blue-2: #2971ff;
 	--color-psgl-dark: #050508;
 	--color-psgl-card: #0a0a0f;
 	--color-psgl-accent: #ff0040;
@@ -56,4 +57,12 @@ body {
         hover:bg-psgl-blue hover:text-white
         active:bg-psgl-blue active:text-white;
 	}
+}
+
+.prose a {
+	@apply text-psgl-blue-2 hover:text-white;
+}
+
+prose a:hover {
+	@apply text-white;
 }

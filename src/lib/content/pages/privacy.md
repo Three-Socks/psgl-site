@@ -9,10 +9,10 @@ This privacy notice for PREMIER SIM GAMING LEAGUES LTD (doing business as Premie
 
 
 
-* Visit our website at [https://premiersimgl.com/](https://premiersimgl.com/)
+* Visit our website at [https://www.premiersimgl.com/](https://www.premiersimgl.com/)
 * Service of ours that links to this privacy notice.
 
-Questions or concerns? Reading this privacy notice will help you understand your privacy rights and choices. If you do not agree with our policies and practices, please do not use our Services. If you still have any questions or concerns, please contact us at [https://premiersimgl.com/contact](https://premiersimgl.com/contact).
+Questions or concerns? Reading this privacy notice will help you understand your privacy rights and choices. If you do not agree with our policies and practices, please do not use our Services. If you still have any questions or concerns, please contact us at contact [at] premiersimgl [dot] com.
 
 
 ## Types of Data collected
