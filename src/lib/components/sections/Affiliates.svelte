@@ -2,11 +2,13 @@
     import { PARTNERS, AFFILIATE_LINKS } from "$lib/constants";
     import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
     import AffiliateCard from "$lib/components/ui/AffiliateCard.svelte";
+
+    const partnerHighlight = PARTNERS.length > 1 ? "Partners" : "Partner";
 </script>
 
 <section class="border-t border-white/10 bg-psgl-dark py-24">
     <div class="mx-auto max-w-7xl px-4">
-        <SectionHeader title="Official" highlight="Partners" />
+        <SectionHeader title="Official" highlight={partnerHighlight} />
 
         <div class="mt-16 flex flex-wrap justify-center gap-6">
             {#each PARTNERS as partner (partner.name)}

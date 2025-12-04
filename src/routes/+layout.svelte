@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-	<title>PSGL | Premier Sim Gaming League</title>
+	<title>PSGL | Premier Sim Gaming Leagues</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link
 		rel="preconnect"
