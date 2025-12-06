@@ -65,10 +65,8 @@
     <div class="flex w-full gap-1 md:w-auto">
         <button
             onclick={() => (selectedPlatform = Platform.PC)}
-            class="flex-1 border px-6 py-3 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all duration-300 md:flex-none md:text-base {selectedPlatform ===
-            Platform.PC
-                ? "bg-psgl-blue border-psgl-blue text-white"
-                : "bg-black/40 border-white/10 text-gray-300 hover:bg-white/5 hover:border-white/30 hover:text-white"}"
+            class="psgl-button flex-1 px-6 py-3 md:flex-none md:text-base"
+            class:psgl-button-active={selectedPlatform === Platform.PC}
         >
             <div class="flex items-center justify-center gap-2">
                 <Monitor class="h-5 w-5" /> PC
@@ -76,10 +74,8 @@
         </button>
         <button
             onclick={() => (selectedPlatform = Platform.PS)}
-            class="flex-1 border px-6 py-3 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all duration-300 md:flex-none md:text-base {selectedPlatform ===
-            Platform.PS
-                ? "bg-psgl-blue border-psgl-blue text-white"
-                : "bg-black/40 border-white/10 text-gray-300 hover:bg-white/5 hover:border-white/30 hover:text-white"}"
+            class="psgl-button flex-1 px-6 py-3 md:flex-none md:text-base"
+            class:psgl-button-active={selectedPlatform === Platform.PS}
         >
             <div class="flex items-center justify-center gap-2">
                 <Gamepad2 class="h-5 w-5" /> PS
@@ -91,7 +87,7 @@
     <div class="relative z-40 w-full md:w-64" bind:this={menuRef}>
         <button
             onclick={() => (isTierMenuOpen = !isTierMenuOpen)}
-            class="flex w-full items-center justify-between border bg-black/40 border-white/10 px-6 py-3 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all duration-300 md:flex-none md:text-base text-gray-300 hover:bg-white/5 hover:border-white/30 hover:text-white"
+            class="psgl-button flex w-full items-center justify-between px-6 py-3 md:flex-none md:text-base"
         >
             <div class="flex flex-col items-start">
                 <span
@@ -103,9 +99,8 @@
                 </span>
             </div>
             <div
-                class="bg-white/5 p-1 transition-transform duration-300 {isTierMenuOpen
-                    ? "rotate-180"
-                    : ""}"
+                class="bg-white/5 p-1 transition-transform duration-300"
+                class:rotate-180={isTierMenuOpen}
             >
                 <ChevronDown class="text-psgl-blue h-4 w-4" />
             </div>
@@ -113,15 +108,13 @@
 
         {#if isTierMenuOpen}
             <div
-                class="animate-in fade-in zoom-in-95 absolute top-full right-0 left-0 mt-2 grid origin-top grid-cols-2 gap-2 border border-white/20 bg-black p-2 shadow-2xl duration-200"
+                class="psgl-button cursor-auto! hover:bg-gray-950! animate-in fade-in zoom-in-95 absolute top-full right-0 left-0 mt-2 grid origin-top grid-cols-2 gap-2 p-2 shadow-2xl duration-200"
             >
                 {#each filteredTiers as tier (tier.id)}
                     <button
                         onclick={() => handleTierSelect(tier.id)}
-                        class="group flex items-center justify-between border border-transparent px-3 py-2 cursor-pointer text-left transition-all hover:border-white/20 {selectedTierId ===
-                        tier.id
-                            ? "bg-psgl-blue text-white"
-                            : "bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white"}"
+                        class="psgl-dropdown group flex items-center justify-between px-3 py-2"
+                        class:psgl-dropdown-active={selectedTierId === tier.id}
                     >
                         <span class="text-sm uppercase font-bold"
                             >{tier.name}</span
@@ -138,10 +131,10 @@
     {#each [ViewType.DRIVERS, ViewType.CONSTRUCTORS, ViewType.RESULTS] as type (type)}
         <button
             onclick={() => (selectedView = type)}
-            class="flex-1 min-w-0 border py-3 text-[10px] font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer md:py-4 md:text-sm {selectedView ===
+            class="psgl-button flex-1 min-w-0 py-3 text-[10px] md:py-4 {selectedView ===
             type
-                ? "border-white bg-white text-black"
-                : "bg-black/40 border-white/10 text-gray-300 hover:bg-white/5 hover:border-white/30 hover:text-white"}"
+                ? "psgl-button-active"
+                : ""}"
         >
             <div
                 class="flex flex-col items-center justify-center gap-1 text-center md:flex-row md:gap-2"

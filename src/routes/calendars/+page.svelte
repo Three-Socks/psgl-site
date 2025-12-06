@@ -124,10 +124,8 @@
             <div class="flex flex-wrap justify-center gap-2 w-full max-w-5xl px-4">
                 {#each Object.entries(calendars) as [calId, cal] (calId)}
                     <button
-                        class="group relative flex-1 min-w-40 max-w-60 border px-6 py-4 text-sm font-bold uppercase cursor-pointer tracking-wider transition-all duration-300
-                        {activeCalendarId === calId
-                            ? "bg-psgl-blue border-psgl-blue text-white"
-                            : "bg-black/40 border-white/10 text-gray-300 hover:bg-white/5 hover:border-white/30 hover:text-white"}"
+                        class="psgl-button group relative flex-1 min-w-40 max-w-60 px-6 py-4"
+                        class:psgl-button-active={activeCalendarId === calId}
                         onclick={() => setActiveCalendar(calId)}
                     >
                         <div class="flex items-center justify-center gap-3">

@@ -21,6 +21,24 @@ body {
 	color: white;
 }
 
+.psgl-button {
+	@apply bg-gray-950 border border-white/10 hover:bg-slate-900/60
+		text-gray-300 hover:text-white text-sm font-bold uppercase cursor-pointer tracking-wider transition-all duration-300;
+}
+
+.psgl-button-active {
+	@apply bg-psgl-blue border-psgl-blue text-white hover:bg-psgl-blue hover:border-psgl-blue;
+}
+
+.psgl-dropdown {
+	@apply bg-slate-900/60 border border-white/10 hover:bg-slate-800/60
+		text-gray-300 hover:text-white text-sm font-bold uppercase cursor-pointer tracking-wider transition-all duration-300;
+}
+
+.psgl-dropdown-active {
+	@apply bg-psgl-blue border-psgl-blue text-white hover:bg-psgl-blue hover:border-psgl-blue;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
 	width: 8px;
