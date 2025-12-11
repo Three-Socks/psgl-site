@@ -65,6 +65,17 @@ export interface RaceRound {
     countryCode?: string;
 }
 
+export interface NextRace {
+    calendarSlugId: string;
+    tier: string;
+    round: string;
+    track: string;
+    date: string;
+    dateText: string;
+    flag: string;
+    timestamp: number;
+}
+
 export interface CalendarTier {
     tiers_id: Tier;
 }

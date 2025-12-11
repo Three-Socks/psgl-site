@@ -9,17 +9,8 @@
     import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
     import { onMount } from "svelte";
     import { resolve } from "$app/paths";
-    import type { CalendarData, RaceRound } from "$lib/types";
+    import type { CalendarData, NextRace } from "$lib/types";
     import { DEFAULT_TIMEZONE } from "$lib/constants";
-
-    type NextRace = {
-        tier: string;
-        round: string;
-        track: string;
-        date: string;
-        dateText: string;
-        flag: string;
-    };
 
     const props = $props<{ calendars: Record<string, CalendarData>; nextRaceTierNames?: string[] }>();
     let { calendars, nextRaceTierNames } = props;
@@ -34,13 +25,7 @@
         const calendarEntries = Object.values(calendars ?? {}) as CalendarData[];
         if (!calendarEntries.length) return null;
 
-        let allRounds: {
-            tier: string;
-            round: RaceRound;
-            dateTimeStr: string;
-            date: Date;
-            flag: string;
-        }[] = [];
+        let allRounds: NextRace[] = [];
 
         for (const tierName of nextRaceTierNames) {
             const normalizedTierName = tierName.trim().toLowerCase();
@@ -53,16 +38,30 @@
                 const tierRounds = calendar.rounds
                     .map((round) => {
                         const dateTimeStr = `${round.date}T${targetTier.tiers_id.time}`;
+                        const dateObj = new Date(dateTimeStr);
+                        const trackName = round.name.split(" - ")[1] || round.name;
+                        const dateText = dateObj.toLocaleDateString("en-GB", {
+                            weekday: "long",
+                            hour: "numeric",
+                            minute: "2-digit",
+                            hour12: true,
+                            timeZone: DEFAULT_TIMEZONE,
+                            timeZoneName: "short"
+                        });
+
                         return {
+                            calendarSlugId: calendar.name.toLowerCase().replace(/\s+/g, "-"),
                             tier: targetTier.tiers_id.name,
-                            round,
-                            dateTimeStr,
-                            date: new Date(dateTimeStr),
-                            flag: round.flag
+                            round: `Round ${round.number}`,
+                            track: trackName,
+                            date: dateTimeStr,
+                            dateText,
+                            flag: round.flag,
+                            timestamp: dateObj.getTime()
                         };
                     })
                     // Keep races that started up to 2 hours ago
-                    .filter(({ date }) => date.getTime() + (2 * 60 * 60 * 1000) > Date.now());
+                    .filter(({ timestamp }) => timestamp + 2 * 60 * 60 * 1000 > Date.now());
 
                 allRounds = [...allRounds, ...tierRounds];
             }
@@ -71,27 +70,10 @@
         if (!allRounds.length) return null;
 
         // Sort by date to find the absolute nearest/current race
-        allRounds.sort((a, b) => a.date.getTime() - b.date.getTime());
+        allRounds.sort((a, b) => a.timestamp - b.timestamp);
 
         const next = allRounds[0];
-
-        const dateText = next.date.toLocaleDateString("en-GB", {
-            weekday: "long",
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true,
-            timeZone: DEFAULT_TIMEZONE,
-            timeZoneName: "short"
-        });
-
-        return {
-            tier: next.tier,
-            round: `Round ${next.round.number}`,
-            track: next.round.name.split(" - ")[1] || next.round.name,
-            date: next.dateTimeStr,
-            dateText,
-            flag: next.flag
-        };
+        return next;
     };
 
     const setNextRace = () => {
@@ -328,8 +310,8 @@
                             </div>
                         </div>
 
-                        <a
-                            href={resolve("/calendars")}
+                        <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+                        <a href={resolve("/calendars") + `?calendar=${nextRace.calendarSlugId}`}
                             class="btn-primary mt-2 w-full"
                         >
                             <span>View Full Calendar</span>

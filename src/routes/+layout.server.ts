@@ -57,7 +57,6 @@ export const load = async () => {
     }
 
     try {
-
         [calendars, tiers, leagues, seasonLeague, stats] = await Promise.all([
             getAllCalendars() as unknown as Promise<CalendarData[]>,
             getAllTiers() as unknown as Promise<Tier[]>,
@@ -138,14 +137,13 @@ export const load = async () => {
             return a.tiers_id.name.localeCompare(b.tiers_id.name, undefined, { numeric: true, sensitivity: "base" });
         });
 
-        const calendarId = calendar.name.toLowerCase().replace(/\s+/g, "-");
+        const calendarSlugId = calendar.name.toLowerCase().replace(/\s+/g, "-");
 
-        processedCalendars[calendarId] = {
+        processedCalendars[calendarSlugId] = {
             name: calendar.name,
             tiers: calendar.tiers,
             rounds: calendar.rounds
         };
-
     }
 
     const nextFeaturedRaceTierNames = (NEXT_FEATURED_RACE_TIER_NAMES ?? "")

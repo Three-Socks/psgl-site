@@ -76,7 +76,7 @@
                 />
             </div>
             <span
-                class="text-3xl font-black uppercase text-white select-none lg:block"
+                class="text-4xl font-black uppercase text-white select-none lg:block"
                 class:active={logoActive}
                 on:pointerenter={activateLogo}
                 on:pointerleave={deactivateLogo}
@@ -95,8 +95,8 @@
             </p>
             <div class="mt-2 flex justify-center gap-2 lg:justify-end">
                 {#each FOOTER_LINKS as link, i (link.name)}
-                    <a
-                        href={link.href}
+                    <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+                    <a href={link.href}
                         class="text-xs font-bold uppercase tracking-widest text-psgl-blue-2 transition-colors hover:text-white"
                         target={link.external ? "_blank" : ""}
                         rel={link.external ? "noopener" : ""}

@@ -13,8 +13,8 @@
     const timeZoneName = $derived(data.timeZoneName);
     const currentSeason = $derived(data.currentSeason);
 
-    let activeCalendarId = $state<string>(Object.keys(calendars)[0] || "");
-    let activeCalendar = $derived(calendars[activeCalendarId]);
+    let activeCalendarSlugId = $state<string>(Object.keys(calendars)[0] || "");
+    let activeCalendar = $derived(calendars[activeCalendarSlugId]);
     let activeRounds = $derived(activeCalendar.rounds);
     let activeRoundIndex = $state(-1);
 
@@ -40,15 +40,15 @@
         const params = new URLSearchParams(window.location.search);
         const calendarParam = params.get("calendar");
         if (calendarParam && calendars[calendarParam]) {
-            activeCalendarId = calendarParam;
+            activeCalendarSlugId = calendarParam;
         }
     };
 
-    const updateCalendarQueryParams = (calendarId: string) => {
+    const updateCalendarQueryParams = (calendarSlugId: string) => {
         if (!browser) return;
         const url = new URL(window.location.href);
-        if (calendarId) {
-            url.searchParams.set("calendar", calendarId);
+        if (calendarSlugId) {
+            url.searchParams.set("calendar", calendarSlugId);
         } else {
             url.searchParams.delete("calendar");
         }
@@ -79,8 +79,8 @@
         return `${twelveHour}:${minutePadded}${period}`;
     };
 
-    const setActiveCalendar = (id: string) => {
-        activeCalendarId = id;
+    const setActiveCalendar = (slugId: string) => {
+        activeCalendarSlugId = slugId;
         updateActiveRound();
     };
 
@@ -94,12 +94,12 @@
         applyCalendarFromUrl();
         updateActiveRound();
         hasSyncedCalendarFromUrl = true;
-        updateCalendarQueryParams(activeCalendarId);
+        updateCalendarQueryParams(activeCalendarSlugId);
     });
 
     $effect(() => {
         if (!hasSyncedCalendarFromUrl) return;
-        updateCalendarQueryParams(activeCalendarId);
+        updateCalendarQueryParams(activeCalendarSlugId);
     });
 
     const formatDate = (dateStr: string) => {
@@ -122,11 +122,11 @@
         <!-- Calendar Switcher (Top) -->
         <div class="mt-8 flex justify-center mb-12">
             <div class="flex flex-wrap justify-center gap-2 w-full max-w-5xl px-4">
-                {#each Object.entries(calendars) as [calId, cal] (calId)}
+                {#each Object.entries(calendars) as [calSlugId, cal] (calSlugId)}
                     <button
                         class="psgl-button group relative flex-1 min-w-40 max-w-60 px-6 py-4"
-                        class:psgl-button-active={activeCalendarId === calId}
-                        onclick={() => setActiveCalendar(calId)}
+                        class:psgl-button-active={activeCalendarSlugId === calSlugId}
+                        onclick={() => setActiveCalendar(calSlugId)}
                     >
                         <div class="flex items-center justify-center gap-3">
                             <span class="leading-none">{cal.name}</span>
