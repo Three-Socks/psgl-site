@@ -131,13 +131,13 @@
     {#each [ViewType.DRIVERS, ViewType.CONSTRUCTORS, ViewType.RESULTS] as type (type)}
         <button
             onclick={() => (selectedView = type)}
-            class="psgl-button flex-1 min-w-0 py-3 text-[10px] md:py-4 {selectedView ===
+            class="psgl-button flex-1 min-w-0 py-3 md:py-4 {selectedView ===
             type
                 ? "psgl-button-active"
                 : ""}"
         >
             <div
-                class="flex flex-col items-center justify-center gap-1 text-center md:flex-row md:gap-2"
+                class="flex flex-col items-center justify-center gap-1 text-center text-[8px] sm:text-sm md:flex-row md:gap-2"
             >
                 {#if type === ViewType.DRIVERS}
                     <Users class="h-3 w-3 md:h-4 md:w-4" />
