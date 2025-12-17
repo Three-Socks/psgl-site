@@ -40,14 +40,18 @@
                         const dateTimeStr = `${round.date}T${targetTier.tiers_id.time}`;
                         const dateObj = new Date(dateTimeStr);
                         const trackName = round.name.split(" - ")[1] || round.name;
-                        const dateText = dateObj.toLocaleDateString("en-GB", {
+                        const roundYear = Number(round.date.split("-")[0]);
+                        const currentYear = new Date().getFullYear();
+                        const formatOptions: Intl.DateTimeFormatOptions = {
                             weekday: "long",
+                            ...(roundYear > currentYear ? { year: "numeric" } : {}),
                             hour: "numeric",
                             minute: "2-digit",
                             hour12: true,
                             timeZone: DEFAULT_TIMEZONE,
                             timeZoneName: "short"
-                        });
+                        };
+                        const dateText = dateObj.toLocaleDateString("en-GB", formatOptions);
 
                         return {
                             calendarSlugId: calendar.name.toLowerCase().replace(/\s+/g, "-"),

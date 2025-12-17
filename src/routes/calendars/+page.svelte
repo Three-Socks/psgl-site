@@ -104,7 +104,13 @@
 
     const formatDate = (dateStr: string) => {
         const date = new Date(dateStr);
-        return date.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+        const year = Number(dateStr.split("-")[0]);
+        const currentYear = new Date().getFullYear();
+        return date.toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "short",
+            ...(year > currentYear ? { year: "numeric" } : {})
+        });
     };
 
     const getFlagUrl = (code: string) => `https://flagcdn.com/${code}.svg`;
