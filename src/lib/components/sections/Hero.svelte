@@ -64,8 +64,8 @@
                             timestamp: dateObj.getTime()
                         };
                     })
-                    // Keep races that started up to 2 hours ago
-                    .filter(({ timestamp }) => timestamp + 2 * 60 * 60 * 1000 > Date.now());
+                    // Keep races that started up to 1 hour 30 mins ago
+                    .filter(({ timestamp }) => timestamp + 1.5 * 60 * 60 * 1000 > Date.now());
 
                 allRounds = [...allRounds, ...tierRounds];
             }
@@ -91,9 +91,9 @@
         const target = new Date(nextRace.date);
         const diff = target.getTime() - now.getTime();
 
-        // Check if live (race started less than 2 hours ago)
-        const twoHours = 2 * 60 * 60 * 1000;
-        if (diff <= 0 && Math.abs(diff) < twoHours) {
+        // Check if live (race started less than 1 hour 30 mins ago)
+        const threshold = 1.5 * 60 * 60 * 1000;
+        if (diff <= 0 && Math.abs(diff) < threshold) {
             isLive = true;
             timeRemaining = "LIVE NOW";
             return;
@@ -101,7 +101,7 @@
 
         isLive = false;
 
-        if (diff <= -twoHours) {
+        if (diff <= -threshold) {
             setNextRace();
             updateCountdown();
             return;
