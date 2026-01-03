@@ -234,7 +234,7 @@
                             <h2 class="text-3xl font-bold uppercase tracking-wide">Tiers</h2>
                         </div>
                         <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white bg-black/40 px-3 py-1.5 border border-white/10">
-                            <span class="inline-block h-2 w-2 bg-psgl-blue animate-pulse"></span>
+                            <span class="inline-block h-2 w-2 bg-psgl-blue"></span>
                             Live Streamed
                         </div>
                     </div>

@@ -27,9 +27,8 @@
         { label: "Active Drivers", key: "driver_count", iconNode: motorRacingHelmet },
     ] satisfies readonly StatCardConfig[];
 
-    const numberFormatter = new Intl.NumberFormat("en-GB", {
-        notation: "compact",
-        maximumFractionDigits: 1,
+    const numberFormatter = new Intl.NumberFormat("en-US", {
+        maximumFractionDigits: 3,
     });
 
     const formatStatValue = (value?: number | null) => {
@@ -80,7 +79,7 @@
                         </div>
                     </div>
                     <h3
-                        class="mb-1 pr-3 text-4xl font-black italic text-white md:text-5xl"
+                        class="mb-1 pr-3 text-4xl font-black italic tracking-wider text-white md:text-5xl"
                     >
                         {stat.value}
                     </h3>
