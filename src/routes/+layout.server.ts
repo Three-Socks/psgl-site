@@ -133,7 +133,12 @@ export const load = async () => {
     const processedCalendars: Record<string, CalendarData> = {};
 
     for (const calendar of calendars) {
-        calendar.tiers.sort((a: CalendarTier, b: CalendarTier) => {
+        const calendarTiers = Array.isArray(calendar.tiers) ? calendar.tiers : [];
+        const validTiers = calendarTiers.filter(
+            (tier): tier is CalendarTier => Boolean(tier?.tiers_id?.name)
+        );
+
+        validTiers.sort((a: CalendarTier, b: CalendarTier) => {
             return a.tiers_id.name.localeCompare(b.tiers_id.name, undefined, { numeric: true, sensitivity: "base" });
         });
 
@@ -141,8 +146,8 @@ export const load = async () => {
 
         processedCalendars[calendarSlugId] = {
             name: calendar.name,
-            tiers: calendar.tiers,
-            rounds: calendar.rounds
+            tiers: validTiers,
+            rounds: calendar.rounds ?? []
         };
     }
 

@@ -15,12 +15,9 @@ export const getAllCalendars = async () => {
         const calendar_response = await directus.request(readItems("calendars", {
             fields: ["name", "tiers.tiers_id.id", "tiers.tiers_id.name", "tiers.tiers_id.time", "tiers.tiers_id.comm_confirm", "rounds"],
             filter: {
-                "_and": [
-                    { "count(tiers)": { "_gt": 0 } },
-                    { "_or": [
-                        { archived: { _eq: false } },
-                        { archived: { _null: true } },
-                    ]}
+                "_or": [
+                    { archived: { _eq: false } },
+                    { archived: { _null: true } },
                 ]
             },
             sort: "-name",
