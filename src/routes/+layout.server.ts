@@ -100,8 +100,20 @@ export const load = async () => {
 
             const candidateIsMid = candidate.phase?.toLowerCase().includes("mid") ?? false;
             const existingIsMid = existing.phase?.toLowerCase().includes("mid") ?? false;
+            const candidateOpen = !candidate.closed;
+            const existingOpen = !existing.closed;
 
-            if (existingIsMid || !candidateIsMid) {
+            if (candidateOpen !== existingOpen) {
+                if (candidateOpen) {
+                    map[key] = candidate;
+                }
+                return map;
+            }
+
+            if (candidateIsMid !== existingIsMid) {
+                if (!candidateIsMid) {
+                    map[key] = candidate;
+                }
                 return map;
             }
 
