@@ -2,6 +2,7 @@
     import { FOOTER_LINKS } from "$lib/constants";
     import Affiliates from "$lib/components/sections/Affiliates.svelte";
     import logo from "$lib/assets/psgl-logo-125.png";
+    import { resolve } from "$app/paths";
     const currentYear = new Date().getFullYear();
 
     let logoActive = false;
@@ -29,15 +30,18 @@
     <div
         class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-4 lg:flex-row"
     >
-        <div class="flex items-center gap-4 group">
+        <a
+            href={resolve("/")}
+            class="flex items-center gap-4 group"
+            on:pointerenter={activateLogo}
+            on:pointerleave={deactivateLogo}
+            on:pointerdown={activateLogo}
+            on:pointerup={deactivateLogo}
+            on:pointercancel={deactivateLogo}
+        >
             <div
-                class="logo-container group relative flex h-10 w-10 items-center select-none justify-center overflow-visible"
+                class="logo-container relative flex h-10 w-10 items-center select-none justify-center overflow-visible"
                 class:active={logoActive}
-                on:pointerenter={activateLogo}
-                on:pointerleave={deactivateLogo}
-                on:pointerdown={activateLogo}
-                on:pointerup={deactivateLogo}
-                on:pointercancel={deactivateLogo}
             >
                 <div
                     class="speed-lines pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
@@ -77,15 +81,9 @@
             </div>
             <span
                 class="text-4xl font-black uppercase text-white select-none lg:block"
-                class:active={logoActive}
-                on:pointerenter={activateLogo}
-                on:pointerleave={deactivateLogo}
-                on:pointerdown={activateLogo}
-                on:pointerup={deactivateLogo}
-                on:pointercancel={deactivateLogo}
                 >PSGL</span
             >
-        </div>
+        </a>
 
         <div class="text-center lg:text-right">
             <p

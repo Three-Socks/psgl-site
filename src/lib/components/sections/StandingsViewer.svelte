@@ -14,9 +14,7 @@
 
     let selectedPlatform = $state<Platform>(Platform.PC);
     let selectedView = $state<ViewType>(ViewType.DRIVERS);
-
-    const initialTier = tiers.find((t: Tier) => t.platform === Platform.PC);
-    let selectedTierId = $state<string>(initialTier?.id || "");
+    let selectedTierId = $state("");
 
     const viewParamMap: Record<string, ViewType> = {
         drivers: ViewType.DRIVERS,

@@ -12,8 +12,10 @@
     import type { CalendarData, NextRace } from "$lib/types";
     import { DEFAULT_TIMEZONE } from "$lib/constants";
 
-    const props = $props<{ calendars: Record<string, CalendarData>; nextRaceTierNames?: string[] }>();
-    let { calendars, nextRaceTierNames } = props;
+    let { calendars, nextRaceTierNames } = $props<{
+        calendars: Record<string, CalendarData>;
+        nextRaceTierNames?: string[];
+    }>();
 
     let nextRace = $state<NextRace | null>(null);
 

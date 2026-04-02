@@ -7,15 +7,21 @@
     import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
     import type { CalendarData } from "$lib/types";
     import { SvelteMap } from "svelte/reactivity";
+    import type { PageProps } from "./$types";
 
-    let { data } = $props();
-    const calendars = data.calendars as Record<string, CalendarData>;
-    const timeZoneName = $derived(data.timeZoneName);
-    const currentSeason = $derived(data.currentSeason);
+    let { data }: PageProps = $props();
+    let calendars = $derived(data.calendars as Record<string, CalendarData>);
+    let timeZoneName = $derived(data.timeZoneName);
+    let currentSeason = $derived(data.currentSeason);
 
-    let activeCalendarSlugId = $state<string>(Object.keys(calendars)[0] || "");
-    let activeCalendar = $derived(calendars[activeCalendarSlugId]);
-    let activeRounds = $derived(activeCalendar.rounds);
+    let activeCalendarSlugId = $state("");
+    let resolvedActiveCalendarSlugId = $derived(
+        activeCalendarSlugId && calendars[activeCalendarSlugId]
+            ? activeCalendarSlugId
+            : Object.keys(calendars)[0] || ""
+    );
+    let activeCalendar = $derived(calendars[resolvedActiveCalendarSlugId] as CalendarData);
+    let activeRounds = $derived(activeCalendar?.rounds ?? []);
     let activeRoundIndex = $state(-1);
 
     const tiersByTime = (tiers: CalendarData["tiers"]) => {
@@ -31,7 +37,7 @@
             .sort((a, b) => a.time.localeCompare(b.time, undefined, { numeric: true, sensitivity: "base" }));
     };
 
-    let tierBlocks = $derived(tiersByTime(activeCalendar.tiers));
+    let tierBlocks = $derived(activeCalendar ? tiersByTime(activeCalendar.tiers) : []);
 
     let hasSyncedCalendarFromUrl = $state(false);
 
@@ -93,13 +99,17 @@
     onMount(() => {
         applyCalendarFromUrl();
         updateActiveRound();
+        activeCalendarSlugId = resolvedActiveCalendarSlugId;
         hasSyncedCalendarFromUrl = true;
-        updateCalendarQueryParams(activeCalendarSlugId);
+        updateCalendarQueryParams(resolvedActiveCalendarSlugId);
     });
 
     $effect(() => {
         if (!hasSyncedCalendarFromUrl) return;
-        updateCalendarQueryParams(activeCalendarSlugId);
+        if (activeCalendarSlugId !== resolvedActiveCalendarSlugId) {
+            activeCalendarSlugId = resolvedActiveCalendarSlugId;
+        }
+        updateCalendarQueryParams(resolvedActiveCalendarSlugId);
     });
 
     const formatDate = (dateStr: string) => {
@@ -152,7 +162,7 @@
                     </div>
                     <div>
                         <h2 class="text-3xl font-bold uppercase tracking-wide">Rounds</h2>
-                        <p class="text-psgl-blue font-bold uppercase tracking-widest text-sm">{activeCalendar.name} Calendar</p>
+                        <p class="text-psgl-blue font-bold uppercase tracking-widest text-sm">{activeCalendar?.name ?? ""} Calendar</p>
                     </div>
                 </div>
 
