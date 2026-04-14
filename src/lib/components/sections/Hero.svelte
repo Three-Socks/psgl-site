@@ -1,10 +1,8 @@
 <script lang="ts">
-    import {
-        Calendar,
-        MapPin,
-        Trophy,
-        ArrowRight,
-    } from "@lucide/svelte";
+    import Calendar from "@lucide/svelte/icons/calendar";
+    import MapPin from "@lucide/svelte/icons/map-pin";
+    import Trophy from "@lucide/svelte/icons/trophy";
+    import ArrowRight from "@lucide/svelte/icons/arrow-right";
     import { siDiscord } from "simple-icons";
     import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
     import { onMount } from "svelte";

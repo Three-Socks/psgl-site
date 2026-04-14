@@ -4,7 +4,8 @@
     import SocialIcon from "$lib/components/ui/SocialIcon.svelte";
     import logo from "$lib/assets/psgl-logo-125.png";
     import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
-    import { Menu, X } from "@lucide/svelte";
+    import Menu from "@lucide/svelte/icons/menu";
+    import X from "@lucide/svelte/icons/x";
     import { resolve } from "$app/paths";
 
     let isMenuOpen = false;

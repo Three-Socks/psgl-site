@@ -1,9 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { browser } from "$app/environment";
-    import {
-        CircleAlert,
-    } from "@lucide/svelte";
+    import CircleAlert from "@lucide/svelte/icons/circle-alert";
     import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
     import StandingsControls from "../ui/StandingsControls.svelte";
     import { Platform, ViewType } from "$lib/types";

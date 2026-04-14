@@ -1,6 +1,7 @@
 <script lang="ts">
-    import { Icon, Trophy, Layers, Users } from "@lucide/svelte";
-    import { motorRacingHelmet } from "@lucide/lab";
+    import Trophy from "@lucide/svelte/icons/trophy";
+    import Layers from "@lucide/svelte/icons/layers";
+    import Users from "@lucide/svelte/icons/users";
     import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
     import type { SiteStats } from "$lib/types";
 
@@ -17,14 +18,14 @@
         label: string;
         key: keyof SiteStats;
         icon?: typeof Users;
-        iconNode?: typeof motorRacingHelmet;
+        motorRacingHelmet?: boolean;
     };
 
     const STAT_CARDS = [
         { label: "Discord Members", key: "member_count", icon: Users },
         { label: "Races Completed", key: "races_completed", icon: Trophy },
         { label: "Total\nTiers", key: "tier_count", icon: Layers },
-        { label: "Active Drivers", key: "driver_count", iconNode: motorRacingHelmet },
+        { label: "Active Drivers", key: "driver_count", motorRacingHelmet: true },
     ] satisfies readonly StatCardConfig[];
 
     const numberFormatter = new Intl.NumberFormat("en-GB", {
@@ -71,11 +72,8 @@
                         <div class="-rotate-45">
                             {#if IconComponent}
                                 <IconComponent class="h-8 w-8" />
-                            {:else if stat.iconNode}
-                                <Icon
-                                    class="h-8 w-8"
-                                    iconNode={stat.iconNode}
-                                />
+                            {:else if stat.motorRacingHelmet}
+                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide-icon lucide h-8 w-8"><!----><path d="M22 12.2a10 10 0 1 0-19.4 3.2c.2.5.8 1.1 1.3 1.3l13.2 5.1c.5.2 1.2 0 1.6-.3l2.6-2.6c.4-.4.7-1.2.7-1.7Z"></path><!----><path d="m21.8 18-10.5-4a2 2.06 0 0 1 .7-4h9.8"></path><!----><!----></svg>
                             {/if}
                         </div>
                     </div>
@@ -85,7 +83,7 @@
                         {stat.value}
                     </h3>
                     <p
-                        class="w-full max-w-[100px] whitespace-pre-line border-t border-white/20 pt-2 text-[10px] font-bold uppercase tracking-[0.2em] text-blue-200 md:text-xs"
+                        class="w-full max-w-25 whitespace-pre-line border-t border-white/20 pt-2 text-[10px] font-bold uppercase tracking-[0.2em] text-blue-200 md:text-xs"
                     >
                         {stat.label}
                     </p>

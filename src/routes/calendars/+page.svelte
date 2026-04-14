@@ -1,7 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { browser } from "$app/environment";
-    import { Calendar, Users } from "@lucide/svelte";
+    import Calendar from "@lucide/svelte/icons/calendar";
+    import Users from "@lucide/svelte/icons/users";
     import PageShell from "$lib/components/layout/PageShell.svelte";
     import PageSection from "$lib/components/layout/PageSection.svelte";
     import SectionHeader from "$lib/components/layout/SectionHeader.svelte";

@@ -1,5 +1,10 @@
 <script lang="ts">
-    import { Monitor, Gamepad2, ChevronDown, Trophy, Users, Flag } from "@lucide/svelte";
+    import Monitor from "@lucide/svelte/icons/monitor";
+    import Gamepad2 from "@lucide/svelte/icons/gamepad-2";
+    import ChevronDown from "@lucide/svelte/icons/chevron-down";
+    import Trophy from "@lucide/svelte/icons/trophy";
+    import Users from "@lucide/svelte/icons/users";
+    import Flag from "@lucide/svelte/icons/flag";
     import { Platform, ViewType } from "$lib/types";
     import type { Tier } from "$lib/types";
 

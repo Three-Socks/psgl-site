@@ -1,6 +1,8 @@
 <script lang="ts">
     import type { Affiliate } from "$lib/types";
-    import { ExternalLink, Copy, Check } from "@lucide/svelte";
+    import ExternalLink from "@lucide/svelte/icons/external-link";
+    import Copy from "@lucide/svelte/icons/copy";
+    import Check from "@lucide/svelte/icons/check";
     import DecorativeCorners from "$lib/components/ui/DecorativeCorners.svelte";
 
     export let item: Affiliate;

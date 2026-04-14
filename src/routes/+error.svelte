@@ -1,7 +1,7 @@
 <script lang="ts">
     import { page } from "$app/state";
     import PageShell from "$lib/components/layout/PageShell.svelte";
-    import { ArrowLeft } from "@lucide/svelte";
+    import ArrowLeft from "@lucide/svelte/icons/arrow-left";
     import { resolve } from "$app/paths";
 </script>
 
