@@ -3,7 +3,7 @@
     import MapPin from "@lucide/svelte/icons/map-pin";
     import Trophy from "@lucide/svelte/icons/trophy";
     import ArrowRight from "@lucide/svelte/icons/arrow-right";
-    import { siDiscord } from "simple-icons";
+    import SiDiscord from "@icons-pack/svelte-simple-icons/icons/SiDiscord";
     import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
     import { onMount } from "svelte";
     import { resolve } from "$app/paths";
@@ -191,10 +191,7 @@
                     target="_blank"
                     class="btn-primary text-lg"
                 >
-                    <svg role="img" viewBox="0 0 24 24" class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg">
-                        <title>{siDiscord.title}</title>
-                        <path d={siDiscord.path} />
-                    </svg>
+                    <SiDiscord class="h-5 w-5" title="Discord" />
                     <span>JOIN DISCORD</span>
                 </a>
 

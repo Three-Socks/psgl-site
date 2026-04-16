@@ -1,7 +1,7 @@
 
 <script lang="ts">
     import type { HomepageLeagueCard } from "$lib/types";
-    import { siDiscord } from "simple-icons";
+    import SiDiscord from "@icons-pack/svelte-simple-icons/icons/SiDiscord";
     import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
     import DecorativeCorners from "$lib/components/ui/DecorativeCorners.svelte";
     import { resolve } from "$app/paths";
@@ -75,10 +75,7 @@
                 rel="noreferrer"
                 class="btn-primary"
             >
-                <svg role="img" viewBox="0 0 24 24" class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg">
-                    <title>{siDiscord.title}</title>
-                    <path d={siDiscord.path} />
-                </svg>
+                <SiDiscord class="h-5 w-5" title="Discord" />
                 <span>Join On Discord</span>
             </a>
         </div>

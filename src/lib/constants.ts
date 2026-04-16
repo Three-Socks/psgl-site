@@ -1,7 +1,12 @@
 import type {
     Affiliate,
 } from "./types";
-import { siX, siYoutube, siTwitch, siInstagram, siTiktok, siDiscord } from "simple-icons";
+import SiDiscord from "@icons-pack/svelte-simple-icons/icons/SiDiscord";
+import SiInstagram from "@icons-pack/svelte-simple-icons/icons/SiInstagram";
+import SiTiktok from "@icons-pack/svelte-simple-icons/icons/SiTiktok";
+import SiTwitch from "@icons-pack/svelte-simple-icons/icons/SiTwitch";
+import SiX from "@icons-pack/svelte-simple-icons/icons/SiX";
+import SiYoutube from "@icons-pack/svelte-simple-icons/icons/SiYoutube";
 import SimRacingSetup from "$lib/assets/psgl-x-simracingsetup-360.png";
 import { resolve } from "$app/paths";
 
@@ -25,12 +30,12 @@ export const DISCORD_LINK = "https://discord.gg/s9TzzCb";
 export const STANDINGS_IMAGE_BASE_URL = "https://i.premiersimgl.com/standings";
 
 export const SOCIAL_LINKS = [
-    { icon: siDiscord, url: resolve("/discord"), name: "Discord" },
-    { icon: siYoutube, url: "https://www.youtube.com/channel/UCJOgL44GC1W1dWLIB7Er-2w?sub_confirmation=1", name: "YouTube" },
-    { icon: siTwitch, url: "https://www.twitch.tv/premiersimgl", name: "Twitch" },
-    { icon: siX, url: "https://x.com/PremierSimGL", name: "X" },
-    { icon: siInstagram, url: "https://www.instagram.com/premiersimgl", name: "Instagram" },
-    { icon: siTiktok, url: "https://www.tiktok.com/@premiersimgl", name: "TikTok" }
+    { icon: SiDiscord, url: resolve("/discord"), name: "Discord" },
+    { icon: SiYoutube, url: "https://www.youtube.com/channel/UCJOgL44GC1W1dWLIB7Er-2w?sub_confirmation=1", name: "YouTube" },
+    { icon: SiTwitch, url: "https://www.twitch.tv/premiersimgl", name: "Twitch" },
+    { icon: SiX, url: "https://x.com/PremierSimGL", name: "X" },
+    { icon: SiInstagram, url: "https://www.instagram.com/premiersimgl", name: "Instagram" },
+    { icon: SiTiktok, url: "https://www.tiktok.com/@premiersimgl", name: "TikTok" }
 ];
 
 export const LEAGUE_METADATA = {

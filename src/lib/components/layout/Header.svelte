@@ -72,7 +72,7 @@
 
         <div class="hidden lg:flex gap-2">
             {#each SOCIAL_LINKS as link (link.url)}
-                <SocialIcon icon={link.icon} url={link.url} />
+                <SocialIcon icon={link.icon} url={link.url} name={link.name} />
             {/each}
         </div>
 
@@ -107,7 +107,7 @@
 
             <div class="flex flex-wrap gap-4 mt-2">
                 {#each SOCIAL_LINKS as link (link.url)}
-                    <SocialIcon icon={link.icon} url={link.url} />
+                    <SocialIcon icon={link.icon} url={link.url} name={link.name} />
                 {/each}
             </div>
         </div>
