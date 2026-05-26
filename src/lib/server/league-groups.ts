@@ -5,7 +5,7 @@ import {
     LEAGUE_ID_F1_PS_MID_SIGNUP,
     LEAGUE_ID_F1_PS_SIGNUP,
     LEAGUE_ID_GT_SIGNUP,
-    LEAGUE_ID_ESERIES_SIGNUP,
+    // LEAGUE_ID_ESERIES_SIGNUP,
 } from "$env/static/private";
 
 interface RawLeagueEntry {
@@ -18,7 +18,6 @@ interface RawHomepageLeague {
     id: string;
     title: string;
     description: string;
-    image?: string;
     imageWebp?: string;
     entries: RawLeagueEntry[];
 }
@@ -32,7 +31,6 @@ const rawLeagues: RawHomepageLeague[] = [
         id: "f1",
         title: "F1",
         description: LEAGUE_METADATA.F1.description,
-        image: LEAGUE_METADATA.F1.image,
         imageWebp: LEAGUE_METADATA.F1.imageWebp,
         entries: [
             { id: LEAGUE_ID_F1_PS_SIGNUP, platform: "PS", phase: "Sign Ups" },
@@ -45,22 +43,20 @@ const rawLeagues: RawHomepageLeague[] = [
         id: "gt",
         title: "GT7",
         description: LEAGUE_METADATA.GT.description,
-        image: LEAGUE_METADATA.GT.image,
         imageWebp: LEAGUE_METADATA.GT.imageWebp,
         entries: [
             { id: LEAGUE_ID_GT_SIGNUP, platform: "PS" },
         ],
     },
-    {
+    /* {
         id: "e-series",
         title: "E-Series",
         description: LEAGUE_METADATA["E-Series"].description,
-        image: LEAGUE_METADATA["E-Series"].image,
         imageWebp: LEAGUE_METADATA["E-Series"].imageWebp,
         entries: [
             { id: LEAGUE_ID_ESERIES_SIGNUP, platform: "PC" },
         ],
-    },
+    }, */
 ];
 
 export const HOMEPAGE_LEAGUES = rawLeagues

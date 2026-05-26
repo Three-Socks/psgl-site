@@ -21,19 +21,14 @@
                     <!-- Image Container (16:9) -->
                     <div class="relative aspect-video w-full overflow-hidden">
                         <div class="absolute inset-0 z-10"></div>
-                        <picture>
-                            {#if league.imageWebp}
-                                <source srcset={league.imageWebp} type="image/webp" />
-                            {/if}
-                            {#if league.image}
-                                <img
-                                    src={league.image}
-                                    alt={league.title}
-                                    class="h-full w-full object-cover"
-                                    loading="lazy"
-                                />
-                            {/if}
-                        </picture>
+                        {#if league.imageWebp}
+                            <img
+                                src={league.imageWebp}
+                                alt={league.title}
+                                class="h-full w-full object-cover"
+                                loading="lazy"
+                            />
+                        {/if}
                     </div>
 
                     <!-- Content -->

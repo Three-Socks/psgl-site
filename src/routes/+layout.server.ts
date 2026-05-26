@@ -133,7 +133,6 @@ export const load = async () => {
             id: league.id,
             title: league.title,
             description: league.description,
-            image: league.image,
             imageWebp: league.imageWebp,
             entries,
         });

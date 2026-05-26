@@ -41,17 +41,14 @@ export const SOCIAL_LINKS = [
 export const LEAGUE_METADATA = {
     F1: {
         description: "Join the world's largest F1 league. With tiers for every skill level on PC & PlayStation.",
-        image: "/leagues/f125.jpg",
         imageWebp: "/leagues/f125.webp"
     },
     GT: {
         description: "Experience competitive Gran Turismo 7 racing.",
-        image: "/leagues/gt7.jpg",
         imageWebp: "/leagues/gt7.webp"
     },
     "E-Series": {
         description: "E-Series is a PC team event bringing the biggest and best organisations together.",
-        image: "/leagues/e-series-s6.jpg",
         imageWebp: "/leagues/e-series-s6.webp"
     }
 };

@@ -13,7 +13,6 @@ export interface HomepageLeagueCard {
     title: string;
     description: string;
     imageWebp?: string;
-    image?: string;
     entries: HomepageLeagueEntry[];
 }
 
