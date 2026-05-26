@@ -1,13 +1,17 @@
 import { createDirectus, rest, authentication, readItems, readSingleton, isDirectusError } from "@directus/sdk";
-import { DIRECTUS_URL, DIRECTUS_STATIC_TOKEN } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import type { SiteStats } from "$lib/types";
 
-export const directus = createDirectus(DIRECTUS_URL)
+if (!env.DIRECTUS_URL) {
+    throw new Error("DIRECTUS_URL is required.");
+}
+
+export const directus = createDirectus(env.DIRECTUS_URL)
     .with(rest())
     .with(authentication());
 
-if (DIRECTUS_STATIC_TOKEN) {
-    directus.setToken(DIRECTUS_STATIC_TOKEN);
+if (env.DIRECTUS_STATIC_TOKEN) {
+    directus.setToken(env.DIRECTUS_STATIC_TOKEN);
 }
 
 export const getAllCalendars = async () => {

@@ -13,9 +13,9 @@
     <div class="mx-auto max-w-7xl px-4">
         <SectionHeader title="Our" highlight="Leagues" />
 
-        <div class="mt-16 grid gap-8 md:grid-cols-3">
+        <div class="mt-16 flex flex-wrap justify-center gap-8">
             {#each leagues as league (league.id)}
-                <div class="hover:border-psgl-blue group relative flex flex-col overflow-hidden border border-transparent bg-gray-900/30 transition-all duration-500 hover:bg-gray-900">
+                <div class="hover:border-psgl-blue group relative flex w-full max-w-sm flex-col overflow-hidden border border-transparent bg-gray-900/30 transition-all duration-500 hover:bg-gray-900">
                     <DecorativeCorners zIndex="z-30" />
 
                     <!-- Image Container (16:9) -->
