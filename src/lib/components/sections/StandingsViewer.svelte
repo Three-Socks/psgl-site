@@ -82,7 +82,7 @@
     };
 
     const buildImageUrl = (tierName: string, view: ViewType) =>
-        `${STANDINGS_IMAGE_BASE_URL}/${tierSlug(tierName)}-${viewSuffix[view]}.png`;
+        `${STANDINGS_IMAGE_BASE_URL}/${tierSlug(tierName)}-${viewSuffix[view]}.webp`;
 
 
     let filteredTiers = $derived(
