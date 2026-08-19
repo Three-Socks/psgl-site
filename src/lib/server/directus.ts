@@ -17,7 +17,26 @@ if (env.DIRECTUS_STATIC_TOKEN) {
 export const getAllCalendars = async () => {
     try {
         const calendar_response = await directus.request(readItems("calendars", {
-            fields: ["name", "tiers.tiers_id.id", "tiers.tiers_id.name", "tiers.tiers_id.time", "tiers.tiers_id.comm_confirm", "rounds"],
+            fields: [
+                "name",
+                "tiers.tiers_id.id",
+                "tiers.tiers_id.name",
+                "tiers.tiers_id.time",
+                "tiers.tiers_id.comm_confirm",
+                "calendar_rounds.id",
+                "calendar_rounds.sort",
+                "calendar_rounds.number",
+                "calendar_rounds.name",
+                "calendar_rounds.short_name",
+                "calendar_rounds.flag",
+                "calendar_rounds.date",
+                "calendar_rounds.time",
+                "calendar_rounds.preseason",
+                "calendar_rounds.schedule_date",
+                "calendar_rounds.overrides.id",
+                "calendar_rounds.overrides.tier",
+                "calendar_rounds.overrides.scheduled_at",
+            ],
             filter: {
                 "_or": [
                     { archived: { _eq: false } },

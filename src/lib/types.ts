@@ -54,14 +54,26 @@ export interface Affiliate {
 }
 
 export interface RaceRound {
+    id: string;
+    sort: number;
     date: string;
     flag: string;
     name: string;
     number: string;
-    race_confirm_sent?: boolean;
-    schedule_date?: string;
+    time?: string | null;
+    preseason?: boolean;
+    schedule_date?: string | null;
     short_name?: string;
-    countryCode?: string;
+    overrides?: RaceRoundOverride[];
+}
+
+export interface RaceRoundOverride {
+    id: string;
+    tier: string | {
+        id: string;
+        name?: string;
+    };
+    scheduled_at: string;
 }
 
 export interface NextRace {
@@ -83,6 +95,7 @@ export interface CalendarData {
     name: string;
     tiers: CalendarTier[];
     rounds: RaceRound[];
+    calendar_rounds?: RaceRound[];
 }
 
 export interface SiteStats {

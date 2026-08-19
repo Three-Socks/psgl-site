@@ -158,7 +158,7 @@ export const load = async () => {
         processedCalendars[calendarSlugId] = {
             name: calendar.name,
             tiers: validTiers,
-            rounds: calendar.rounds ?? []
+            rounds: [...(calendar.calendar_rounds ?? [])].sort((a, b) => a.sort - b.sort)
         };
     }
 

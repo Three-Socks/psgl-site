@@ -9,6 +9,7 @@
     import { resolve } from "$app/paths";
     import type { CalendarData, NextRace } from "$lib/types";
     import { DEFAULT_TIMEZONE } from "$lib/constants";
+    import { resolveRaceDate } from "$lib/race-date";
 
     let { calendars, nextRaceTierNames } = $props<{
         calendars: Record<string, CalendarData>;
@@ -33,14 +34,18 @@
 
             for (const calendar of calendarEntries) {
                 const targetTier = calendar.tiers.find((t) => t.tiers_id.name.trim().toLowerCase() === normalizedTierName);
-                if (!targetTier || !targetTier.tiers_id.time) continue;
+                if (!targetTier) continue;
 
                 const tierRounds = calendar.rounds
                     .map((round) => {
-                        const dateTimeStr = `${round.date}T${targetTier.tiers_id.time}`;
-                        const dateObj = new Date(dateTimeStr);
+                        const dateObj = resolveRaceDate(round, targetTier.tiers_id);
+                        if (!dateObj) return null;
+
                         const trackName = round.name.split(" - ")[1] || round.name;
-                        const roundYear = Number(round.date.split("-")[0]);
+                        const roundYear = Number(new Intl.DateTimeFormat("en-GB", {
+                            timeZone: DEFAULT_TIMEZONE,
+                            year: "numeric"
+                        }).format(dateObj));
                         const currentYear = new Date().getFullYear();
                         const formatOptions: Intl.DateTimeFormatOptions = {
                             weekday: "long",
@@ -58,12 +63,13 @@
                             tier: targetTier.tiers_id.name,
                             round: `Round ${round.number}`,
                             track: trackName,
-                            date: dateTimeStr,
+                            date: dateObj.toISOString(),
                             dateText,
                             flag: round.flag,
                             timestamp: dateObj.getTime()
                         };
                     })
+                    .filter((race): race is NextRace => Boolean(race))
                     // Keep races that started up to 1 hour 30 mins ago
                     .filter(({ timestamp }) => timestamp + 1.5 * 60 * 60 * 1000 > Date.now());
 
