@@ -43,7 +43,6 @@ export const getAllCalendars = async () => {
                     { archived: { _null: true } },
                 ]
             },
-            sort: "-name",
             limit: -1,
         }));
 
