@@ -5,7 +5,7 @@ import {
     LEAGUE_ID_F1_PS_MID_SIGNUP,
     LEAGUE_ID_F1_PS_SIGNUP,
     LEAGUE_ID_GT_SIGNUP,
-    // LEAGUE_ID_ESERIES_SIGNUP,
+    LEAGUE_ID_ESERIES_SIGNUP,
 } from "$env/static/private";
 
 interface RawLeagueEntry {
@@ -48,7 +48,7 @@ const rawLeagues: RawHomepageLeague[] = [
             { id: LEAGUE_ID_GT_SIGNUP, platform: "PS" },
         ],
     },
-    /* {
+    {
         id: "e-series",
         title: "E-Series",
         description: LEAGUE_METADATA["E-Series"].description,
@@ -56,7 +56,7 @@ const rawLeagues: RawHomepageLeague[] = [
         entries: [
             { id: LEAGUE_ID_ESERIES_SIGNUP, platform: "PC" },
         ],
-    }, */
+    },
 ];
 
 export const HOMEPAGE_LEAGUES = rawLeagues

@@ -49,7 +49,7 @@ export const LEAGUE_METADATA = {
     },
     "E-Series": {
         description: "E-Series is a PC team event bringing the biggest and best organisations together.",
-        imageWebp: "/leagues/e-series-s6.webp"
+        imageWebp: "/leagues/e-series-logo.png"
     }
 };
 

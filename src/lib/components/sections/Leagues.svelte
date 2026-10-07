@@ -19,13 +19,13 @@
                     <DecorativeCorners zIndex="z-30" />
 
                     <!-- Image Container (16:9) -->
-                    <div class="relative aspect-video w-full overflow-hidden">
+                    <div class="relative aspect-video w-full overflow-hidden" class:bg-[#0e1420]={league.id === "e-series"}>
                         <div class="absolute inset-0 z-10"></div>
                         {#if league.imageWebp}
                             <img
                                 src={league.imageWebp}
                                 alt={league.title}
-                                class="h-full w-full object-cover"
+                                class={league.id === "e-series" ? "h-full w-full object-contain p-8" : "h-full w-full object-cover"}
                                 loading="lazy"
                             />
                         {/if}
