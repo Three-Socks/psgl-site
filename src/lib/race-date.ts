@@ -1,5 +1,5 @@
-import { DEFAULT_TIMEZONE } from "$lib/constants";
-import type { RaceRound, Tier } from "$lib/types";
+import { DEFAULT_TIMEZONE } from "#lib/constants.ts";
+import type { RaceRound, Tier } from "#lib/types.ts";
 
 const timezoneFormatter = new Intl.DateTimeFormat("en-GB", {
     timeZone: DEFAULT_TIMEZONE,

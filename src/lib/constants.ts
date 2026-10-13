@@ -7,7 +7,7 @@ import SiTiktok from "@icons-pack/svelte-simple-icons/icons/SiTiktok";
 import SiTwitch from "@icons-pack/svelte-simple-icons/icons/SiTwitch";
 import SiX from "@icons-pack/svelte-simple-icons/icons/SiX";
 import SiYoutube from "@icons-pack/svelte-simple-icons/icons/SiYoutube";
-import SimRacingSetup from "$lib/assets/psgl-x-simracingsetup-360.png";
+import SimRacingSetup from "#lib/assets/psgl-x-simracingsetup-360.png";
 import { resolve } from "$app/paths";
 
 export const SITE_URL = "https://www.premiersimgl.com";
@@ -19,8 +19,8 @@ export const NAV_LINKS = [
 ] as const;
 
 export const FOOTER_LINKS = [
-    { name: "Terms", href: resolve("/page/terms") },
-    { name: "Privacy", href: resolve("/page/privacy") },
+    { name: "Terms", href: resolve("/page/[slug]", { slug: "terms" }) },
+    { name: "Privacy", href: resolve("/page/[slug]", { slug: "privacy" }) },
     { name: "Source", href: "https://github.com/Three-Socks/psgl-site/", external: true },
     { name: "Deploys by Vercel", href: "https://vercel.com", external: true }
 ];

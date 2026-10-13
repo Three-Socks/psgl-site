@@ -2,8 +2,8 @@
     import Trophy from "@lucide/svelte/icons/trophy";
     import Layers from "@lucide/svelte/icons/layers";
     import Users from "@lucide/svelte/icons/users";
-    import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
-    import type { SiteStats } from "$lib/types";
+    import RealCarbonFibre from "#lib/assets/real-carbon-fibre.png";
+    import type { SiteStats } from "#lib/types.ts";
 
     const { stats }: { stats: SiteStats | null } = $props();
 

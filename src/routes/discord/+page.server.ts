@@ -1,6 +1,6 @@
-import { DISCORD_LINK } from "$lib/constants";
+import { DISCORD_LINK } from "#lib/constants.ts";
 import { redirect } from "@sveltejs/kit";
 
 export const load = () => {
-    throw redirect(302, DISCORD_LINK);
+    redirect(302, DISCORD_LINK, { external: true });
 };

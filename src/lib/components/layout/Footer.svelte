@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { FOOTER_LINKS } from "$lib/constants";
-    import Affiliates from "$lib/components/sections/Affiliates.svelte";
-    import logo from "$lib/assets/psgl-logo-125.png";
+    import { FOOTER_LINKS } from "#lib/constants.ts";
+    import Affiliates from "#lib/components/sections/Affiliates.svelte";
+    import logo from "#lib/assets/psgl-logo-125.png";
     import { resolve } from "$app/paths";
     const currentYear = new Date().getFullYear();
 

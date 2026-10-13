@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { PARTNERS, AFFILIATE_LINKS } from "$lib/constants";
-    import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
-    import AffiliateCard from "$lib/components/ui/AffiliateCard.svelte";
+    import { PARTNERS, AFFILIATE_LINKS } from "#lib/constants.ts";
+    import SectionHeader from "#lib/components/layout/SectionHeader.svelte";
+    import AffiliateCard from "#lib/components/ui/AffiliateCard.svelte";
 
     const partnerHighlight = PARTNERS.length > 1 ? "Partners" : "Partner";
 </script>

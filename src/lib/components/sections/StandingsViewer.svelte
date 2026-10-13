@@ -1,12 +1,12 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { browser } from "$app/environment";
+    import { browser } from "$app/env";
     import CircleAlert from "@lucide/svelte/icons/circle-alert";
-    import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
+    import SectionHeader from "#lib/components/layout/SectionHeader.svelte";
     import StandingsControls from "../ui/StandingsControls.svelte";
-    import { Platform, ViewType } from "$lib/types";
-    import { STANDINGS_IMAGE_BASE_URL } from "$lib/constants";
-    import type { Tier } from "$lib/types";
+    import { Platform, ViewType } from "#lib/types.ts";
+    import { STANDINGS_IMAGE_BASE_URL } from "#lib/constants.ts";
+    import type { Tier } from "#lib/types.ts";
 
     let { tiers, currentSeason } = $props<{ tiers: Tier[], currentSeason: string }>();
 

@@ -1,4 +1,4 @@
-import { LEAGUE_METADATA } from "$lib/constants";
+import { LEAGUE_METADATA } from "#lib/constants.ts";
 import {
     LEAGUE_ID_F1_PC_MID_SIGNUP,
     LEAGUE_ID_F1_PC_SIGNUP,
@@ -6,7 +6,7 @@ import {
     LEAGUE_ID_F1_PS_SIGNUP,
     LEAGUE_ID_GT_SIGNUP,
     LEAGUE_ID_ESERIES_SIGNUP,
-} from "$env/static/private";
+} from "$app/env/private";
 
 interface RawLeagueEntry {
     id?: string;

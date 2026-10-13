@@ -1,7 +1,7 @@
 <script lang="ts">
-    import StandingsViewer from "$lib/components/sections/StandingsViewer.svelte";
-    import PageShell from "$lib/components/layout/PageShell.svelte";
-    import PageSection from "$lib/components/layout/PageSection.svelte";
+    import StandingsViewer from "#lib/components/sections/StandingsViewer.svelte";
+    import PageShell from "#lib/components/layout/PageShell.svelte";
+    import PageSection from "#lib/components/layout/PageSection.svelte";
 
     let { data } = $props();
 </script>

@@ -4,12 +4,12 @@
     import Trophy from "@lucide/svelte/icons/trophy";
     import ArrowRight from "@lucide/svelte/icons/arrow-right";
     import SiDiscord from "@icons-pack/svelte-simple-icons/icons/SiDiscord";
-    import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
+    import RealCarbonFibre from "#lib/assets/real-carbon-fibre.png";
     import { onMount } from "svelte";
     import { resolve } from "$app/paths";
-    import type { CalendarData, NextRace } from "$lib/types";
-    import { DEFAULT_TIMEZONE } from "$lib/constants";
-    import { resolveRaceDate } from "$lib/race-date";
+    import type { CalendarData, NextRace } from "#lib/types.ts";
+    import { DEFAULT_TIMEZONE } from "#lib/constants.ts";
+    import { resolveRaceDate } from "#lib/race-date.ts";
 
     let { calendars, nextRaceTierNames } = $props<{
         calendars: Record<string, CalendarData>;

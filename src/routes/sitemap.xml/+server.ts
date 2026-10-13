@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { SITE_URL, NAV_LINKS } from "$lib/constants";
+import { SITE_URL, NAV_LINKS } from "#lib/constants.ts";
 
 export const prerender = true;
 

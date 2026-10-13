@@ -1,6 +1,6 @@
 <script lang="ts">
-	import PageShell from "$lib/components/layout/PageShell.svelte";
-	import PageSection from "$lib/components/layout/PageSection.svelte";
+	import PageShell from "#lib/components/layout/PageShell.svelte";
+	import PageSection from "#lib/components/layout/PageSection.svelte";
 
 let { data } = $props();
 

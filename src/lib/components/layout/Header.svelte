@@ -1,9 +1,9 @@
 <script lang="ts">
     import { page } from "$app/state";
-    import { NAV_LINKS, SOCIAL_LINKS } from "$lib/constants";
-    import SocialIcon from "$lib/components/ui/SocialIcon.svelte";
-    import logo from "$lib/assets/psgl-logo-125.png";
-    import RealCarbonFibre from "$lib/assets/real-carbon-fibre.png";
+    import { NAV_LINKS, SOCIAL_LINKS } from "#lib/constants.ts";
+    import SocialIcon from "#lib/components/ui/SocialIcon.svelte";
+    import logo from "#lib/assets/psgl-logo-125.png";
+    import RealCarbonFibre from "#lib/assets/real-carbon-fibre.png";
     import Menu from "@lucide/svelte/icons/menu";
     import X from "@lucide/svelte/icons/x";
     import { resolve } from "$app/paths";

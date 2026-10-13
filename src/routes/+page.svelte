@@ -1,8 +1,8 @@
 <script>
-    import Hero from "$lib/components/sections/Hero.svelte";
-    import Stats from "$lib/components/sections/Stats.svelte";
-    import Leagues from "$lib/components/sections/Leagues.svelte";
-    import PageShell from "$lib/components/layout/PageShell.svelte";
+    import Hero from "#lib/components/sections/Hero.svelte";
+    import Stats from "#lib/components/sections/Stats.svelte";
+    import Leagues from "#lib/components/sections/Leagues.svelte";
+    import PageShell from "#lib/components/layout/PageShell.svelte";
 
     let { data } = $props();
 </script>

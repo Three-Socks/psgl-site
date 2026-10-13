@@ -1,6 +1,6 @@
 import { createDirectus, rest, authentication, readItems, readSingleton, isDirectusError } from "@directus/sdk";
-import { env } from "$env/dynamic/private";
-import type { SiteStats } from "$lib/types";
+import * as env from "$app/env/private";
+import type { SiteStats } from "#lib/types.ts";
 
 if (!env.DIRECTUS_URL) {
     throw new Error("DIRECTUS_URL is required.");

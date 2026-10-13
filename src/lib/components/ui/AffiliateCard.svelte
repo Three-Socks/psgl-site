@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type { Affiliate } from "$lib/types";
+    import type { Affiliate } from "#lib/types.ts";
     import ExternalLink from "@lucide/svelte/icons/external-link";
     import Copy from "@lucide/svelte/icons/copy";
     import Check from "@lucide/svelte/icons/check";
-    import DecorativeCorners from "$lib/components/ui/DecorativeCorners.svelte";
+    import DecorativeCorners from "#lib/components/ui/DecorativeCorners.svelte";
 
     export let item: Affiliate;
     export let widthClass = "sm:w-90";

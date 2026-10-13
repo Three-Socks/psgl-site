@@ -1,10 +1,10 @@
-import { getAllCalendars, getAllTiers, getLeaguesByIds, getLeagueSeasonByGameId, getSiteStats } from "$lib/server/directus";
-import { SEASON_GAME_ID, NEXT_FEATURED_RACE_TIER_NAMES } from "$env/static/private";
-import type { CalendarData, Tier, CalendarTier, League, HomepageLeagueCard, HomepageLeagueEntry, SiteStats } from "$lib/types";
+import { getAllCalendars, getAllTiers, getLeaguesByIds, getLeagueSeasonByGameId, getSiteStats } from "#lib/server/directus.ts";
+import { SEASON_GAME_ID, NEXT_FEATURED_RACE_TIER_NAMES } from "$app/env/private";
+import type { CalendarData, Tier, CalendarTier, League, HomepageLeagueCard, HomepageLeagueEntry, SiteStats } from "#lib/types.ts";
 import { error } from "@sveltejs/kit";
-import { building } from "$app/environment";
-import { DEFAULT_TIMEZONE } from "$lib/constants";
-import { HOMEPAGE_LEAGUES, HOMEPAGE_LEAGUE_IDS } from "$lib/server/league-groups";
+import { building } from "$app/env";
+import { DEFAULT_TIMEZONE } from "#lib/constants.ts";
+import { HOMEPAGE_LEAGUES, HOMEPAGE_LEAGUE_IDS } from "#lib/server/league-groups.ts";
 
 export const prerender = true;
 

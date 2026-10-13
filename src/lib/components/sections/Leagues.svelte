@@ -1,9 +1,9 @@
 
 <script lang="ts">
-    import type { HomepageLeagueCard } from "$lib/types";
+    import type { HomepageLeagueCard } from "#lib/types.ts";
     import SiDiscord from "@icons-pack/svelte-simple-icons/icons/SiDiscord";
-    import SectionHeader from "$lib/components/layout/SectionHeader.svelte";
-    import DecorativeCorners from "$lib/components/ui/DecorativeCorners.svelte";
+    import SectionHeader from "#lib/components/layout/SectionHeader.svelte";
+    import DecorativeCorners from "#lib/components/ui/DecorativeCorners.svelte";
     import { resolve } from "$app/paths";
 
     let { leagues = [] }: { leagues: HomepageLeagueCard[] } = $props();

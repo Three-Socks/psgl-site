@@ -5,8 +5,8 @@
     import Trophy from "@lucide/svelte/icons/trophy";
     import Users from "@lucide/svelte/icons/users";
     import Flag from "@lucide/svelte/icons/flag";
-    import { Platform, ViewType } from "$lib/types";
-    import type { Tier } from "$lib/types";
+    import { Platform, ViewType } from "#lib/types.ts";
+    import type { Tier } from "#lib/types.ts";
 
     let {
         selectedPlatform = $bindable(),
