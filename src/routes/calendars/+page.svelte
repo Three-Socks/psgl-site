@@ -6,13 +6,14 @@
     import PageShell from "#lib/components/layout/PageShell.svelte";
     import PageSection from "#lib/components/layout/PageSection.svelte";
     import SectionHeader from "#lib/components/layout/SectionHeader.svelte";
-    import type { CalendarData } from "#lib/types.ts";
+    import type { CalendarData, RaceRound } from "#lib/types.ts";
     import { SvelteMap } from "svelte/reactivity";
     import type { PageProps } from "./$types";
+    import { DEFAULT_TIMEZONE } from "#lib/constants.ts";
+    import { getUKDateKey, resolveRaceDate } from "#lib/race-date.ts";
 
     let { data }: PageProps = $props();
     let calendars = $derived(data.calendars as Record<string, CalendarData>);
-    let timeZoneName = $derived(data.timeZoneName);
     let currentSeason = $derived(data.currentSeason);
 
     let activeCalendarSlugId = $state("");
@@ -23,18 +24,60 @@
     );
     let activeCalendar = $derived(calendars[resolvedActiveCalendarSlugId] as CalendarData);
     let activeRounds = $derived(activeCalendar?.rounds ?? []);
-    let activeRoundIndex = $state(-1);
+    let now = $state(new Date());
+    let today = $derived(getUKDateKey(now));
+
+    const getRoundSchedules = (round: RaceRound) => (activeCalendar?.tiers ?? [])
+        .map(({ tiers_id: tier }) => ({ tier, date: resolveRaceDate(round, tier) }))
+        .filter((schedule): schedule is { tier: CalendarData["tiers"][number]["tiers_id"]; date: Date } => schedule.date !== null);
+
+    let roundSchedules = $derived(activeRounds.map((round) => {
+        const schedules = getRoundSchedules(round);
+        const baseDate = resolveRaceDate({ ...round, overrides: [] }, { id: "", time: "12:00:00" });
+        const dates = schedules.length ? schedules.map(({ date }) => date) : baseDate ? [baseDate] : [];
+        const sameDay = dates.every((date) => getUKDateKey(date) === getUKDateKey(dates[0]));
+        const displayDate = sameDay ? dates[0] : baseDate;
+        return { round, schedules, dates, displayDate };
+    }));
+
+    let activeRoundIndex = $derived.by(() => {
+        let index = -1;
+        let nearest = Infinity;
+        roundSchedules.forEach(({ dates }, i) => {
+            const upcoming = dates.filter((date) => getUKDateKey(date) >= today);
+            const timestamp = Math.min(...upcoming.map((date) => date.getTime()));
+            if (timestamp < nearest) {
+                nearest = timestamp;
+                index = i;
+            }
+        });
+        return index;
+    });
+
+    let referenceRound = $derived(activeRounds[activeRoundIndex] ?? activeRounds.at(-1));
+
+    const formatRaceTime = (date: Date) => date.toLocaleTimeString("en-GB", {
+        timeZone: DEFAULT_TIMEZONE, hour: "numeric", minute: "2-digit", hour12: true,
+    });
+
+    const raceTimeZone = (date: Date) => new Intl.DateTimeFormat("en-GB", {
+        timeZone: DEFAULT_TIMEZONE, timeZoneName: "short",
+    }).formatToParts(date).find((part) => part.type === "timeZoneName")?.value ?? "UK";
 
     const tiersByTime = (tiers: CalendarData["tiers"]) => {
         const timeMap = new SvelteMap<string, typeof tiers>();
         tiers.forEach((tierData) => {
-            const time = tierData.tiers_id.time;
+            const date = referenceRound ? resolveRaceDate(referenceRound, tierData.tiers_id) : null;
+            const time = date ? date.toISOString() : tierData.tiers_id.time;
             if (time) {
                 timeMap.set(time, [...(timeMap.get(time) ?? []), tierData]);
             }
         });
         return Array.from(timeMap.entries())
-            .map(([time, groupedTiers]) => ({ time, tiers: groupedTiers }))
+            .map(([time, groupedTiers]) => {
+                const date = referenceRound ? resolveRaceDate(referenceRound, groupedTiers[0].tiers_id) : null;
+                return { time, tiers: groupedTiers, date };
+            })
             .sort((a, b) => a.time.localeCompare(b.time, undefined, { numeric: true, sensitivity: "base" }));
     };
 
@@ -88,21 +131,16 @@
 
     const setActiveCalendar = (slugId: string) => {
         activeCalendarSlugId = slugId;
-        updateActiveRound();
-    };
-
-    const updateActiveRound = () => {
-        const todayIso = new Date().toISOString().split("T")[0];
-        const upcomingIndex = activeRounds.findIndex((round) => round.date >= todayIso);
-        activeRoundIndex = upcomingIndex;
     };
 
     onMount(() => {
         applyCalendarFromUrl();
-        updateActiveRound();
         activeCalendarSlugId = resolvedActiveCalendarSlugId;
         hasSyncedCalendarFromUrl = true;
         updateCalendarQueryParams(resolvedActiveCalendarSlugId);
+        now = new Date();
+        const interval = setInterval(() => (now = new Date()), 60_000);
+        return () => clearInterval(interval);
     });
 
     $effect(() => {
@@ -113,23 +151,24 @@
         updateCalendarQueryParams(resolvedActiveCalendarSlugId);
     });
 
-    const formatDate = (dateStr: string) => {
-        const date = new Date(dateStr);
-        const year = Number(dateStr.split("-")[0]);
-        const currentYear = new Date().getFullYear();
-        return date.toLocaleDateString("en-GB", {
-            day: "numeric",
-            month: "short",
-            ...(year > currentYear ? { year: "numeric" } : {})
-        });
-    };
+    const formatDate = (date: Date) => date.toLocaleDateString("en-GB", {
+        timeZone: DEFAULT_TIMEZONE,
+        day: "numeric",
+        month: "short",
+        ...(getUKDateKey(date).slice(0, 4) !== today.slice(0, 4) ? { year: "numeric" } : {}),
+    });
+
+    const getRescheduledTiers = (round: RaceRound) => getRoundSchedules(round).filter(({ tier, date }) => {
+        const original = resolveRaceDate({ ...round, overrides: [] }, tier);
+        return original?.getTime() !== date.getTime();
+    });
 
     const getFlagUrl = (code: string) => `https://flagcdn.com/${code}.svg`;
 </script>
 
 <svelte:head>
     <title>PSGL | Calendars</title>
-    <meta name="description" content="League Calendars." />
+    <meta name="description" content={`${currentSeason} league race calendars and tier start times.`} />
 </svelte:head>
 
 <PageShell>
@@ -142,7 +181,8 @@
                 {#each Object.entries(calendars) as [calSlugId, cal] (calSlugId)}
                     <button
                         class="psgl-button group relative flex-1 min-w-40 max-w-60 px-6 py-4"
-                        class:psgl-button-active={activeCalendarSlugId === calSlugId}
+                        class:psgl-button-active={resolvedActiveCalendarSlugId === calSlugId}
+                        aria-pressed={resolvedActiveCalendarSlugId === calSlugId}
                         onclick={() => setActiveCalendar(calSlugId)}
                     >
                         <div class="flex items-center justify-center gap-3">
@@ -168,7 +208,7 @@
                 </div>
 
                 <div class="grid gap-4">
-                    {#each activeRounds as round, i (round.number)}
+                    {#each roundSchedules as { round, dates, displayDate }, i (round.id)}
                         <div class={`group relative overflow-hidden border border-white/10 transition-all duration-300
                             ${activeRoundIndex === i
                             ? "bg-[#111116] border-psgl-blue/50 hover:border-psgl-blue shadow-lg"
@@ -214,7 +254,7 @@
                                     <div class="shrink-0">
                                         <div class="inline-flex items-center gap-2 px-4 py-2 bg-psgl-blue text-white text-xs font-bold uppercase tracking-widest">
                                             <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                                            {round.date === new Date().toISOString().split("T")[0] ? "Race Day" : "Next Race"}
+                                            {dates.some((date) => getUKDateKey(date) === today) ? "Race Day" : "Next Race"}
                                         </div>
                                     </div>
                                 {/if}
@@ -224,11 +264,16 @@
                                     <div class="flex flex-col items-center sm:items-end gap-1">
                                         <div class="flex items-center gap-2 text-psgl-blue font-bold text-lg uppercase">
                                             <Calendar class="w-4 h-4" />
-                                            {formatDate(round.date)}
+                                            {displayDate ? formatDate(displayDate) : "Date to be confirmed"}
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            {#each getRescheduledTiers(round) as { tier, date } (tier.id)}
+                                <p class="px-4 pb-4 text-sm text-gray-300 md:px-6">
+                                    {tier.name} rescheduled: {formatDate(date)}, {formatRaceTime(date)} {raceTimeZone(date)}
+                                </p>
+                            {/each}
                         </div>
                     {/each}
                 </div>
@@ -250,6 +295,9 @@
                         </div>
                     </div>
 
+                    {#if referenceRound}
+                        <p class="mb-4 text-sm text-gray-400">Start times for round {referenceRound.number}</p>
+                    {/if}
                     <!-- Tiers Grid -->
                     <div class="bg-psgl-card border border-white/10 p-6 md:p-8 shadow-lg">
                         <div class="space-y-8">
@@ -258,10 +306,10 @@
                                     <div class="flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
                                         <div class="w-32 shrink-0 flex flex-col gap-1">
                                             <div class="text-3xl font-black text-white leading-none">
-                                                {formatTime(block.time)}
+                                                {block.date ? formatRaceTime(block.date) : formatTime(block.time)}
                                             </div>
                                             <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">
-                                                {timeZoneName}
+                                                {block.date ? `${formatDate(block.date)} · ${raceTimeZone(block.date)}` : "UK time (GMT/BST)"}
                                             </div>
                                         </div>
 

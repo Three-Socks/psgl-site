@@ -8,7 +8,15 @@
     import X from "@lucide/svelte/icons/x";
     import { resolve } from "$app/paths";
 
-    let isMenuOpen = false;
+    let isMenuOpen = $state(false);
+    let menuButton: HTMLButtonElement | undefined = $state();
+
+    function handleMenuKeydown(event: KeyboardEvent) {
+        if (event.key === "Escape" && isMenuOpen) {
+            isMenuOpen = false;
+            menuButton?.focus();
+        }
+    }
 
     function toggleMenu() {
         isMenuOpen = !isMenuOpen;
@@ -19,6 +27,8 @@
         return page.url.pathname.startsWith(href);
     }
 </script>
+
+<svelte:window onkeydown={handleMenuKeydown} />
 
 <header
     class="absolute top-0 left-0 right-0 z-50 flex flex-col border-b border-psgl-blue/70"
@@ -63,6 +73,7 @@
             {#each NAV_LINKS as link (link.href)}
                 <a
                     href={resolve(link.href)}
+                    aria-current={isActive(link.href) ? "page" : undefined}
                     class="text-sm font-bold uppercase tracking-widest transition-colors hover:text-white border-b-2 py-1 {isActive(link.href) ? "text-white border-psgl-blue" : "text-white/70 border-transparent"}"
                 >
                     {link.name}
@@ -80,7 +91,10 @@
         <button
             class="text-white lg:hidden"
             onclick={toggleMenu}
-            aria-label="Toggle menu"
+            bind:this={menuButton}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-navigation"
         >
             {#if isMenuOpen}
                 <X size={32} />
@@ -91,14 +105,14 @@
     </div>
 
     <!-- Mobile Menu Dropdown -->
-    {#if isMenuOpen}
-        <div class="flex flex-col gap-2 border-t border-white/10 bg-black/95 p-4 lg:hidden">
+        <div id="mobile-navigation" class="flex flex-col gap-2 border-t border-white/10 bg-black/95 p-4 lg:hidden" class:hidden={!isMenuOpen}>
             <nav class="flex flex-col">
                 {#each NAV_LINKS as link (link.href)}
                     <a
                         href={resolve(link.href)}
+                        aria-current={isActive(link.href) ? "page" : undefined}
                         class="text-xl font-bold uppercase tracking-widest text-center transition-colors py-5 border-b border-white/10 hover:text-white {isActive(link.href) ? "text-psgl-blue" : "text-white/70"}"
-                        onclick={toggleMenu}
+                        onclick={() => (isMenuOpen = false)}
                     >
                         {link.name}
                     </a>
@@ -111,6 +125,5 @@
                 {/each}
             </div>
         </div>
-    {/if}
 
 </header>

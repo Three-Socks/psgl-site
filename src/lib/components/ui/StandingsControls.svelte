@@ -24,7 +24,7 @@
 
     let isTierMenuOpen = $state(false);
     let menuRef: HTMLDivElement | undefined = $state();
-    let tierCloseTimeout: ReturnType<typeof setTimeout> | undefined = $state();
+    let tierButton: HTMLButtonElement | undefined = $state();
 
     function handleClickOutside(event: MouseEvent) {
         if (menuRef && !menuRef.contains(event.target as Node)) {
@@ -41,15 +41,16 @@
     const handleTierSelect = (id: string) => {
         selectedTierId = id;
 
-        if (tierCloseTimeout) clearTimeout(tierCloseTimeout);
-        tierCloseTimeout = setTimeout(() => {
-            isTierMenuOpen = false;
-        }, 160);
+        isTierMenuOpen = false;
+        tierButton?.focus();
     };
 
-    $effect(() => {
-        return () => tierCloseTimeout && clearTimeout(tierCloseTimeout);
-    });
+    function handleKeydown(event: KeyboardEvent) {
+        if (event.key === "Escape" && isTierMenuOpen) {
+            isTierMenuOpen = false;
+            tierButton?.focus();
+        }
+    }
 
     const getViewLabel = (type: ViewType) => {
         switch (type) {
@@ -65,11 +66,17 @@
     };
 </script>
 
+<svelte:window onkeydown={handleKeydown} />
+
 <div class="mt-6 flex w-full flex-col gap-4 md:flex-row">
     <!-- Platform Switcher -->
     <div class="flex w-full gap-1 md:w-auto">
         <button
-            onclick={() => (selectedPlatform = Platform.PC)}
+            onclick={() => {
+                selectedPlatform = Platform.PC;
+                isTierMenuOpen = false;
+            }}
+            aria-pressed={selectedPlatform === Platform.PC}
             class="psgl-button flex-1 px-6 py-3 md:flex-none md:text-base"
             class:psgl-button-active={selectedPlatform === Platform.PC}
         >
@@ -78,7 +85,11 @@
             </div>
         </button>
         <button
-            onclick={() => (selectedPlatform = Platform.CON)}
+            onclick={() => {
+                selectedPlatform = Platform.CON;
+                isTierMenuOpen = false;
+            }}
+            aria-pressed={selectedPlatform === Platform.CON}
             class="psgl-button flex-1 px-6 py-3 md:flex-none md:text-base"
             class:psgl-button-active={selectedPlatform === Platform.CON}
         >
@@ -92,6 +103,9 @@
     <div class="relative z-40 w-full md:w-64" bind:this={menuRef}>
         <button
             onclick={() => (isTierMenuOpen = !isTierMenuOpen)}
+            bind:this={tierButton}
+            aria-expanded={isTierMenuOpen}
+            aria-controls="standings-tier-options"
             class="psgl-button flex w-full items-center justify-between px-6 py-3 md:flex-none md:text-base"
         >
             <div class="flex flex-col items-start">
@@ -111,13 +125,17 @@
             </div>
         </button>
 
-        {#if isTierMenuOpen}
             <div
+                id="standings-tier-options"
+                role="group"
+                aria-label="Select tier"
+                class:hidden={!isTierMenuOpen}
                 class="psgl-button cursor-auto! hover:bg-gray-950! animate-in fade-in zoom-in-95 absolute top-full right-0 left-0 mt-2 grid origin-top grid-cols-2 gap-2 p-2 shadow-2xl duration-200"
             >
                 {#each filteredTiers as tier (tier.id)}
                     <button
                         onclick={() => handleTierSelect(tier.id)}
+                        aria-pressed={selectedTierId === tier.id}
                         class="psgl-dropdown group flex items-center justify-between px-3 py-2"
                         class:psgl-dropdown-active={selectedTierId === tier.id}
                     >
@@ -127,7 +145,6 @@
                     </button>
                 {/each}
             </div>
-        {/if}
     </div>
 </div>
 
@@ -136,6 +153,7 @@
     {#each [ViewType.DRIVERS, ViewType.CONSTRUCTORS, ViewType.RESULTS] as type (type)}
         <button
             onclick={() => (selectedView = type)}
+            aria-pressed={selectedView === type}
             class="psgl-button flex-1 min-w-0 py-3 md:py-4 {selectedView ===
             type
                 ? "psgl-button-active"

@@ -6,6 +6,19 @@ const timezoneFormatter = new Intl.DateTimeFormat("en-GB", {
     timeZoneName: "longOffset",
 });
 
+const dateKeyFormatter = new Intl.DateTimeFormat("en-GB", {
+    timeZone: DEFAULT_TIMEZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+});
+
+export const getUKDateKey = (date: Date): string => {
+    const parts = dateKeyFormatter.formatToParts(date);
+    const value = (type: string) => parts.find((part) => part.type === type)?.value;
+    return `${value("year")}-${value("month")}-${value("day")}`;
+};
+
 const parseUKDateTime = (date: string, time: string): Date | null => {
     const utcGuess = new Date(`${date}T${time}Z`);
     if (!Number.isFinite(utcGuess.getTime())) return null;

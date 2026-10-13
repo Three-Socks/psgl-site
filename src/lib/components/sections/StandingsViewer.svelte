@@ -13,6 +13,8 @@
     let selectedPlatform = $state<Platform>(Platform.PC);
     let selectedView = $state<ViewType>(ViewType.DRIVERS);
     let selectedTierId = $state("");
+    let imageState = $state<"loading" | "loaded" | "error">("loading");
+    let retryCount = $state(0);
 
     const viewParamMap: Record<string, ViewType> = {
         drivers: ViewType.DRIVERS,
@@ -106,6 +108,22 @@
         currentTier ? buildImageUrl(currentTier.name, selectedView) : undefined,
     );
 
+    let imageRequestUrl = $derived(currentImageUrl
+        ? `${currentImageUrl}${retryCount ? `?retry=${retryCount}` : ""}`
+        : undefined);
+
+    $effect(() => {
+        if (currentImageUrl) {
+            retryCount = 0;
+            imageState = "loading";
+        }
+    });
+
+    function retryImage() {
+        imageState = "loading";
+        retryCount += 1;
+    }
+
     $effect(() => {
         if (!hasSyncedFromUrl) return;
         updateStandingsQueryParams(currentTier, selectedView);
@@ -126,24 +144,41 @@
 
     <!-- IMAGE VIEWER -->
     <div
-        class="group relative w-fit mx-auto max-w-full overflow-hidden border border-white/10 bg-black"
+        class="group relative w-full mx-auto max-w-full overflow-hidden border border-white/10 bg-black"
+        aria-busy={currentTier && imageState === "loading"}
     >
         {#if currentTier && currentImageUrl}
-            <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-            <a href={currentImageUrl}>
-                <img
-                    src={currentImageUrl}
-                    alt={`${currentTier.name} - ${selectedView}`}
-                    class="block h-auto max-w-full mx-auto"
-                />
-            </a>
+            {#key imageRequestUrl}
+                <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+                <a href={currentImageUrl} class:hidden={imageState !== "loaded"}>
+                    <img
+                        src={imageRequestUrl}
+                        alt={`${currentTier.name} - ${selectedView}`}
+                        onload={() => (imageState = "loaded")}
+                        onerror={() => (imageState = "error")}
+                        class="block h-auto max-w-full mx-auto"
+                    />
+                </a>
+            {/key}
+            <div role="status" aria-live="polite">
+                {#if imageState === "loading"}
+                    <p class="p-12 text-center text-gray-300">Loading {currentTier.name} {selectedView.toLowerCase()}…</p>
+                {:else if imageState === "error"}
+                    <div class="flex min-h-64 flex-col items-center justify-center gap-4 p-8 text-center">
+                        <CircleAlert class="h-10 w-10 text-gray-400" />
+                        <p class="text-gray-300">These standings may not have been published yet, or could not be loaded.</p>
+                        <button class="psgl-button px-6 py-3" onclick={retryImage}>Try again</button>
+                    </div>
+                {/if}
+            </div>
         {:else}
             <div
-                class="flex h-full w-full flex-col items-center justify-center text-gray-600"
+                class="flex min-h-64 w-full flex-col items-center justify-center p-8 text-gray-400"
+                role="status"
             >
                 <CircleAlert class="mb-4 h-12 w-12" />
                 <p class="font-bold uppercase tracking-widest">
-                    No Data Available
+                    No tiers are available for this platform.
                 </p>
             </div>
         {/if}
