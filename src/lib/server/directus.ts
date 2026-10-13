@@ -46,10 +46,6 @@ export const getAllCalendars = async () => {
             limit: -1,
         }));
 
-        if (!calendar_response.length) {
-            throw new Error("No calendars found.");
-        }
-
         return calendar_response;
     } catch (e) {
         if (isDirectusError(e)) {
@@ -75,10 +71,6 @@ export const getAllTiers = async () => {
             sort: ["sort"],
             limit: -1,
         }));
-
-        if (!tiers_response.length) {
-            throw new Error("No tiers found.");
-        }
 
         return tiers_response;
     } catch (e) {
@@ -130,11 +122,7 @@ export const getLeagueSeasonByGameId = async (gameId: string) => {
             limit: 1,
         }));
 
-        if (!seasonLeague) {
-            throw new Error(`No league found for game ID: ${gameId}`);
-        }
-
-        return seasonLeague;
+        return seasonLeague ?? null;
     } catch (e) {
         if (isDirectusError(e)) {
             throw new Error(`Directus Error: ${e.message}`);

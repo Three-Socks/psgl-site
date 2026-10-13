@@ -168,165 +168,173 @@
 
 <svelte:head>
     <title>PSGL | Calendars</title>
-    <meta name="description" content={`${currentSeason} league race calendars and tier start times.`} />
+    <meta name="description" content={currentSeason
+        ? `${currentSeason} league race calendars and tier start times.`
+        : "League race calendars and tier start times."} />
 </svelte:head>
 
 <PageShell>
     <PageSection className="relative z-10">
         <SectionHeader title="League" subTitle={currentSeason} highlight="Calendar" align="left" />
 
-        <!-- Calendar Switcher (Top) -->
-        <div class="mt-8 flex justify-center mb-12">
-            <div class="flex flex-wrap justify-center gap-2 w-full max-w-5xl px-4">
-                {#each Object.entries(calendars) as [calSlugId, cal] (calSlugId)}
-                    <button
-                        class="psgl-button group relative flex-1 min-w-40 max-w-60 px-6 py-4"
-                        class:psgl-button-active={resolvedActiveCalendarSlugId === calSlugId}
-                        aria-pressed={resolvedActiveCalendarSlugId === calSlugId}
-                        onclick={() => setActiveCalendar(calSlugId)}
-                    >
-                        <div class="flex items-center justify-center gap-3">
-                            <span class="leading-none">{cal.name}</span>
-                        </div>
-                    </button>
-                {/each}
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-
-            <!-- Left Column: Rounds -->
-            <div class="lg:col-span-7 space-y-8 order-2 lg:order-1">
-                <div class="flex items-center gap-4 mb-8">
-                    <div class="bg-psgl-blue/20 p-3 border border-psgl-blue/50">
-                        <Calendar class="w-8 h-8 text-psgl-blue" />
-                    </div>
-                    <div>
-                        <h2 class="text-3xl font-bold uppercase tracking-wide">Rounds</h2>
-                        <p class="text-psgl-blue font-bold uppercase tracking-widest text-sm">{activeCalendar?.name ?? ""} Calendar</p>
-                    </div>
-                </div>
-
-                <div class="grid gap-4">
-                    {#each roundSchedules as { round, dates, displayDate }, i (round.id)}
-                        <div class={`group relative overflow-hidden border border-white/10 transition-all duration-300
-                            ${activeRoundIndex === i
-                            ? "bg-[#111116] border-psgl-blue/50 hover:border-psgl-blue shadow-lg"
-                            : "bg-psgl-card hover:bg-[#111116] hover:border-psgl-blue"}`}>
-
-                            <!-- Decorative corners -->
-                            {#if activeRoundIndex === i}
-                                <div class="absolute top-0 left-0 h-4 w-4 border-t border-l border-psgl-blue transition-opacity duration-500 group-hover:opacity-0"></div>
-                                <div class="absolute top-0 right-0 h-4 w-4 border-t border-r border-psgl-blue transition-opacity duration-500 group-hover:opacity-0"></div>
-                                <div class="absolute bottom-0 left-0 h-4 w-4 border-b border-l border-psgl-blue transition-opacity duration-500 group-hover:opacity-0"></div>
-                                <div class="absolute bottom-0 right-0 h-4 w-4 border-b border-r border-psgl-blue transition-opacity duration-500 group-hover:opacity-0"></div>
-                            {/if}
-
-                            <div class="relative p-4 md:p-6 flex flex-col sm:flex-row items-center gap-6">
-
-                                <!-- Round Number Box -->
-                                <div class={`shrink-0 flex flex-col items-center justify-center w-16 h-16 bg-black/60 border border-white/10 transition-colors ${activeRoundIndex === i ? "border-psgl-blue/50 group-hover:border-psgl-blue" : "group-hover:border-psgl-blue"}`}>
-                                    <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Round</span>
-                                    <span class="text-3xl font-black text-white leading-none">{round.number}</span>
-                                </div>
-
-                                <!-- Flag & Details -->
-                                <div class="grow text-center sm:text-left flex flex-col sm:flex-row items-center gap-6 w-full">
-                                    <img
-                                        src={getFlagUrl(round.flag)}
-                                        alt={round.flag}
-                                        class="w-16 h-10 object-cover shadow-lg border border-white/10"
-                                    />
-                                    <div class="grow relative w-full">
-                                        <div class="relative z-10">
-                                            <h3 class={`text-2xl font-black uppercase italic transition-colors ${activeRoundIndex === i ? "text-psgl-blue" : "text-white group-hover:text-psgl-blue"}`}>
-                                                {round.name.split(" - ")[0]}
-                                            </h3>
-                                            <p class="text-gray-400 text-xs font-bold uppercase tracking-[0.15em]">
-                                                {round.name.split(" - ")[1] || round.name}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Next Race Badge -->
-                                {#if activeRoundIndex === i}
-                                    <div class="shrink-0">
-                                        <div class="inline-flex items-center gap-2 px-4 py-2 bg-psgl-blue text-white text-xs font-bold uppercase tracking-widest">
-                                            <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                                            {dates.some((date) => getUKDateKey(date) === today) ? "Race Day" : "Next Race"}
-                                        </div>
-                                    </div>
-                                {/if}
-
-                                <!-- Date -->
-                                <div class="shrink-0 text-right min-w-[140px]">
-                                    <div class="flex flex-col items-center sm:items-end gap-1">
-                                        <div class="flex items-center gap-2 text-psgl-blue font-bold text-lg uppercase">
-                                            <Calendar class="w-4 h-4" />
-                                            {displayDate ? formatDate(displayDate) : "Date to be confirmed"}
-                                        </div>
-                                    </div>
-                                </div>
+        {#if !activeCalendar}
+            <p class="mt-8 border border-white/10 bg-psgl-card p-8 text-center text-gray-400" role="status">
+                No calendars are available yet.
+            </p>
+        {:else}
+            <!-- Calendar Switcher (Top) -->
+            <div class="mt-8 flex justify-center mb-12">
+                <div class="flex flex-wrap justify-center gap-2 w-full max-w-5xl px-4">
+                    {#each Object.entries(calendars) as [calSlugId, cal] (calSlugId)}
+                        <button
+                            class="psgl-button group relative flex-1 min-w-40 max-w-60 px-6 py-4"
+                            class:psgl-button-active={resolvedActiveCalendarSlugId === calSlugId}
+                            aria-pressed={resolvedActiveCalendarSlugId === calSlugId}
+                            onclick={() => setActiveCalendar(calSlugId)}
+                        >
+                            <div class="flex items-center justify-center gap-3">
+                                <span class="leading-none">{cal.name}</span>
                             </div>
-                            {#each getRescheduledTiers(round) as { tier, date } (tier.id)}
-                                <p class="px-4 pb-4 text-sm text-gray-300 md:px-6">
-                                    {tier.name} rescheduled: {formatDate(date)}, {formatRaceTime(date)} {raceTimeZone(date)}
-                                </p>
-                            {/each}
-                        </div>
+                        </button>
                     {/each}
                 </div>
             </div>
 
-            <!-- Right Column: Tiers -->
-            <div class="lg:col-span-5 space-y-8 order-1 lg:order-2">
-                <div class="sticky top-8">
-                    <div class="flex items-center justify-between mb-8">
-                        <div class="flex items-center gap-4">
-                            <div class="bg-psgl-blue/20 p-3 border border-psgl-blue/50">
-                                <Users class="w-8 h-8 text-psgl-blue" />
-                            </div>
-                            <h2 class="text-3xl font-bold uppercase tracking-wide">Tiers</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+                <!-- Left Column: Rounds -->
+                <div class="lg:col-span-7 space-y-8 order-2 lg:order-1">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="bg-psgl-blue/20 p-3 border border-psgl-blue/50">
+                            <Calendar class="w-8 h-8 text-psgl-blue" />
                         </div>
-                        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white bg-black/40 px-3 py-1.5 border border-white/10">
-                            <span class="inline-block h-2 w-2 bg-psgl-blue"></span>
-                            Live Streamed
+                        <div>
+                            <h2 class="text-3xl font-bold uppercase tracking-wide">Rounds</h2>
+                            <p class="text-psgl-blue font-bold uppercase tracking-widest text-sm">{activeCalendar?.name ?? ""} Calendar</p>
                         </div>
                     </div>
 
-                    {#if referenceRound}
-                        <p class="mb-4 text-sm text-gray-400">Start times for round {referenceRound.number}</p>
-                    {/if}
-                    <!-- Tiers Grid -->
-                    <div class="bg-psgl-card border border-white/10 p-6 md:p-8 shadow-lg">
-                        <div class="space-y-8">
-                            {#each tierBlocks as block, idx (block.time)}
-                                <div class={`pt-4 ${idx > 0 ? "border-t border-white/5" : ""}`}>
-                                    <div class="flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
-                                        <div class="w-32 shrink-0 flex flex-col gap-1">
-                                            <div class="text-3xl font-black text-white leading-none">
-                                                {block.date ? formatRaceTime(block.date) : formatTime(block.time)}
-                                            </div>
-                                            <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">
-                                                {block.date ? `${formatDate(block.date)} · ${raceTimeZone(block.date)}` : "UK time (GMT/BST)"}
+                    <div class="grid gap-4">
+                        {#each roundSchedules as { round, dates, displayDate }, i (round.id)}
+                            <div class={`group relative overflow-hidden border border-white/10 transition-all duration-300
+                                ${activeRoundIndex === i
+                                ? "bg-[#111116] border-psgl-blue/50 hover:border-psgl-blue shadow-lg"
+                                : "bg-psgl-card hover:bg-[#111116] hover:border-psgl-blue"}`}>
+
+                                <!-- Decorative corners -->
+                                {#if activeRoundIndex === i}
+                                    <div class="absolute top-0 left-0 h-4 w-4 border-t border-l border-psgl-blue transition-opacity duration-500 group-hover:opacity-0"></div>
+                                    <div class="absolute top-0 right-0 h-4 w-4 border-t border-r border-psgl-blue transition-opacity duration-500 group-hover:opacity-0"></div>
+                                    <div class="absolute bottom-0 left-0 h-4 w-4 border-b border-l border-psgl-blue transition-opacity duration-500 group-hover:opacity-0"></div>
+                                    <div class="absolute bottom-0 right-0 h-4 w-4 border-b border-r border-psgl-blue transition-opacity duration-500 group-hover:opacity-0"></div>
+                                {/if}
+
+                                <div class="relative p-4 md:p-6 flex flex-col sm:flex-row items-center gap-6">
+
+                                    <!-- Round Number Box -->
+                                    <div class={`shrink-0 flex flex-col items-center justify-center w-16 h-16 bg-black/60 border border-white/10 transition-colors ${activeRoundIndex === i ? "border-psgl-blue/50 group-hover:border-psgl-blue" : "group-hover:border-psgl-blue"}`}>
+                                        <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Round</span>
+                                        <span class="text-3xl font-black text-white leading-none">{round.number}</span>
+                                    </div>
+
+                                    <!-- Flag & Details -->
+                                    <div class="grow text-center sm:text-left flex flex-col sm:flex-row items-center gap-6 w-full">
+                                        <img
+                                            src={getFlagUrl(round.flag)}
+                                            alt={round.flag}
+                                            class="w-16 h-10 object-cover shadow-lg border border-white/10"
+                                        />
+                                        <div class="grow relative w-full">
+                                            <div class="relative z-10">
+                                                <h3 class={`text-2xl font-black uppercase italic transition-colors ${activeRoundIndex === i ? "text-psgl-blue" : "text-white group-hover:text-psgl-blue"}`}>
+                                                    {round.name.split(" - ")[0]}
+                                                </h3>
+                                                <p class="text-gray-400 text-xs font-bold uppercase tracking-[0.15em]">
+                                                    {round.name.split(" - ")[1] || round.name}
+                                                </p>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="flex flex-wrap gap-2">
-                                            {#each block.tiers as tierData (tierData.tiers_id.id)}
-                                                <div class={`min-w-20 text-center px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition ${tierData.tiers_id.comm_confirm ? "bg-psgl-blue text-white shadow-md" : "bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10"}`}>
-                                                    {tierData.tiers_id.name}
-                                                </div>
-                                            {/each}
+                                    <!-- Next Race Badge -->
+                                    {#if activeRoundIndex === i}
+                                        <div class="shrink-0">
+                                            <div class="inline-flex items-center gap-2 px-4 py-2 bg-psgl-blue text-white text-xs font-bold uppercase tracking-widest">
+                                                <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                                                {dates.some((date) => getUKDateKey(date) === today) ? "Race Day" : "Next Race"}
+                                            </div>
+                                        </div>
+                                    {/if}
+
+                                    <!-- Date -->
+                                    <div class="shrink-0 text-right min-w-[140px]">
+                                        <div class="flex flex-col items-center sm:items-end gap-1">
+                                            <div class="flex items-center gap-2 text-psgl-blue font-bold text-lg uppercase">
+                                                <Calendar class="w-4 h-4" />
+                                                {displayDate ? formatDate(displayDate) : "Date to be confirmed"}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            {/each}
+                                {#each getRescheduledTiers(round) as { tier, date } (tier.id)}
+                                    <p class="px-4 pb-4 text-sm text-gray-300 md:px-6">
+                                        {tier.name} rescheduled: {formatDate(date)}, {formatRaceTime(date)} {raceTimeZone(date)}
+                                    </p>
+                                {/each}
+                            </div>
+                        {/each}
+                    </div>
+                </div>
+
+                <!-- Right Column: Tiers -->
+                <div class="lg:col-span-5 space-y-8 order-1 lg:order-2">
+                    <div class="sticky top-8">
+                        <div class="flex items-center justify-between mb-8">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-psgl-blue/20 p-3 border border-psgl-blue/50">
+                                    <Users class="w-8 h-8 text-psgl-blue" />
+                                </div>
+                                <h2 class="text-3xl font-bold uppercase tracking-wide">Tiers</h2>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white bg-black/40 px-3 py-1.5 border border-white/10">
+                                <span class="inline-block h-2 w-2 bg-psgl-blue"></span>
+                                Live Streamed
+                            </div>
+                        </div>
+
+                        {#if referenceRound}
+                            <p class="mb-4 text-sm text-gray-400">Start times for round {referenceRound.number}</p>
+                        {/if}
+                        <!-- Tiers Grid -->
+                        <div class="bg-psgl-card border border-white/10 p-6 md:p-8 shadow-lg">
+                            <div class="space-y-8">
+                                {#each tierBlocks as block, idx (block.time)}
+                                    <div class={`pt-4 ${idx > 0 ? "border-t border-white/5" : ""}`}>
+                                        <div class="flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
+                                            <div class="w-32 shrink-0 flex flex-col gap-1">
+                                                <div class="text-3xl font-black text-white leading-none">
+                                                    {block.date ? formatRaceTime(block.date) : formatTime(block.time)}
+                                                </div>
+                                                <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">
+                                                    {block.date ? `${formatDate(block.date)} · ${raceTimeZone(block.date)}` : "UK time (GMT/BST)"}
+                                                </div>
+                                            </div>
+
+                                            <div class="flex flex-wrap gap-2">
+                                                {#each block.tiers as tierData (tierData.tiers_id.id)}
+                                                    <div class={`min-w-20 text-center px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition ${tierData.tiers_id.comm_confirm ? "bg-psgl-blue text-white shadow-md" : "bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10"}`}>
+                                                        {tierData.tiers_id.name}
+                                                    </div>
+                                                {/each}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {/each}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {/if}
     </PageSection>
 </PageShell>

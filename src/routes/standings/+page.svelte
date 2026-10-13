@@ -8,7 +8,9 @@
 
 <svelte:head>
     <title>PSGL | Standings</title>
-    <meta name="description" content={`${data.currentSeason} league standings for PC and console.`} />
+    <meta name="description" content={data.currentSeason
+        ? `${data.currentSeason} league standings for PC and console.`
+        : "League standings for PC and console."} />
 </svelte:head>
 
 <PageShell>

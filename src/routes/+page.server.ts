@@ -1,54 +1,15 @@
-import { getAllCalendars, getAllTiers, getLeaguesByIds, getLeagueSeasonByGameId, getSiteStats } from "#lib/server/directus.ts";
-import { SEASON_GAME_ID, NEXT_FEATURED_RACE_TIER_NAMES } from "$app/env/private";
-import type { CalendarData, Tier, CalendarTier, League, HomepageLeagueCard, HomepageLeagueEntry, SiteStats } from "#lib/types.ts";
+import { getAllCalendars, getLeaguesByIds, getSiteStats } from "#lib/server/directus.ts";
+import { NEXT_FEATURED_RACE_TIER_NAMES } from "$app/env/private";
+import type { CalendarData, League, HomepageLeagueCard, HomepageLeagueEntry, SiteStats } from "#lib/types.ts";
 import { error } from "@sveltejs/kit";
 import { building } from "$app/env";
-import { DEFAULT_TIMEZONE } from "#lib/constants.ts";
 import { HOMEPAGE_LEAGUES, HOMEPAGE_LEAGUE_IDS } from "#lib/server/league-groups.ts";
+import { processCalendars } from "#lib/server/calendars.ts";
+import type { PageServerLoad } from "./$types";
 
-export const prerender = true;
-
-// Resolve the current timezone name (e.g. GMT, BST)
-function getTimeZoneName() {
-    const now = new Date();
-    const timeZoneFormatter = new Intl.DateTimeFormat("en-GB", {
-        timeZone: DEFAULT_TIMEZONE,
-        timeZoneName: "short"
-    });
-    const timeZoneParts = timeZoneFormatter.formatToParts(now);
-    const timeZoneName =
-        timeZoneParts.find((part) => part.type === "timeZoneName")?.value ?? "UK";
-
-    return timeZoneName;
-}
-
-// Process leagues and extract current season
-function getCurrentSeasonFromLeague(seasonLeague: Pick<League, "standings_config">) {
-    if (!seasonLeague.standings_config) {
-        throw error(500, "League standings_config is missing");
-    }
-
-    let config = seasonLeague.standings_config;
-    if (typeof config === "string") {
-        try {
-            config = JSON.parse(config);
-        } catch {
-            throw error(500, "Failed to parse standings_config JSON");
-        }
-    }
-
-    if (!Array.isArray(config) || config.length === 0 || !config[0].season) {
-        throw error(500, "Invalid or empty standings_config structure");
-    }
-
-    return `Season ${config[0].season}`;
-}
-
-export const load = async () => {
+export const load: PageServerLoad = async () => {
     let calendars: CalendarData[];
-    let tiers: Tier[];
     let leagues: League[];
-    let seasonLeague: League;
     let stats: SiteStats;
 
     const featuredLeagueIds = Array.from(new Set(HOMEPAGE_LEAGUE_IDS));
@@ -57,11 +18,9 @@ export const load = async () => {
     }
 
     try {
-        [calendars, tiers, leagues, seasonLeague, stats] = await Promise.all([
+        [calendars, leagues, stats] = await Promise.all([
             getAllCalendars() as unknown as Promise<CalendarData[]>,
-            getAllTiers() as unknown as Promise<Tier[]>,
             getLeaguesByIds(featuredLeagueIds) as unknown as Promise<League[]>,
-            getLeagueSeasonByGameId(SEASON_GAME_ID) as unknown as Promise<League>,
             getSiteStats() as unknown as Promise<SiteStats>,
         ]);
     } catch (e) {
@@ -140,40 +99,15 @@ export const load = async () => {
         return acc;
     }, []);
 
-    // Process calendars to match the frontend structure
-    const processedCalendars: Record<string, CalendarData> = {};
-
-    for (const calendar of calendars) {
-        const calendarTiers = Array.isArray(calendar.tiers) ? calendar.tiers : [];
-        const validTiers = calendarTiers.filter(
-            (tier): tier is CalendarTier => Boolean(tier?.tiers_id?.name)
-        );
-
-        validTiers.sort((a: CalendarTier, b: CalendarTier) => {
-            return a.tiers_id.name.localeCompare(b.tiers_id.name, undefined, { numeric: true, sensitivity: "base" });
-        });
-
-        const calendarSlugId = calendar.name.toLowerCase().replace(/\s+/g, "-");
-
-        processedCalendars[calendarSlugId] = {
-            name: calendar.name,
-            tiers: validTiers,
-            rounds: [...(calendar.calendar_rounds ?? [])].sort((a, b) => a.sort - b.sort)
-        };
-    }
-
     const nextFeaturedRaceTierNames = (NEXT_FEATURED_RACE_TIER_NAMES ?? "")
         .split(",")
         .map((value) => value.trim())
         .filter((value) => Boolean(value));
 
     return {
-        calendars: processedCalendars,
+        calendars: processCalendars(calendars),
         nextRaceTierNames: nextFeaturedRaceTierNames,
-        tiers: tiers,
-        timeZoneName: getTimeZoneName(),
         leagues: displayLeagues,
-        currentSeason: getCurrentSeasonFromLeague(seasonLeague),
         stats,
     };
 };
