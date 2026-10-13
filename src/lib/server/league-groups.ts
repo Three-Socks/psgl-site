@@ -33,8 +33,8 @@ const rawLeagues: RawHomepageLeague[] = [
         description: LEAGUE_METADATA.F1.description,
         imageWebp: LEAGUE_METADATA.F1.imageWebp,
         entries: [
-            { id: LEAGUE_ID_F1_PS_SIGNUP, platform: "PS", phase: "Sign Ups" },
-            { id: LEAGUE_ID_F1_PS_MID_SIGNUP, platform: "PS", phase: "Mid-Season" },
+            { id: LEAGUE_ID_F1_PS_SIGNUP, platform: "CON", phase: "Sign Ups" },
+            { id: LEAGUE_ID_F1_PS_MID_SIGNUP, platform: "CON", phase: "Mid-Season" },
             { id: LEAGUE_ID_F1_PC_SIGNUP, platform: "PC", phase: "Sign Ups" },
             { id: LEAGUE_ID_F1_PC_MID_SIGNUP, platform: "PC", phase: "Mid-Season" },
         ],

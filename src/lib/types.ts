@@ -1,6 +1,6 @@
 export enum Platform {
     PC = "PC",
-    PS = "PS"
+    CON = "CON"
 }
 
 export interface HomepageLeagueEntry extends Pick<League, "id" | "name" | "closed" | "color"> {

@@ -45,7 +45,7 @@
                                         style={`background-color: ${entry.color ?? (entry.closed ? "#ef4444" : "#22c55e")};`}
                                     ></div>
                                     <span class="text-xs font-bold uppercase tracking-widest text-white">
-                                        {(entry.platform ?? "") + (entry.platform && entry.phase ? " " : "") + (entry.phase ?? " Sign Ups")}
+                                        {(entry.platform === "CON" ? "Console" : (entry.platform ?? "")) + (entry.platform && entry.phase ? " " : "") + (entry.phase ?? " Sign Ups")}
                                     </span>
                                     <span class={`text-xs font-bold uppercase tracking-widest ${entry.closed ? "text-red-500" : "text-green-500"}`}>
                                         {entry.closed ? "Closed" : "Open"}

@@ -40,7 +40,7 @@ export const SOCIAL_LINKS = [
 
 export const LEAGUE_METADATA = {
     F1: {
-        description: "Join the world's largest F1 league. With tiers for every skill level on PC & PlayStation.",
+        description: "Join the world's largest F1 league. With tiers for every skill level on PC, PlayStation and Xbox.",
         imageWebp: "/leagues/f125-2026.webp"
     },
     GT: {

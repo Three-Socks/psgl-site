@@ -186,7 +186,7 @@
             <p
                 class="border-psgl-blue mb-10 max-w-xl border-l-4 pl-6 py-1 text-lg font-light text-gray-300 md:text-xl"
             >
-                The world's largest Formula 1 league on PlayStation & PC.
+                The world's largest Formula 1 league on PC, PlayStation and Xbox.
             </p>
 
             <div

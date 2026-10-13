@@ -78,12 +78,12 @@
             </div>
         </button>
         <button
-            onclick={() => (selectedPlatform = Platform.PS)}
+            onclick={() => (selectedPlatform = Platform.CON)}
             class="psgl-button flex-1 px-6 py-3 md:flex-none md:text-base"
-            class:psgl-button-active={selectedPlatform === Platform.PS}
+            class:psgl-button-active={selectedPlatform === Platform.CON}
         >
             <div class="flex items-center justify-center gap-2">
-                <Gamepad2 class="h-5 w-5" /> PS
+                <Gamepad2 class="h-5 w-5" /> Console
             </div>
         </button>
     </div>

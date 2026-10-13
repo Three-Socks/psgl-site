@@ -9,7 +9,7 @@
 
 <svelte:head>
     <title>PSGL | Premier Sim Gaming Leagues</title>
-    <meta name="description" content="The biggest Formula 1 racing gaming league on PlayStation & PC" />
+    <meta name="description" content="The biggest Formula 1 racing gaming league on PC, PlayStation and Xbox" />
 </svelte:head>
 
 <PageShell headerPadding={false}>
