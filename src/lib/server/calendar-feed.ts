@@ -89,7 +89,7 @@ export const buildCalendarFeed = (
             const cancelled = Boolean(round.cancelled_at);
             const description = cancelled
                 ? `${calendar.name}\nCancelled: ${round.cancellation_reason || "This round has been cancelled."}\nThe start time is the original schedule.`
-                : `${calendar.name}\nRace start time. Check PSGL announcements for late changes.`;
+                : `${calendar.name}\nRace start time.`;
             events.push({
                 key: `${calendar.id}:${round.id}:${tier.id}`,
                 start: start.getTime(),
