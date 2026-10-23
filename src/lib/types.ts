@@ -65,6 +65,8 @@ export interface RaceRound {
     schedule_date?: string | null;
     short_name?: string;
     overrides?: RaceRoundOverride[];
+    cancelled_at?: string | null;
+    cancellation_reason?: string | null;
 }
 
 export interface RaceRoundOverride {
@@ -92,6 +94,7 @@ export interface CalendarTier {
 }
 
 export interface CalendarData {
+    id: string;
     name: string;
     tiers: CalendarTier[];
     rounds: RaceRound[];

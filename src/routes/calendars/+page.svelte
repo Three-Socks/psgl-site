@@ -6,6 +6,7 @@
     import PageShell from "#lib/components/layout/PageShell.svelte";
     import PageSection from "#lib/components/layout/PageSection.svelte";
     import SectionHeader from "#lib/components/layout/SectionHeader.svelte";
+    import CalendarSubscriptions from "#lib/components/sections/CalendarSubscriptions.svelte";
     import type { CalendarData, RaceRound } from "#lib/types.ts";
     import { SvelteMap } from "svelte/reactivity";
     import type { PageProps } from "./$types";
@@ -43,7 +44,8 @@
     let activeRoundIndex = $derived.by(() => {
         let index = -1;
         let nearest = Infinity;
-        roundSchedules.forEach(({ dates }, i) => {
+        roundSchedules.forEach(({ round, dates }, i) => {
+            if (round.cancelled_at) return;
             const upcoming = dates.filter((date) => getUKDateKey(date) >= today);
             const timestamp = Math.min(...upcoming.map((date) => date.getTime()));
             if (timestamp < nearest) {
@@ -54,7 +56,7 @@
         return index;
     });
 
-    let referenceRound = $derived(activeRounds[activeRoundIndex] ?? activeRounds.at(-1));
+    let referenceRound = $derived(activeRounds[activeRoundIndex] ?? activeRounds.findLast((round) => !round.cancelled_at));
 
     const formatRaceTime = (date: Date) => date.toLocaleTimeString("en-GB", {
         timeZone: DEFAULT_TIMEZONE, hour: "numeric", minute: "2-digit", hour12: true,
@@ -89,7 +91,13 @@
         if (!browser) return;
         const params = new URLSearchParams(window.location.search);
         const calendarParam = params.get("calendar");
-        if (calendarParam && calendars[calendarParam]) {
+        const calendarId = params.get("calendar_id");
+        const matchingCalendar = calendarId
+            ? Object.entries(calendars).find(([, calendar]) => calendar.id === calendarId)
+            : undefined;
+        if (matchingCalendar) {
+            activeCalendarSlugId = matchingCalendar[0];
+        } else if (calendarParam && calendars[calendarParam]) {
             activeCalendarSlugId = calendarParam;
         }
     };
@@ -97,6 +105,7 @@
     const updateCalendarQueryParams = (calendarSlugId: string) => {
         if (!browser) return;
         const url = new URL(window.location.href);
+        url.searchParams.delete("calendar_id");
         if (calendarSlugId) {
             url.searchParams.set("calendar", calendarSlugId);
         } else {
@@ -200,6 +209,8 @@
                 </div>
             </div>
 
+            <CalendarSubscriptions {calendars} enabled={data.calendarSubscriptionsEnabled} />
+
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
                 <!-- Left Column: Rounds -->
@@ -216,7 +227,7 @@
 
                     <div class="grid gap-4">
                         {#each roundSchedules as { round, dates, displayDate }, i (round.id)}
-                            <div class={`group relative overflow-hidden border border-white/10 transition-all duration-300
+                            <div id={`round-${round.id}`} class={`group relative overflow-hidden border border-white/10 transition-all duration-300
                                 ${activeRoundIndex === i
                                 ? "bg-[#111116] border-psgl-blue/50 hover:border-psgl-blue shadow-lg"
                                 : "bg-psgl-card hover:bg-[#111116] hover:border-psgl-blue"}`}>
@@ -249,6 +260,9 @@
                                                 <h3 class={`text-2xl font-black uppercase italic transition-colors ${activeRoundIndex === i ? "text-psgl-blue" : "text-white group-hover:text-psgl-blue"}`}>
                                                     {round.name.split(" - ")[0]}
                                                 </h3>
+                                                {#if round.cancelled_at}
+                                                    <span class="mt-2 inline-block border border-red-400/40 bg-red-950/40 px-3 py-1 text-xs font-bold uppercase tracking-wider text-red-200">Cancelled</span>
+                                                {/if}
                                                 <p class="text-gray-400 text-xs font-bold uppercase tracking-[0.15em]">
                                                     {round.name.split(" - ")[1] || round.name}
                                                 </p>
@@ -271,14 +285,20 @@
                                         <div class="flex flex-col items-center sm:items-end gap-1">
                                             <div class="flex items-center gap-2 text-psgl-blue font-bold text-lg uppercase">
                                                 <Calendar class="w-4 h-4" />
-                                                {displayDate ? formatDate(displayDate) : "Date to be confirmed"}
+                                                {displayDate ? formatDate(displayDate) : round.cancelled_at ? "Cancelled" : "Date to be confirmed"}
                                             </div>
+                                            {#if round.cancelled_at && displayDate}
+                                                <p class="text-xs text-gray-400">Originally scheduled</p>
+                                            {/if}
                                         </div>
                                     </div>
                                 </div>
+                                {#if round.cancelled_at}
+                                    <p class="px-4 pb-4 text-sm text-red-200 md:px-6">{round.cancellation_reason || "This round has been cancelled."}</p>
+                                {/if}
                                 {#each getRescheduledTiers(round) as { tier, date } (tier.id)}
                                     <p class="px-4 pb-4 text-sm text-gray-300 md:px-6">
-                                        {tier.name} rescheduled: {formatDate(date)}, {formatRaceTime(date)} {raceTimeZone(date)}
+                                        {tier.name}{round.cancelled_at ? " originally rescheduled" : " rescheduled"}: {formatDate(date)}, {formatRaceTime(date)} {raceTimeZone(date)}
                                     </p>
                                 {/each}
                             </div>
@@ -304,6 +324,8 @@
 
                         {#if referenceRound}
                             <p class="mb-4 text-sm text-gray-400">Start times for round {referenceRound.number}</p>
+                        {:else if activeRounds.length}
+                            <p class="mb-4 text-sm text-gray-400">All rounds in this calendar are cancelled. Normal tier times are shown below.</p>
                         {/if}
                         <!-- Tiers Grid -->
                         <div class="bg-psgl-card border border-white/10 p-6 md:p-8 shadow-lg">

@@ -16,6 +16,7 @@ export function processCalendars(calendars: CalendarData[]): Record<string, Cale
         const calendarSlugId = calendar.name.toLowerCase().replace(/\s+/g, "-");
 
         processedCalendars[calendarSlugId] = {
+            id: calendar.id,
             name: calendar.name,
             tiers: validTiers,
             rounds: [...(calendar.calendar_rounds ?? [])].sort((a, b) => a.sort - b.sort)

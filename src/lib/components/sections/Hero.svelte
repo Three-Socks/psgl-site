@@ -37,6 +37,7 @@
                 if (!targetTier) continue;
 
                 const tierRounds = calendar.rounds
+                    .filter((round) => !round.cancelled_at)
                     .map((round) => {
                         const dateObj = resolveRaceDate(round, targetTier.tiers_id);
                         if (!dateObj) return null;

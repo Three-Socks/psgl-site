@@ -1,4 +1,4 @@
-import { createDirectus, rest, authentication, readItems, readSingleton, isDirectusError } from "@directus/sdk";
+import { createDirectus, rest, authentication, readItems, readSingleton, isDirectusError, withOptions } from "@directus/sdk";
 import * as env from "$app/env/private";
 import type { SiteStats } from "#lib/types.ts";
 
@@ -14,10 +14,11 @@ if (env.DIRECTUS_STATIC_TOKEN) {
     directus.setToken(env.DIRECTUS_STATIC_TOKEN);
 }
 
-export const getAllCalendars = async () => {
+export const getAllCalendars = async (signal?: AbortSignal) => {
     try {
-        const calendar_response = await directus.request(readItems("calendars", {
+        const calendar_response = await directus.request(withOptions(readItems("calendars", {
             fields: [
+                "id",
                 "name",
                 "tiers.tiers_id.id",
                 "tiers.tiers_id.name",
@@ -33,6 +34,8 @@ export const getAllCalendars = async () => {
                 "calendar_rounds.time",
                 "calendar_rounds.preseason",
                 "calendar_rounds.schedule_date",
+                "calendar_rounds.cancelled_at",
+                "calendar_rounds.cancellation_reason",
                 "calendar_rounds.overrides.id",
                 "calendar_rounds.overrides.tier",
                 "calendar_rounds.overrides.scheduled_at",
@@ -44,7 +47,11 @@ export const getAllCalendars = async () => {
                 ]
             },
             limit: -1,
-        }));
+            deep: {
+                tiers: { _limit: -1 },
+                calendar_rounds: { _limit: -1, overrides: { _limit: -1 } },
+            },
+        }), signal ? { signal, cache: "no-store" } : {}));
 
         return calendar_response;
     } catch (e) {

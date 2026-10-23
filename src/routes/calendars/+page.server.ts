@@ -1,5 +1,6 @@
 import { getAllCalendars, getLeagueSeasonByGameId } from "#lib/server/directus.ts";
 import { SEASON_GAME_ID } from "$app/env/private";
+import { CALENDAR_SUBSCRIPTIONS_ENABLED } from "$app/env/private";
 import type { CalendarData, League } from "#lib/types.ts";
 import { error } from "@sveltejs/kit";
 import { building } from "$app/env";
@@ -26,5 +27,6 @@ export const load: PageServerLoad = async () => {
     return {
         calendars: processCalendars(calendars),
         currentSeason: getCurrentSeasonFromLeague(seasonLeague),
+        calendarSubscriptionsEnabled: CALENDAR_SUBSCRIPTIONS_ENABLED,
     };
 };
