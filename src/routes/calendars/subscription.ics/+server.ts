@@ -35,7 +35,7 @@ export const GET: RequestHandler = async ({ url, request }) => {
     try {
         const signal = AbortSignal.timeout(15_000);
         const before = await readCalendarPublication(signal);
-        const calendars = await getAllCalendars(signal) as unknown as CalendarData[];
+        const calendars = await getAllCalendars(signal, selections) as unknown as CalendarData[];
         const publication = await readCalendarPublication(signal);
         // This detects a publish command during this read, not edits awaiting publication.
         if (before.revision !== publication.revision || before.modified.getTime() !== publication.modified.getTime()) {
@@ -45,7 +45,7 @@ export const GET: RequestHandler = async ({ url, request }) => {
         const headers = {
             "Content-Type": "text/calendar; charset=utf-8",
             "Content-Disposition": "inline; filename=\"psgl-schedules.ics\"",
-            "Cache-Control": "public, max-age=0, s-maxage=60, must-revalidate",
+            "Cache-Control": "public, max-age=0, s-maxage=900, must-revalidate",
             "X-Content-Type-Options": "nosniff",
             "ETag": etag,
         };

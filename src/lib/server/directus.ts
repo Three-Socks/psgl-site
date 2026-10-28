@@ -1,6 +1,7 @@
 import { createDirectus, rest, authentication, readItems, readSingleton, isDirectusError, withOptions } from "@directus/sdk";
 import * as env from "$app/env/private";
 import type { SiteStats } from "#lib/types.ts";
+import type { CalendarSelection } from "#lib/calendar-subscription.ts";
 
 if (!env.DIRECTUS_URL) {
     throw new Error("DIRECTUS_URL is required.");
@@ -14,7 +15,9 @@ if (env.DIRECTUS_STATIC_TOKEN) {
     directus.setToken(env.DIRECTUS_STATIC_TOKEN);
 }
 
-export const getAllCalendars = async (signal?: AbortSignal) => {
+export const getAllCalendars = async (signal?: AbortSignal, selections?: CalendarSelection[]) => {
+    const calendarIds = selections && [...new Set(selections.map(({ calendarId }) => calendarId))];
+    const tierIds = selections && [...new Set(selections.map(({ tierId }) => tierId))];
     try {
         const calendar_response = await directus.request(withOptions(readItems("calendars", {
             fields: [
@@ -41,6 +44,7 @@ export const getAllCalendars = async (signal?: AbortSignal) => {
                 "calendar_rounds.overrides.scheduled_at",
             ],
             filter: {
+                ...(calendarIds ? { id: { _in: calendarIds } } : {}),
                 "_or": [
                     { archived: { _eq: false } },
                     { archived: { _null: true } },
@@ -48,8 +52,17 @@ export const getAllCalendars = async (signal?: AbortSignal) => {
             },
             limit: -1,
             deep: {
-                tiers: { _limit: -1 },
-                calendar_rounds: { _limit: -1, overrides: { _limit: -1 } },
+                tiers: {
+                    _limit: -1,
+                    ...(tierIds ? { _filter: { tiers_id: { _in: tierIds } } } : {}),
+                },
+                calendar_rounds: {
+                    _limit: -1,
+                    overrides: {
+                        _limit: -1,
+                        ...(tierIds ? { _filter: { tier: { _in: tierIds } } } : {}),
+                    },
+                },
             },
         }), signal ? { signal, cache: "no-store" } : {}));
 

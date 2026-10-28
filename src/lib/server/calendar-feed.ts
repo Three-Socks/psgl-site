@@ -104,6 +104,13 @@ export const buildCalendarFeed = (
                     `STATUS:${cancelled ? "CANCELLED" : "CONFIRMED"}`,
                     `DESCRIPTION:${escapeText(description)}`,
                     `URL:${source.href}`,
+                    ...(cancelled ? [] : [
+                        "BEGIN:VALARM",
+                        "ACTION:DISPLAY",
+                        "TRIGGER:-PT10M",
+                        `DESCRIPTION:${escapeText(`Race starts in 10 minutes: ${title}`)}`,
+                        "END:VALARM",
+                    ]),
                     "END:VEVENT",
                 ],
             });
