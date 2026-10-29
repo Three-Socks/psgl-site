@@ -84,7 +84,7 @@
     };
 
     const buildImageUrl = (tierName: string, view: ViewType) =>
-        `${STANDINGS_IMAGE_BASE_URL}/${tierSlug(tierName)}-${viewSuffix[view]}.webp`;
+        `${STANDINGS_IMAGE_BASE_URL}/${tierName.trim().replace(/\s/g, "-").toUpperCase()}-${viewSuffix[view]}.webp`;
 
 
     let filteredTiers = $derived(
@@ -103,6 +103,18 @@
     let currentTier = $derived(
         filteredTiers.find((t: Tier) => t.id === selectedTierId),
     );
+
+    let availableViews = $derived(
+        currentTier?.name.trim().toUpperCase() === "E-SERIES"
+            ? [ViewType.CONSTRUCTORS, ViewType.RESULTS]
+            : [ViewType.DRIVERS, ViewType.CONSTRUCTORS, ViewType.RESULTS],
+    );
+
+    $effect(() => {
+        if (!availableViews.includes(selectedView)) {
+            selectedView = availableViews[0];
+        }
+    });
 
     let currentImageUrl = $derived(
         currentTier ? buildImageUrl(currentTier.name, selectedView) : undefined,
@@ -140,6 +152,7 @@
         bind:selectedView
         {filteredTiers}
         {currentTier}
+        {availableViews}
     />
 
     <!-- IMAGE VIEWER -->

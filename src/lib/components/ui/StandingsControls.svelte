@@ -13,13 +13,15 @@
         selectedTierId = $bindable(),
         selectedView = $bindable(),
         filteredTiers,
-        currentTier
+        currentTier,
+        availableViews
     } = $props<{
         selectedPlatform: Platform;
         selectedTierId: string;
         selectedView: ViewType;
         filteredTiers: Tier[];
         currentTier: Tier | undefined;
+        availableViews: ViewType[];
     }>();
 
     let isTierMenuOpen = $state(false);
@@ -150,7 +152,7 @@
 
 <!-- VIEW TABS (Full width, no scroll) -->
 <div class="flex w-full gap-1">
-    {#each [ViewType.DRIVERS, ViewType.CONSTRUCTORS, ViewType.RESULTS] as type (type)}
+    {#each availableViews as type (type)}
         <button
             onclick={() => (selectedView = type)}
             aria-pressed={selectedView === type}
