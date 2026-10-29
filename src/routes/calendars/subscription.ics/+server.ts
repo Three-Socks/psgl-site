@@ -24,7 +24,7 @@ export const GET: RequestHandler = async ({ url, request }) => {
     }
     let selections;
     try {
-        if ([...url.searchParams.keys()].some((key) => key !== "selection")) {
+        if ([...url.searchParams.keys()].some((key) => key !== "selection" && key !== "v")) {
             return failure("Invalid calendar selection.", 400);
         }
         selections = parseCalendarSelections(url.searchParams.getAll("selection"));

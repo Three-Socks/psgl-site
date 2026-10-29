@@ -30,5 +30,6 @@ export const calendarSubscriptionUrl = (values: string[], origin: string): strin
     for (const selection of parseCalendarSelections(values)) {
         url.searchParams.append("selection", selectionKey(selection));
     }
+    url.searchParams.set("v", "2");
     return url.href;
 };
